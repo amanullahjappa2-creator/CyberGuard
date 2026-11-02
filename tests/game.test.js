@@ -137,7 +137,7 @@ test("the correct response path completes all thirty levels and unlocks the cert
       assert.equal(game.selectIssue(index).type, "selected");
       const result = game.answer(level.issues[index].fix);
       if (index < level.issues.length - 1) assert.equal(result.type, "correct");
-      else assert.equal(result.type, level.id === 30 ? "gameComplete" : "levelComplete");
+      else assert.equal(result.type, level.id === 30 ? "academyComplete" : "levelComplete");
     }
   }
   assert.equal(game.progress.finished, true);
@@ -164,7 +164,7 @@ test("difficulty adjusts trust, hints and awarded score", () => {
   assert.ok(game.progress.achievements.includes("perfect-level"));
 });
 
-test("the final boss timer starts in campaign mode", () => {
+test("the final lab timer starts in campaign mode", () => {
   installMemoryStorage();
   const game = new GameEngine(levels, locales);
   game.progress.unlocked = 30;
@@ -175,13 +175,13 @@ test("the final boss timer starts in campaign mode", () => {
   assert.equal(game.state.timerSeconds, 180);
 });
 
-test("the final boss is a six-step triage and response queue", () => {
-  const boss = levels.at(-1);
-  assert.equal(boss.type, "alerts");
-  assert.equal(boss.issues.length, 6);
-  assert.equal(boss.timerSeconds, 240);
+test("the final lab is a six-step triage and response queue", () => {
+  const lab = levels.at(-1);
+  assert.equal(lab.type, "alerts");
+  assert.equal(lab.issues.length, 6);
+  assert.equal(lab.timerSeconds, 240);
   assert.deepEqual(
-    boss.issues.map((issue) => issue.fix),
+    lab.issues.map((issue) => issue.fix),
     ["c0", "c1", "c2", "c3", "c4", "c5"],
   );
 });

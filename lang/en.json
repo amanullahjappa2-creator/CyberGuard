@@ -71,7 +71,7 @@
     "levelFailed": "Trust meter empty",
     "trustEnded": "This scenario needs another try. Your progress in this attempt was not saved as a completed level.",
     "retry": "Retry level",
-    "gameComplete": "ALL 30 LEVELS COMPLETE",
+    "academyComplete": "ALL 30 LEVELS COMPLETE",
     "certificateTitle": "Cyber Safety Defender",
     "certificateIntro": "You completed all thirty simulated security scenarios.",
     "certificateAward": "This certificate is awarded to",
@@ -1397,7 +1397,7 @@
         "whatHappened": "A pretend buyer sends a payment screenshot and a QR code. Verify payment in the official app.",
         "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
         "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
-        "pakistan": "Online marketplace sales and Easypaisa or JazzCash payment claims."
+        "pakistan": "Online marketplace sales and fictional NovaPay or SahulatPay payment claims."
       }
     },
     {
@@ -2617,7 +2617,7 @@
       }
     },
     {
-      "title": "Final Boss: Security Operations Shift",
+      "title": "Final Lab: Security Operations Shift",
       "scenario": "Triage three simulated alerts under a timer. Prioritize, contain, eradicate, recover and document in order.",
       "choices": {
         "c0": "Triage all alerts and preserve the available evidence",
@@ -3000,8 +3000,8 @@
       "description": "Complete a level without mistakes or hints."
     },
     "boss-slayer": {
-      "title": "Boss Slayer",
-      "description": "Complete a chapter boss level."
+      "title": "Lab Specialist",
+      "description": "Complete a chapter-end lab."
     },
     "code-reviewer": {
       "title": "Code Reviewer",

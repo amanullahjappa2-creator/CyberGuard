@@ -54,7 +54,7 @@ test("completes a level, switches language and theme, and keeps progress after r
     .click();
   const levels = page.locator(".level-card:not(:disabled)");
   await expect(page.locator(".level-card")).toHaveCount(30);
-  await expect(page.locator(".city-map")).toHaveCount(0);
+  await expect(page.locator(".chapter-levels")).toHaveCount(6);
   await expect(levels).toHaveCount(2);
   await levels.first().focus();
   await page.keyboard.press("Tab");

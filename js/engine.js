@@ -476,7 +476,7 @@ export class GameEngine {
     this.progress.current = null;
     this.persist();
     return {
-      type: id === this.levels.length ? "gameComplete" : "levelComplete",
+      type: id === this.levels.length ? "academyComplete" : "levelComplete",
       levelId: id,
       stars,
       score: this.state.score,

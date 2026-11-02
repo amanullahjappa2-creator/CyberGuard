@@ -931,10 +931,6 @@ p {
 .level-card:disabled .level-status {
   color: var(--muted);
 }
-.level-card .level-result {
-  margin-top: 6px;
-  font-size: 0.88rem;
-}
 .recommendation-card {
   margin-top: 18px;
   border-color: color-mix(in srgb, var(--primary) 48%, var(--border));
@@ -1059,94 +1055,6 @@ p {
 }
 .error-text {
   color: var(--danger);
-}
-.chapter-section {
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-}
-.chapter-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  gap: 16px;
-}
-.chapter-head h2 {
-  margin: 0 0 5px;
-  font-size: 1.05rem;
-}
-.chapter-head p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.84rem;
-}
-.chapter-nodes {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 20px;
-}
-.chapter-nodes::before {
-  position: absolute;
-  z-index: 0;
-  top: 24px;
-  inset-inline: 8%;
-  height: 1px;
-  background: var(--border);
-  content: "";
-}
-.map-node {
-  position: relative;
-  z-index: 1;
-  min-height: 100px;
-  padding: 12px 8px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background: var(--surface);
-  text-align: center;
-  cursor: pointer;
-}
-.map-node:hover:not(:disabled) {
-  border-color: var(--primary);
-  background: var(--surface-soft);
-}
-.map-node:disabled {
-  opacity: 0.43;
-  cursor: not-allowed;
-}
-.map-node.is-boss {
-  border-color: var(--warning);
-}
-.map-node.is-complete {
-  border-color: var(--success);
-}
-.map-node .node-number {
-  display: grid;
-  width: 28px;
-  height: 28px;
-  place-items: center;
-  margin: 0 auto 8px;
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  background: var(--surface-soft);
-  color: var(--primary);
-  font:
-    700 0.75rem "JetBrains Mono",
-    monospace;
-}
-.map-node .node-title {
-  display: block;
-  font-size: 0.76rem;
-  font-weight: 700;
-  line-height: 1.35;
-}
-.map-node .node-stars {
-  display: block;
-  margin-top: 5px;
-  color: var(--warning);
-  font-size: 0.75rem;
 }
 .settings-list {
   display: grid;
@@ -1295,12 +1203,6 @@ p {
   .nav-link {
     flex: 0 0 auto;
   }
-  .chapter-nodes {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .chapter-nodes::before {
-    display: none;
-  }
 }
 @media (max-width: 680px) {
   .app-shell {
@@ -1310,21 +1212,12 @@ p {
   .dashboard-grid {
     grid-template-columns: 1fr;
   }
-  .chapter-nodes {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .chapter-head {
-    flex-direction: column;
-  }
   .setting-row {
     align-items: start;
     flex-direction: column;
   }
   .setting-control {
     justify-content: start;
-  }
-  .map-node {
-    min-height: 92px;
   }
   .hero {
     min-height: 0;

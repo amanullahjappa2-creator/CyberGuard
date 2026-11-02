@@ -979,7 +979,7 @@ function answer(choiceId) {
   } else if (result.type === "failed") {
     feedback = null;
     screen = "failed";
-  } else if (result.type === "levelComplete" || result.type === "gameComplete") {
+  } else if (result.type === "levelComplete" || result.type === "academyComplete") {
     summaryResult = result;
     feedback = null;
     screen = "summary";
@@ -1214,7 +1214,7 @@ function renderFinal() {
   const total = engine.getTotalScore();
   const rank = currentLocale().ranks?.[engine.progress.rank] ?? engine.progress.rank;
   const panel = element("section", "summary-card");
-  panel.append(element("p", "level-number", ui.gameComplete));
+  panel.append(element("p", "level-number", ui.academyComplete));
   panel.append(element("h1", "", ui.certificateTitle));
   panel.append(element("p", "intro", ui.certificateIntro));
   const certificate = element("div", "certificate");

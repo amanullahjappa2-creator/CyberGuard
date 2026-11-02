@@ -135,8 +135,8 @@ const definitions = [
       "اسکرین شاٹ ادائیگی کا ثبوت نہیں۔ خریدار کا ادائیگی QR اسکین یا رقم لینے کے لیے OTP شیئر نہ کریں۔",
     ),
     context: pair(
-      "Online marketplace sales and Easypaisa or JazzCash payment claims.",
-      "آن لائن مارکیٹ پلیس اور ایزی پیسہ یا جاز کیش ادائیگی کے دعوے۔",
+      "Online marketplace sales and fictional NovaPay or SahulatPay payment claims.",
+      "آن لائن مارکیٹ پلیس اور فرضی NovaPay یا SahulatPay ادائیگی کے دعوے۔",
     ),
     terms: ["qr-payment", "otp", "phishing"],
     items: [
@@ -1108,7 +1108,7 @@ const definitions = [
     boss: true,
     timedByDefault: true,
     timerSeconds: 240,
-    title: pair("Final Boss: Security Operations Shift", "آخری باس: سیکیورٹی آپریشنز کی شفٹ"),
+    title: pair("Final Lab: Security Operations Shift", "آخری لیب: سیکیورٹی آپریشنز کی شفٹ"),
     scenario: pair(
       "Triage three simulated alerts under a timer. Prioritize, contain, eradicate, recover and document in order.",
       "وقت کے اندر تین فرضی تنبیہات دیکھیں۔ ترجیح، روک تھام، صفائی، بحالی اور رپورٹ درست ترتیب سے کریں۔",
