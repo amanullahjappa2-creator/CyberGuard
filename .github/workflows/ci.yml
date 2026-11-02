@@ -20,7 +20,13 @@ jobs:
         with:
           python-version: "3.12"
       - run: npm ci
-      - run: python -m pip install -r requirements.txt
+      - run: npm audit --audit-level=high
+      - run: python -m pip install -r requirements-dev.txt
+      - run: pip-audit -r requirements.txt
+      - run: bandit -q -r app.py
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: python -m unittest discover -s tests -p "test_app.py"
       - run: npm run lint
       - run: npm run format:check

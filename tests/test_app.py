@@ -52,8 +52,8 @@ class ScoreboardApiTests(unittest.TestCase):
         self.assertEqual(response.get_json()["score"], 400)
 
     def test_mutations_require_csrf_and_validate_class_membership(self):
-        response = self.client.post("/api/classes", json={})
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(self.client.post("/api/classes", json={}).status_code, 403)
+        self.assertEqual(self.client.post("/api/score", json=self.score_payload()).status_code, 403)
         self.assertEqual(self.post("/api/score", self.score_payload(classCode="ABC234")).status_code, 404)
         self.assertEqual(
             self.post("/api/score", self.score_payload(completedLevels=[1, 1])).status_code, 400
@@ -93,12 +93,39 @@ class ScoreboardApiTests(unittest.TestCase):
     def test_static_server_does_not_expose_application_or_database_files(self):
         home = self.client.get("/")
         self.assertEqual(home.status_code, 200)
+        self.assertIn("frame-ancestors 'none'", home.headers["Content-Security-Policy"])
+        self.assertEqual(home.headers["X-Content-Type-Options"], "nosniff")
+        self.assertEqual(home.headers["X-Frame-Options"], "DENY")
+        self.assertEqual(home.headers["Referrer-Policy"], "no-referrer")
+        self.assertEqual(home.headers["Cross-Origin-Opener-Policy"], "same-origin")
+        self.assertEqual(home.headers["Cross-Origin-Resource-Policy"], "same-origin")
+        self.assertNotIn("Strict-Transport-Security", home.headers)
         home.close()
         teacher_page = self.client.get("/teacher.html")
         self.assertEqual(teacher_page.status_code, 200)
+        self.assertEqual(
+            teacher_page.headers["Content-Security-Policy"],
+            home.headers["Content-Security-Policy"],
+        )
         teacher_page.close()
         self.assertEqual(self.client.get("/app.py").status_code, 404)
         self.assertEqual(self.client.get("/instance/cyberguard.sqlite3").status_code, 404)
+
+    def test_api_responses_have_security_headers_and_are_not_cached(self):
+        response = self.client.get("/api/health")
+        self.assertEqual(response.headers["Cache-Control"], "no-store")
+        self.assertIn("default-src 'self'", response.headers["Content-Security-Policy"])
+        self.assertEqual(
+            response.headers["Permissions-Policy"],
+            "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
+        )
+
+    def test_hsts_is_only_sent_for_https_requests(self):
+        response = self.app.test_client().get("/api/health", base_url="https://localhost")
+        self.assertEqual(
+            response.headers["Strict-Transport-Security"],
+            "max-age=31536000; includeSubDomains",
+        )
 
     def test_api_rate_limit_returns_a_clear_429(self):
         limited_app = create_app(

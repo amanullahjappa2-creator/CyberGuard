@@ -42,6 +42,9 @@ items marked missing are not implied to exist elsewhere in the codebase.
   or revocation mechanism.
 - There is no demo seed/reset workflow, migration framework, production
   deployment configuration, or researcher data model.
+- Phase 2 security foundations now add a server CSP and browser security headers;
+  HTTPS responses receive HSTS. CI is configured for npm audit, pip-audit,
+  Bandit and Gitleaks. Their CI results are pending.
 
 ## Missing from the Phase 2 brief
 
@@ -55,10 +58,9 @@ items marked missing are not implied to exist elsewhere in the codebase.
   statistics, charts and study guide.
 - Five dedicated multi-skill Lab assessments and six micro-lessons; current
   chapter-end levels are not a replacement for these specified additions.
-- Threat model and security reporting documentation, dependency/security
-  scanners in CI, authentication and account recovery, instructor/admin TOTP,
-  global logout, data deletion, certificate signing/revocation and validation
-  of per-issue event evidence on the server.
+- Authentication and account recovery, instructor/admin TOTP, global logout,
+  data deletion, certificate signing/revocation and validation of per-issue
+  event evidence on the server.
 - Seeded demo accounts/data, Docker/PostgreSQL deployment and backup/restore
   documentation, full multi-screen browser QA and Lighthouse measurements.
 - In-platform phishing drills are intentionally deferred until the core platform
@@ -74,6 +76,11 @@ Checked on 2026-11-03 before Phase 2 edits:
 - `npm run lint`: passing.
 - `npm run format:check`: passing.
 
+Post-baseline, the server security headers pass eight Python API tests, and
+the 27 Node tests, Playwright flow, lint and npm audit continue to pass. The
+Python scanner packages could not be installed in the local Python 3.15
+environment because their PyYAML dependency requires unavailable C++ build
+tools; CI uses Python 3.12. Gitleaks has not yet run in this local checkout.
 Lighthouse scores have not been measured. No claim is made that the missing
 features or platform-security controls are complete.
 

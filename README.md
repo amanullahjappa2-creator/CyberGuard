@@ -59,6 +59,20 @@ status. Answer choices are shuffled per attempt and remain stable while that
 attempt is in progress. Dashboard, Levels, Reports and Dictionary are the primary
 destinations; Badges, Settings, language and theme controls are in the Options menu.
 
+## Responsible use and security
+
+CyberGuard uses fictional, simulated scenarios for learning. Do not use it to scan,
+exploit or test real systems, and do not enter real passwords, OTPs, payment
+details or other sensitive information. The optional scoreboard is not an
+authenticated account or high-stakes assessment service; client-submitted scores
+are sanity-checked, not proven. It is not suitable for storing sensitive student
+records.
+
+See [SECURITY.md](./SECURITY.md) for private vulnerability reporting and
+[THREAT_MODEL.md](./THREAT_MODEL.md) for the current security scope and known
+limitations. In production, use HTTPS, a strong persistent secret key, secure
+cookies, and a production WSGI server.
+
 ## Current project structure
 
 - `index.html`, `css/`, `js/`: application shell, interface, level engine, local
@@ -69,7 +83,9 @@ destinations; Badges, Settings, language and theme controls are in the Options m
   API, browser client and teacher report.
 - `assets/fonts/`: self-hosted typefaces and their licenses.
 - `tests/`, `e2e/`: Node, Python and browser checks.
-- `.github/workflows/ci.yml`: automated lint, formatting and test checks.
+- `.github/workflows/ci.yml`: automated security scans, lint, formatting and tests.
+- `THREAT_MODEL.md`, `SECURITY.md`, `STATUS.md`: security scope, reporting and
+  implementation status.
 - `service-worker.js`, `manifest.webmanifest`: offline installation support.
 
 See [ARCHITECTURE.md](./ARCHITECTURE.md) for existing components, current navigation,
@@ -90,9 +106,14 @@ npm run test:e2e
 Run the API tests with:
 
 ```powershell
-python -m pip install -r requirements.txt
+python -m pip install -r requirements-dev.txt
 python -m unittest discover -s tests -p "test_app.py"
+pip-audit -r requirements.txt
+bandit -q -r app.py
 ```
+
+`npm audit --audit-level=high` checks JavaScript dependencies. GitHub Actions also
+runs Gitleaks against repository changes.
 
 ## Screenshots
 

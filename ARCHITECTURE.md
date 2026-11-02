@@ -32,12 +32,16 @@ scenario engine and renderers.
   fix identifiers. `level-catalog.json` supplies lightweight index metadata.
 - `lang/en.json` and `lang/ur.json` hold English and Urdu UI and scenario content.
 - `app.py`, `js/scoreboard.js`, `js/teacher.js` and `teacher.html` implement the
-  optional privacy-consented nickname scoreboard and teacher reports.
+  optional privacy-consented nickname scoreboard and teacher reports. Flask
+  response headers include a same-origin CSP, frame restrictions, and other
+  browser security policies.
 - `css/style.css` provides responsive themes, RTL layout, accessibility states,
   chapter and level-card presentation, and scenario styles. Fonts are self-hosted
   under `assets/fonts/`.
 - `service-worker.js` precaches the app shell, locale files, levels and assets for
   offline use after the first successful load.
+- `THREAT_MODEL.md` and `SECURITY.md` document the current boundaries, known
+  limitations and private vulnerability-reporting process.
 
 ## Intended Academy direction
 
