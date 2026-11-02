@@ -1,0 +1,53 @@
+{
+  "id": 8,
+  "type": "ports",
+  "items": [0, 1, 2, 3, 4],
+  "choices": ["close", "keep", "restrict", "secure"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "close",
+      "wrongFixes": ["keep", "restrict"],
+      "terms": ["firewall", "incident-response"],
+      "difficulty": 1
+    },
+    {
+      "item": 1,
+      "fix": "restrict",
+      "wrongFixes": ["close", "keep"],
+      "terms": ["firewall", "incident-response"],
+      "difficulty": 2
+    },
+    {
+      "item": 2,
+      "fix": "secure",
+      "wrongFixes": ["close", "keep"],
+      "terms": ["firewall", "incident-response"],
+      "difficulty": 3
+    },
+    {
+      "item": 3,
+      "fix": "keep",
+      "wrongFixes": ["close", "restrict"],
+      "terms": ["firewall", "incident-response"],
+      "difficulty": 4
+    }
+  ],
+  "chapter": 2,
+  "title": {
+    "en": "Firewall and Services",
+    "ur": "فائر وال اور سروسز"
+  },
+  "difficulty": "learner",
+  "skillTag": "network",
+  "glossaryTerms": ["firewall", "incident-response"],
+  "learningCard": true,
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ]
+}

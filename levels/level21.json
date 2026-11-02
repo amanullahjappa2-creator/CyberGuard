@@ -1,0 +1,46 @@
+{
+  "id": 21,
+  "chapter": 5,
+  "title": {
+    "en": "SQL Injection Recognition",
+    "ur": "SQL انجیکشن کی پہچان"
+  },
+  "difficulty": "learner",
+  "skillTag": "web",
+  "type": "log",
+  "items": [0, 1, 2, 3],
+  "choices": ["c0", "c1", "c2", "c3"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "c0",
+      "wrongFixes": ["c1", "c2"],
+      "terms": ["sql-injection", "parameterized-query", "input-validation"],
+      "difficulty": 2
+    },
+    {
+      "item": 1,
+      "fix": "c0",
+      "wrongFixes": ["c1", "c2"],
+      "terms": ["sql-injection", "parameterized-query", "input-validation"],
+      "difficulty": 3
+    },
+    {
+      "item": 2,
+      "fix": "c2",
+      "wrongFixes": ["c0", "c1"],
+      "terms": ["sql-injection", "parameterized-query", "input-validation"],
+      "difficulty": 4
+    }
+  ],
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ],
+  "glossaryTerms": ["sql-injection", "parameterized-query", "input-validation"],
+  "learningCard": true
+}

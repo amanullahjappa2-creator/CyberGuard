@@ -1,0 +1,46 @@
+{
+  "id": 22,
+  "chapter": 5,
+  "title": {
+    "en": "Cross-Site Scripting: Safe Output",
+    "ur": "کراس سائٹ اسکرپٹنگ: محفوظ آؤٹ پٹ"
+  },
+  "difficulty": "defender",
+  "skillTag": "web",
+  "type": "code",
+  "items": [0, 1, 2, 3],
+  "choices": ["c0", "c1", "c2", "c3"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "c1",
+      "wrongFixes": ["c0", "c2"],
+      "terms": ["xss", "output-encoding", "csp"],
+      "difficulty": 3
+    },
+    {
+      "item": 1,
+      "fix": "c0",
+      "wrongFixes": ["c1", "c2"],
+      "terms": ["xss", "output-encoding", "csp"],
+      "difficulty": 4
+    },
+    {
+      "item": 2,
+      "fix": "c1",
+      "wrongFixes": ["c0", "c2"],
+      "terms": ["xss", "output-encoding", "csp"],
+      "difficulty": 1
+    }
+  ],
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ],
+  "glossaryTerms": ["xss", "output-encoding", "csp"],
+  "learningCard": true
+}

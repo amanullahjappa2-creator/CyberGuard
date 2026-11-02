@@ -1,0 +1,46 @@
+{
+  "id": 18,
+  "chapter": 4,
+  "title": {
+    "en": "Email Header Analysis",
+    "ur": "ای میل ہیڈر کا تجزیہ"
+  },
+  "difficulty": "defender",
+  "skillTag": "phishing",
+  "type": "headers",
+  "items": [0, 1, 2, 3],
+  "choices": ["c0", "c1", "c2", "c3"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "c0",
+      "wrongFixes": ["c1", "c2"],
+      "terms": ["spf", "dkim", "dmarc"],
+      "difficulty": 3
+    },
+    {
+      "item": 1,
+      "fix": "c1",
+      "wrongFixes": ["c0", "c2"],
+      "terms": ["spf", "dkim", "dmarc"],
+      "difficulty": 4
+    },
+    {
+      "item": 2,
+      "fix": "c2",
+      "wrongFixes": ["c0", "c1"],
+      "terms": ["spf", "dkim", "dmarc"],
+      "difficulty": 1
+    }
+  ],
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ],
+  "glossaryTerms": ["spf", "dkim", "dmarc"],
+  "learningCard": true
+}

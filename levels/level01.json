@@ -1,0 +1,53 @@
+{
+  "id": 1,
+  "type": "password-list",
+  "items": [0, 1, 2, 3, 4],
+  "choices": ["long", "unique", "manager", "twofa"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "long",
+      "wrongFixes": ["unique", "manager"],
+      "terms": ["password", "password-manager"],
+      "difficulty": 2
+    },
+    {
+      "item": 1,
+      "fix": "unique",
+      "wrongFixes": ["long", "manager"],
+      "terms": ["password", "password-manager"],
+      "difficulty": 3
+    },
+    {
+      "item": 2,
+      "fix": "manager",
+      "wrongFixes": ["long", "unique"],
+      "terms": ["password", "password-manager"],
+      "difficulty": 4
+    },
+    {
+      "item": 3,
+      "fix": "twofa",
+      "wrongFixes": ["long", "unique"],
+      "terms": ["password", "password-manager"],
+      "difficulty": 1
+    }
+  ],
+  "chapter": 1,
+  "title": {
+    "en": "Weak Passwords",
+    "ur": "کمزور پاس ورڈ"
+  },
+  "difficulty": "learner",
+  "skillTag": "passwords",
+  "glossaryTerms": ["password", "password-manager"],
+  "learningCard": true,
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ]
+}

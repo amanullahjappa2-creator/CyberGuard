@@ -1,0 +1,46 @@
+{
+  "id": 24,
+  "chapter": 5,
+  "title": {
+    "en": "Broken Access Control",
+    "ur": "رسائی کے کنٹرول کی خرابی"
+  },
+  "difficulty": "defender",
+  "skillTag": "web",
+  "type": "web-app",
+  "items": [0, 1, 2, 3],
+  "choices": ["c0", "c1", "c2", "c3"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "c1",
+      "wrongFixes": ["c0", "c2"],
+      "terms": ["broken-access-control", "authorization", "least-privilege"],
+      "difficulty": 1
+    },
+    {
+      "item": 1,
+      "fix": "c0",
+      "wrongFixes": ["c1", "c2"],
+      "terms": ["broken-access-control", "authorization", "least-privilege"],
+      "difficulty": 2
+    },
+    {
+      "item": 2,
+      "fix": "c0",
+      "wrongFixes": ["c1", "c2"],
+      "terms": ["broken-access-control", "authorization", "least-privilege"],
+      "difficulty": 3
+    }
+  ],
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ],
+  "glossaryTerms": ["broken-access-control", "authorization", "least-privilege"],
+  "learningCard": true
+}

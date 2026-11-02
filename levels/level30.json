@@ -1,0 +1,71 @@
+{
+  "id": 30,
+  "chapter": 6,
+  "title": {
+    "en": "Final Boss: Security Operations Shift",
+    "ur": "آخری باس: سیکیورٹی آپریشنز کی شفٹ"
+  },
+  "difficulty": "expert",
+  "skillTag": "response",
+  "type": "alerts",
+  "mode": "ordered",
+  "boss": true,
+  "timedByDefault": true,
+  "timerSeconds": 240,
+  "items": [0, 1, 2, 3, 4, 5],
+  "choices": ["c0", "c1", "c2", "c3", "c4", "c5", "c6"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "c0",
+      "wrongFixes": ["c1", "c2"],
+      "terms": ["triage", "containment", "eradication", "recovery", "incident-response"],
+      "difficulty": 3
+    },
+    {
+      "item": 1,
+      "fix": "c1",
+      "wrongFixes": ["c0", "c2"],
+      "terms": ["triage", "containment", "eradication", "recovery", "incident-response"],
+      "difficulty": 4
+    },
+    {
+      "item": 2,
+      "fix": "c2",
+      "wrongFixes": ["c0", "c1"],
+      "terms": ["triage", "containment", "eradication", "recovery", "incident-response"],
+      "difficulty": 1
+    },
+    {
+      "item": 3,
+      "fix": "c3",
+      "wrongFixes": ["c0", "c1"],
+      "terms": ["triage", "containment", "eradication", "recovery", "incident-response"],
+      "difficulty": 2
+    },
+    {
+      "item": 4,
+      "fix": "c4",
+      "wrongFixes": ["c0", "c1"],
+      "terms": ["triage", "containment", "eradication", "recovery", "incident-response"],
+      "difficulty": 3
+    },
+    {
+      "item": 5,
+      "fix": "c5",
+      "wrongFixes": ["c0", "c1"],
+      "terms": ["triage", "containment", "eradication", "recovery", "incident-response"],
+      "difficulty": 4
+    }
+  ],
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ],
+  "glossaryTerms": ["triage", "containment", "eradication", "recovery", "incident-response"],
+  "learningCard": true
+}

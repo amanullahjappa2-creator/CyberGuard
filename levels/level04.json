@@ -1,0 +1,53 @@
+{
+  "id": 4,
+  "type": "url-list",
+  "items": [0, 1, 2, 3, 4],
+  "choices": ["avoid", "official", "https", "check"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "avoid",
+      "wrongFixes": ["official", "https"],
+      "terms": ["domain", "phishing"],
+      "difficulty": 1
+    },
+    {
+      "item": 1,
+      "fix": "official",
+      "wrongFixes": ["avoid", "https"],
+      "terms": ["domain", "phishing"],
+      "difficulty": 2
+    },
+    {
+      "item": 2,
+      "fix": "https",
+      "wrongFixes": ["avoid", "official"],
+      "terms": ["domain", "phishing"],
+      "difficulty": 3
+    },
+    {
+      "item": 4,
+      "fix": "check",
+      "wrongFixes": ["avoid", "official"],
+      "terms": ["domain", "phishing"],
+      "difficulty": 4
+    }
+  ],
+  "chapter": 1,
+  "title": {
+    "en": "Fake Websites",
+    "ur": "جعلی ویب سائٹ"
+  },
+  "difficulty": "learner",
+  "skillTag": "web",
+  "glossaryTerms": ["domain", "phishing"],
+  "learningCard": true,
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ]
+}

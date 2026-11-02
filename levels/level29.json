@@ -1,0 +1,47 @@
+{
+  "id": 29,
+  "chapter": 6,
+  "title": {
+    "en": "Multi-Stage Attack: Break the Chain",
+    "ur": "کئی مرحلوں والا حملہ: سلسلہ روکیں"
+  },
+  "difficulty": "learner",
+  "skillTag": "response",
+  "type": "timeline",
+  "mode": "ordered",
+  "items": [0, 1, 2, 3],
+  "choices": ["c0", "c1", "c2", "c3"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "c0",
+      "wrongFixes": ["c1", "c2"],
+      "terms": ["attack-chain", "phishing", "containment"],
+      "difficulty": 2
+    },
+    {
+      "item": 1,
+      "fix": "c1",
+      "wrongFixes": ["c0", "c2"],
+      "terms": ["attack-chain", "phishing", "containment"],
+      "difficulty": 3
+    },
+    {
+      "item": 2,
+      "fix": "c2",
+      "wrongFixes": ["c0", "c1"],
+      "terms": ["attack-chain", "phishing", "containment"],
+      "difficulty": 4
+    }
+  ],
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ],
+  "glossaryTerms": ["attack-chain", "phishing", "containment"],
+  "learningCard": true
+}

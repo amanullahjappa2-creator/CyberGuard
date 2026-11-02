@@ -1,0 +1,19 @@
+{
+  "name": "CyberGuard Security Defender",
+  "short_name": "CyberGuard",
+  "description": "An offline learning game for safer digital habits.",
+  "lang": "en",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#07111d",
+  "theme_color": "#0b1624",
+  "icons": [
+    {
+      "src": "assets/cyberguard.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

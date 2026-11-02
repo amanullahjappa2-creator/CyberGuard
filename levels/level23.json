@@ -1,0 +1,46 @@
+{
+  "id": 23,
+  "chapter": 5,
+  "title": {
+    "en": "Secrets in a Public Repository",
+    "ur": "عوامی ریپوزٹری میں خفیہ معلومات"
+  },
+  "difficulty": "learner",
+  "skillTag": "cloud",
+  "type": "repository",
+  "items": [0, 1, 2, 3],
+  "choices": ["c0", "c1", "c2", "c3"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "c0",
+      "wrongFixes": ["c1", "c2"],
+      "terms": ["secret", "secret-scanning", "gitignore"],
+      "difficulty": 4
+    },
+    {
+      "item": 1,
+      "fix": "c0",
+      "wrongFixes": ["c1", "c2"],
+      "terms": ["secret", "secret-scanning", "gitignore"],
+      "difficulty": 1
+    },
+    {
+      "item": 2,
+      "fix": "c1",
+      "wrongFixes": ["c0", "c2"],
+      "terms": ["secret", "secret-scanning", "gitignore"],
+      "difficulty": 2
+    }
+  ],
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ],
+  "glossaryTerms": ["secret", "secret-scanning", "gitignore"],
+  "learningCard": true
+}

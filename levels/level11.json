@@ -1,0 +1,46 @@
+{
+  "id": 11,
+  "chapter": 3,
+  "title": {
+    "en": "Two-Factor Authentication and SIM Swap",
+    "ur": "دو مرحلوں کی تصدیق اور سم سواپ"
+  },
+  "difficulty": "learner",
+  "skillTag": "passwords",
+  "type": "auth",
+  "items": [0, 1, 2, 3],
+  "choices": ["c0", "c1", "c2", "c3"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "c0",
+      "wrongFixes": ["c1", "c2"],
+      "terms": ["passkey", "sim-swap", "otp"],
+      "difficulty": 4
+    },
+    {
+      "item": 1,
+      "fix": "c1",
+      "wrongFixes": ["c0", "c2"],
+      "terms": ["passkey", "sim-swap", "otp"],
+      "difficulty": 1
+    },
+    {
+      "item": 2,
+      "fix": "c2",
+      "wrongFixes": ["c0", "c1"],
+      "terms": ["passkey", "sim-swap", "otp"],
+      "difficulty": 2
+    }
+  ],
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ],
+  "glossaryTerms": ["passkey", "sim-swap", "otp"],
+  "learningCard": true
+}

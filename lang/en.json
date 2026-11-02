@@ -1,0 +1,3036 @@
+{
+  "ui": {
+    "appTitle": "CyberGuard - Security Defender",
+    "switchLanguage": "Switch language",
+    "darkTheme": "Dark theme",
+    "lightTheme": "Light theme",
+    "footer": "A learning game for safer digital habits.",
+    "offline": "All scenarios are simulated. No network or real accounts are used.",
+    "home": "Home",
+    "gameLabel": "CYBER SAFETY TRAINING",
+    "welcomeTitle": "Become a security defender",
+    "welcomeBody": "Explore thirty simulated security scenarios across six chapters. Spot warning signs, choose safe responses, and build habits that protect you and your family.",
+    "resumeLevel": "Resume level",
+    "openCertificate": "View certificate",
+    "startGame": "Start training",
+    "totalScore": "Total score",
+    "levelsHeading": "Training levels",
+    "unlocked": "Unlocked",
+    "level": "Level",
+    "stars": "Best stars",
+    "available": "Ready to play",
+    "locked": "Complete the previous level to unlock",
+    "overallProgress": "Your progress",
+    "notAnIssue": "This item is not one of the issues to resolve.",
+    "wrongOrder": "That is not the next response step. Follow the incident response order.",
+    "resolvedIssues": "Resolved",
+    "hintsRemaining": "Hints left",
+    "score": "Score",
+    "trust": "Trust",
+    "scenarioHeading": "Scenario",
+    "scenarioInstructions": "Flag an item that needs attention, then choose the safest fix. Some items are included as decoys.",
+    "actionHeading": "Defender action",
+    "selectPrompt": "Select a scenario item to inspect it.",
+    "chooseFix": "Choose the best response:",
+    "useHint": "Use a hint (-25 points)",
+    "noHints": "No hints remain for this level.",
+    "resolved": "Resolved",
+    "flagged": "Flagged for review",
+    "selectInOrder": "Complete earlier steps first",
+    "clickToInspect": "Select to inspect this {type}",
+    "account": "account",
+    "email": "email",
+    "message": "message",
+    "website": "website",
+    "setting": "router setting",
+    "call step": "call step",
+    "app": "app",
+    "service": "service",
+    "code sample": "code sample",
+    "incident step": "incident step",
+    "item": "item",
+    "network": "network",
+    "log entry": "log entry",
+    "terminal entry": "terminal entry",
+    "email header": "email header",
+    "backup set": "backup set",
+    "repository file": "repository file",
+    "web request": "web request",
+    "cloud setting": "cloud setting",
+    "sandbox behavior": "sandbox behavior",
+    "timeline event": "timeline event",
+    "alert": "alert",
+    "levelSummary": "LEVEL COMPLETE",
+    "levelFinished": "You earned {stars} stars. Review each fix and take a real-life tip with you.",
+    "correctFix": "Correct fix",
+    "realLifeTip": "Real-life tip",
+    "levelScore": "Level score",
+    "viewCertificate": "View final certificate",
+    "continue": "Continue to next level",
+    "levelFailed": "Trust meter empty",
+    "trustEnded": "This scenario needs another try. Your progress in this attempt was not saved as a completed level.",
+    "retry": "Retry level",
+    "gameComplete": "ALL 30 LEVELS COMPLETE",
+    "certificateTitle": "Cyber Safety Defender",
+    "certificateIntro": "You completed all thirty simulated security scenarios.",
+    "certificateAward": "This certificate is awarded to",
+    "playerName": "Enter your name",
+    "certificateFooter": "For learning and awareness. No real systems were accessed.",
+    "printCertificate": "Print certificate",
+    "beginner": "Beginner Defender",
+    "defender": "Security Defender",
+    "expert": "Cyber Safety Expert",
+    "navHome": "Home",
+    "navMap": "Level map",
+    "navReport": "Player report",
+    "navBadges": "Badges",
+    "navDictionary": "Dictionary",
+    "navSettings": "Settings",
+    "playerRank": "Rank",
+    "currentChapter": "Current chapter",
+    "dailyChallenge": "Daily challenge",
+    "chapter": "Chapter",
+    "foundations": "Foundations",
+    "everydayThreats": "Everyday Threats",
+    "chaptersHeading": "Your campaign",
+    "mapIntro": "Select any available level. Completed levels can be replayed at any time.",
+    "cityMapIntro": "Explore CyberCity districts and select an unlocked mission.",
+    "districtBank": "Bank District",
+    "districtBazaar": "Bazaar",
+    "districtUniversity": "University",
+    "districtCafe": "Cafe Wi-Fi Street",
+    "districtData": "Data Center",
+    "districtSoc": "SOC Tower",
+    "mission": "Mission",
+    "missionBriefing": "Story briefing",
+    "missionObjective": "Objective",
+    "launchMission": "Open mission",
+    "selectMission": "Select a mission node to review its briefing.",
+    "recommendedMission": "Recommended mission",
+    "recommendationReason": "{skill} mastery is {mastery}%. Recent accuracy: {accuracy}%.",
+    "recommendationNewSkill": "{skill} is your least-practiced skill, so this mission helps build balanced coverage.",
+    "reportIntro": "A local-only summary of skill practice, accuracy and recent sessions.",
+    "accuracy": "Accuracy",
+    "timePerLevel": "Time per mission",
+    "hintsUsed": "Hints used",
+    "mistakesBySkill": "Mistakes by skill",
+    "sevenSessionTrend": "Improvement across recent sessions",
+    "personalTips": "Personalized practice tips",
+    "exportReport": "Export report JSON",
+    "printReport": "Print report",
+    "noReportData": "Complete a few missions to build your performance report.",
+    "reportTipLowMastery": "Practice {skill} next: current mastery is {mastery}%.",
+    "reportTipMistakes": "Review the {skill} explanations where mistakes occurred.",
+    "reportTipSteady": "Keep practicing {skill}; your current accuracy is {accuracy}%.",
+    "reportTipHint": "Try one {skill} issue before using a hint to build recall.",
+    "reportImprovement": "Accuracy change",
+    "seconds": "seconds",
+    "missionDifficulty": "Issue difficulty",
+    "lockedLevel": "Locked",
+    "practice": "Practice",
+    "settingsTitle": "Settings",
+    "languageSetting": "Language",
+    "themeSetting": "Appearance",
+    "soundSetting": "Sound effects",
+    "soundOff": "Off",
+    "soundOn": "On",
+    "textSizeSetting": "Text size",
+    "normalText": "Standard",
+    "largeText": "Large",
+    "reducedMotionSetting": "Reduce motion",
+    "resetProgress": "Reset progress",
+    "resetConfirm": "Reset all CyberGuard progress and settings? This cannot be undone.",
+    "exportProgress": "Export progress",
+    "importProgress": "Import progress",
+    "importSuccess": "Progress imported successfully.",
+    "importError": "That progress file is invalid or unsupported.",
+    "emptyBadges": "Complete levels to earn badges.",
+    "emptyDictionary": "Glossary terms appear here as you learn them.",
+    "dailyUnavailable": "Daily challenge coming soon",
+    "themeDark": "Dark",
+    "themeLight": "Light",
+    "briefing": "Briefing",
+    "timedChallenge": "Timed challenge",
+    "timer": "Time left",
+    "difficultySetting": "Difficulty",
+    "difficultyDescription": "Adjust hints, trust and scoring for your experience.",
+    "difficultyLearner": "Learner",
+    "difficultyDefender": "Defender",
+    "difficultyExpert": "Expert",
+    "learningCard": "Learning card",
+    "whatHappened": "What happened",
+    "attackerMay": "How an attacker might act",
+    "defend": "How to defend",
+    "inPakistan": "Where this matters in Pakistan",
+    "experience": "XP",
+    "playerLevel": "Player level",
+    "mastery": "Skill mastery",
+    "searchDictionary": "Search glossary terms",
+    "lockedTerm": "Complete a related level to unlock this term.",
+    "certificateDate": "Award date",
+    "certificateId": "Certificate ID",
+    "verifyNote": "Learning certificate only. Verify completion in this browser; this is not a professional credential.",
+    "scoreboardHeading": "Optional scoreboards",
+    "scoreboardPrivacy": "Privacy notice: joining is optional. Do not use your real name or identifying details. You can play every mission without uploading anything.",
+    "scoreboardData": "With your consent, CyberGuard sends your nickname, total score, completed level numbers, and aggregate skill and level accuracy. The server briefly processes connection details for rate limiting; it does not save them in the scoreboard database. No names, contact details, or raw play history are sent.",
+    "scoreboardNickname": "Nickname (3–24 letters, numbers, underscores, or hyphens)",
+    "scoreboardClassCode": "Class code (optional)",
+    "scoreboardScope": "Leaderboard",
+    "scoreboardGlobal": "Global",
+    "scoreboardWeekly": "Weekly",
+    "scoreboardClass": "Class",
+    "scoreboardConsent": "I agree to upload the listed score summary for the leaderboard.",
+    "scoreboardJoin": "Join leaderboard",
+    "scoreboardSync": "Sync my score",
+    "scoreboardSynced": "Your opted-in score was synced.",
+    "scoreboardPending": "Score sync is waiting for the local scoreboard server. Your campaign remains available offline.",
+    "scoreboardView": "View leaderboard",
+    "scoreboardNotLoaded": "Choose View leaderboard to request public rankings.",
+    "scoreboardResults": "Rankings",
+    "scoreboardEmpty": "No entries are available yet.",
+    "scoreboardClassRequired": "Enter a class code to view that class leaderboard.",
+    "scoreboardUnavailable": "The scoreboard is unavailable. You can continue playing offline.",
+    "teacherDashboard": "Teacher dashboard",
+    "teacherTitle": "Class dashboard",
+    "teacherIntro": "Create a class code and keep the teacher access key private. No teacher or student personal details are collected.",
+    "teacherCreateClass": "Create class",
+    "teacherCodeLabel": "Class code",
+    "teacherTokenLabel": "Private teacher access key",
+    "teacherLoad": "Open dashboard",
+    "teacherExport": "Export class CSV",
+    "teacherReport": "Class learning report",
+    "teacherAverageScore": "Average score",
+    "teacherStudentCount": "Students",
+    "teacherAverageSkills": "Average accuracy by skill",
+    "teacherHardestLevels": "Levels needing more practice",
+    "teacherStudentsHelp": "Students who may need support",
+    "teacherNoStudents": "No class submissions yet.",
+    "teacherNoHelp": "No students currently meet the support threshold.",
+    "teacherServerUnavailable": "The teacher service is unavailable. Start the optional Flask server and try again."
+  },
+  "levels": [
+    {
+      "title": "Weak Passwords",
+      "scenario": "A family is reviewing five account settings. Spot the unsafe password habits and choose a stronger protection.",
+      "choices": {
+        "long": "Replace it with a long, hard-to-guess passphrase",
+        "unique": "Use a different password for every account",
+        "manager": "Create and store a unique password in a password manager",
+        "twofa": "Turn on two-step verification"
+      },
+      "items": [
+        {
+          "title": "Email account",
+          "detail": "Password shown in the training mock-up: 123456"
+        },
+        {
+          "title": "School portal",
+          "detail": "Password: Ayesha2012 (name and birth year)"
+        },
+        {
+          "title": "Shopping account",
+          "detail": "Uses the same password as the email account"
+        },
+        {
+          "title": "Family photo account",
+          "detail": "Password is strong, but sign-in has no second step"
+        },
+        {
+          "title": "Library account",
+          "detail": "A long, unique passphrase and two-step verification are enabled"
+        }
+      ],
+      "issues": [
+        {
+          "title": "Easy-to-guess password",
+          "detail": "Short number sequences are among the first guesses criminals try.",
+          "why": "A long passphrase is much harder to guess than a common number sequence.",
+          "mistake": "That change does not make this short, common password hard to guess.",
+          "tip": "Use a long passphrase with several unrelated words; never use a real password in a training game.",
+          "hint": "Replace the common sequence with a longer passphrase.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Personal information in a password",
+          "detail": "Names and birth years may be easy for acquaintances to discover.",
+          "why": "Removing personal details makes the password less predictable.",
+          "mistake": "A password based on a name or birth year can still be guessed.",
+          "tip": "Avoid names, birthdays, school names and other public details in passwords.",
+          "hint": "Choose a password unrelated to the account holder's identity.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Password reuse",
+          "detail": "One leaked password could put several accounts at risk.",
+          "why": "A password manager can create and remember a separate password for each account.",
+          "mistake": "This account needs a password that is not used anywhere else.",
+          "tip": "Give every important account its own password; a reputable password manager can help.",
+          "hint": "Make this password unique and store it safely.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Missing second step",
+          "detail": "A password alone is the only barrier shown here.",
+          "why": "Two-step verification adds another check if a password is stolen.",
+          "mistake": "This does not add a second sign-in check.",
+          "tip": "Enable two-step verification on email, banking and social accounts.",
+          "hint": "Add a second sign-in factor.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Replace the common sequence with a longer passphrase.",
+        "Choose a password unrelated to the account holder's identity."
+      ],
+      "learning": {
+        "whatHappened": "Weak Passwords scenario: A family is reviewing five account settings. Spot the unsafe password habits and choose a stronger protection.",
+        "attacker": "An attacker may take advantage of the unsafe choice described in the scenario.",
+        "defend": "Use the recommended fix, verify requests independently, and keep recovery options current.",
+        "pakistan": "Use the same checks with Pakistani banking apps, mobile wallets and family accounts."
+      }
+    },
+    {
+      "title": "Phishing Email",
+      "scenario": "Review this pretend inbox. Select suspicious messages and choose a safe response. Two ordinary messages are decoys.",
+      "choices": {
+        "verify": "Contact the organization using its official app or number",
+        "avoid": "Do not open the link; go to the known official website yourself",
+        "report": "Report the message as phishing",
+        "delete": "Do not open the attachment; report and delete the email"
+      },
+      "items": [
+        {
+          "title": "Urgent account warning",
+          "detail": "From: support@bank-alerts.example | “Verify now or your account closes today.”"
+        },
+        {
+          "title": "Prize notification",
+          "detail": "From: rewards@free-gift.example | “You won! Open the link and pay a small fee.”"
+        },
+        {
+          "title": "School newsletter",
+          "detail": "From: newsletter@school.example | Expected weekly school update."
+        },
+        {
+          "title": "Unusual payment request",
+          "detail": "From: principal.school@gmail.example | Requests urgent gift-card payment."
+        },
+        {
+          "title": "Unexpected document",
+          "detail": "From: delivery@parcel-check.example | Unrequested attachment: delivery_info.scr"
+        },
+        {
+          "title": "Library reminder",
+          "detail": "From: library@school.example | Expected reminder to return a book."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Look-alike bank sender and urgent threat",
+          "detail": "The sender is not the bank's known domain and pressures you to act immediately.",
+          "why": "Verify account warnings independently through the bank's official app or number.",
+          "mistake": "Following the message's contact details or link could lead to a fake sign-in page.",
+          "tip": "Open your bank app or call the number on your card; do not use contact details in an unexpected email.",
+          "hint": "Check the sender independently before responding to an account warning.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Prize fee and unfamiliar link",
+          "detail": "The message promises a prize but asks you to pay and open an unfamiliar site.",
+          "why": "A prize message asking for payment is suspicious; avoid its link.",
+          "mistake": "Paying or opening the link could expose personal or payment information.",
+          "tip": "Treat unexpected prizes and advance-fee requests as scams.",
+          "hint": "Do not use the message's link or pay to claim a surprise prize.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Impersonation and urgent payment",
+          "detail": "The address uses a free email service and asks for unusual payment.",
+          "why": "Reporting it can help the mail provider or organization block similar messages.",
+          "mistake": "Replying or paying does not verify who sent the request.",
+          "tip": "Confirm unusual money requests with the person using a separate, trusted contact method.",
+          "hint": "Use the report-phishing action for this impersonation.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Unexpected executable attachment",
+          "detail": "The sender is unfamiliar and the file ending suggests a program, not a document.",
+          "why": "Avoiding the attachment prevents running an unexpected file; report and delete it.",
+          "mistake": "Opening an unknown attachment can install unwanted software.",
+          "tip": "Confirm unexpected attachments with the sender through another channel before opening.",
+          "hint": "Do not open the attachment; report and remove the message.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Check the sender independently before responding to an account warning.",
+        "Do not use the message's link or pay to claim a surprise prize."
+      ],
+      "learning": {
+        "whatHappened": "Phishing Email scenario: Review this pretend inbox. Select suspicious messages and choose a safe response. Two ordinary messages are decoys.",
+        "attacker": "An attacker may take advantage of the unsafe choice described in the scenario.",
+        "defend": "Use the recommended fix, verify requests independently, and keep recovery options current.",
+        "pakistan": "Use the same checks with Pakistani banking apps, mobile wallets and family accounts."
+      }
+    },
+    {
+      "title": "Scam Messages",
+      "scenario": "A family chat receives alarming money and prize messages. Choose a safe response for each one.",
+      "choices": {
+        "ignore": "Do not reply or tap anything",
+        "block": "Block the sender",
+        "report": "Report the message in the app",
+        "verify": "Verify through an official number you already trust"
+      },
+      "items": [
+        {
+          "title": "Wallet account warning",
+          "detail": "“Your mobile wallet will be blocked in 10 minutes. Send your PIN to restore it.”"
+        },
+        {
+          "title": "Unexpected prize",
+          "detail": "“You have won a phone. Pay a delivery fee and share your code.”"
+        },
+        {
+          "title": "Family emergency",
+          "detail": "“Your son is in hospital. Send money now; do not call him.”"
+        },
+        {
+          "title": "Unknown shortened link",
+          "detail": "“Look at these photos of you” followed by an unfamiliar shortened link."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Wallet PIN request",
+          "detail": "A real provider should not ask you to send your PIN in a message.",
+          "why": "Verify the warning using the provider's official number or app, not the message.",
+          "mistake": "Sharing the PIN or using the message contact can hand control of the wallet to a scammer.",
+          "tip": "Never share a wallet PIN or one-time code, even with someone claiming to be support.",
+          "hint": "Check the account directly through the official app or number.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Prize and payment scam",
+          "detail": "The message asks for a fee and a private verification code.",
+          "why": "Blocking this sender prevents more unwanted contact.",
+          "mistake": "A fee or code can expose money or take over an account.",
+          "tip": "Unexpected prizes that require payment or codes are a warning sign.",
+          "hint": "Stop further messages from this sender.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Urgent family emergency",
+          "detail": "The sender creates panic and tells you not to verify the story.",
+          "why": "Reporting the message can warn the platform about a likely impersonation scam.",
+          "mistake": "Sending money before independently confirming the emergency risks losing it.",
+          "tip": "Call your relative or another family member using a saved number.",
+          "hint": "Use the app's report option for the suspicious account.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Unknown shortened link",
+          "detail": "The sender is unknown and the link hides its destination.",
+          "why": "Ignoring the message avoids an unknown link and prevents confirming your number is active.",
+          "mistake": "Tapping a hidden link can lead to a fake page or unwanted download.",
+          "tip": "Do not open unexpected links, especially from unknown senders.",
+          "hint": "Do not reply or open the link.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Check the account directly through the official app or number.",
+        "Stop further messages from this sender."
+      ],
+      "learning": {
+        "whatHappened": "Scam Messages scenario: A family chat receives alarming money and prize messages. Choose a safe response for each one.",
+        "attacker": "An attacker may take advantage of the unsafe choice described in the scenario.",
+        "defend": "Use the recommended fix, verify requests independently, and keep recovery options current.",
+        "pakistan": "Use the same checks with Pakistani banking apps, mobile wallets and family accounts."
+      }
+    },
+    {
+      "title": "Fake Websites",
+      "scenario": "Before entering payment details, inspect these pretend web addresses. One is the intended official address; the others contain warning signs.",
+      "choices": {
+        "avoid": "Do not enter details; leave the look-alike page",
+        "official": "Use the official domain saved in your trusted bookmark",
+        "https": "Use the verified HTTPS address, then check the domain",
+        "check": "Compare the full domain with the organization's known address"
+      },
+      "items": [
+        {
+          "title": "bank-example.security-check.example",
+          "detail": "The bank name appears in a subdomain, but the actual domain is security-check.example."
+        },
+        {
+          "title": "paypaI.example",
+          "detail": "The address uses a capital I to resemble the letter l in the brand name."
+        },
+        {
+          "title": "http://shop.example/login",
+          "detail": "The sign-in page uses unencrypted HTTP."
+        },
+        {
+          "title": "https://shop.example",
+          "detail": "Training example: the known official shop address."
+        },
+        {
+          "title": "https://bank.example",
+          "detail": "Training example: exact official bank domain and secure connection."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Brand name hidden in a subdomain",
+          "detail": "The final domain is different from the bank's real domain.",
+          "why": "Leaving the look-alike page avoids exposing payment details.",
+          "mistake": "A familiar word in a subdomain does not make the actual website official.",
+          "tip": "Read the domain from right to left before signing in or paying.",
+          "hint": "Do not enter details on a page whose actual domain belongs to someone else.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Look-alike character",
+          "detail": "One character is changed to make the name look familiar.",
+          "why": "A trusted bookmark helps you reach the organization's genuine domain.",
+          "mistake": "A near-match URL can be controlled by someone impersonating the brand.",
+          "tip": "Use a saved official bookmark instead of links in unexpected messages.",
+          "hint": "Go to the known official address rather than this imitation.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Unencrypted sign-in page",
+          "detail": "This page uses HTTP, which does not protect the connection.",
+          "why": "Use the verified secure address and still confirm the domain is correct.",
+          "mistake": "An unencrypted page is not appropriate for entering payment or sign-in details.",
+          "tip": "HTTPS is necessary but not sufficient; check the domain too.",
+          "hint": "Find the verified secure version of the official site.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Official address confirmation",
+          "detail": "This is the safe choice among the training examples; verify the full address before proceeding.",
+          "why": "Checking the full domain helps distinguish the genuine page from look-alikes.",
+          "mistake": "Do not treat a brand word alone as proof that a page is genuine.",
+          "tip": "Confirm the address through a trusted bookmark or official source before entering card details.",
+          "hint": "This item is the official domain; confirm it rather than selecting a look-alike.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Do not enter details on a page whose actual domain belongs to someone else.",
+        "Go to the known official address rather than this imitation."
+      ],
+      "learning": {
+        "whatHappened": "Fake Websites scenario: Before entering payment details, inspect these pretend web addresses. One is the intended official address; the others contain warning signs.",
+        "attacker": "An attacker may take advantage of the unsafe choice described in the scenario.",
+        "defend": "Use the recommended fix, verify requests independently, and keep recovery options current.",
+        "pakistan": "Use the same checks with Pakistani banking apps, mobile wallets and family accounts."
+      }
+    },
+    {
+      "title": "Wi-Fi Router Safety",
+      "scenario": "A simulated home router panel shows five settings. Select unsafe settings and choose a safer configuration.",
+      "choices": {
+        "change": "Set a unique router administrator password",
+        "close": "Disable the feature unless it is needed",
+        "modern": "Use WPA2-AES or WPA3 encryption",
+        "update": "Install the manufacturer's latest firmware update"
+      },
+      "items": [
+        {
+          "title": "Administrator login",
+          "detail": "Username: admin | Password: admin"
+        },
+        {
+          "title": "Guest Wi-Fi",
+          "detail": "Guest network is open and has no password."
+        },
+        {
+          "title": "Wireless encryption",
+          "detail": "Legacy WEP security is selected."
+        },
+        {
+          "title": "WPS",
+          "detail": "Push-button setup is enabled all the time."
+        },
+        {
+          "title": "Firmware",
+          "detail": "Router has not checked for updates in over two years."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Default administrator credentials",
+          "detail": "Common default credentials are easy to guess.",
+          "why": "A unique admin password prevents others from using the router's default login.",
+          "mistake": "Leaving or changing only part of the default credentials can still expose the admin panel.",
+          "tip": "Change the router admin password during setup and store it safely.",
+          "hint": "Replace the default administrator password.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Open guest network",
+          "detail": "Anyone nearby may be able to join this network.",
+          "why": "Disable an unneeded guest network; if needed, protect it with a separate strong password.",
+          "mistake": "A guest network with no password lets strangers use it.",
+          "tip": "Keep guest Wi-Fi separate from your main home devices and protect it.",
+          "hint": "Turn off this network if the family does not need it.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Outdated WEP encryption",
+          "detail": "WEP is an old, insecure wireless protection method.",
+          "why": "Modern WPA2-AES or WPA3 provides much stronger Wi-Fi protection.",
+          "mistake": "A password cannot make WEP encryption modern or secure.",
+          "tip": "Choose WPA3 where available, or WPA2-AES; avoid WEP and obsolete modes.",
+          "hint": "Replace this legacy encryption setting with a modern standard.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "WPS enabled",
+          "detail": "WPS can create unnecessary risk when left enabled.",
+          "why": "Disable WPS unless it is specifically needed for setup.",
+          "mistake": "Keeping the convenience feature enabled leaves an avoidable access path.",
+          "tip": "Turn off WPS after setup if your household does not need it.",
+          "hint": "Disable the setup feature when it is not needed.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Outdated router firmware",
+          "detail": "The device may be missing important security fixes.",
+          "why": "Firmware updates fix known issues and improve device security.",
+          "mistake": "Changing Wi-Fi passwords does not install missing security updates.",
+          "tip": "Check the manufacturer's official update instructions regularly.",
+          "hint": "Install the vendor's current firmware update.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Replace the default administrator password.",
+        "Turn off this network if the family does not need it."
+      ],
+      "learning": {
+        "whatHappened": "Wi-Fi Router Safety scenario: A simulated home router panel shows five settings. Select unsafe settings and choose a safer configuration.",
+        "attacker": "An attacker may take advantage of the unsafe choice described in the scenario.",
+        "defend": "Use the recommended fix, verify requests independently, and keep recovery options current.",
+        "pakistan": "Use the same checks with Pakistani banking apps, mobile wallets and family accounts."
+      }
+    },
+    {
+      "title": "Suspicious Phone Call",
+      "scenario": "A pretend caller claims to be from a bank. Choose safe replies to requests for private information.",
+      "choices": {
+        "never": "Never share an OTP, PIN or password",
+        "official": "Call the bank using the number on your card",
+        "hangup": "End the call without giving information",
+        "verify": "Verify the request independently before acting"
+      },
+      "items": [
+        {
+          "title": "Caller asks for a one-time code",
+          "detail": "“Read the OTP you just received so I can protect your account.”"
+        },
+        {
+          "title": "Caller requests your PIN",
+          "detail": "“Tell me your card PIN to cancel a suspicious payment.”"
+        },
+        {
+          "title": "Caller asks for CNIC details",
+          "detail": "“Confirm your full CNIC number and address right now.”"
+        },
+        {
+          "title": "Caller pressures you to stay on the line",
+          "detail": "“Do not call the bank; this offer expires in two minutes.”"
+        }
+      ],
+      "issues": [
+        {
+          "title": "OTP theft attempt",
+          "detail": "A caller who asks for a one-time code may be trying to sign in as you.",
+          "why": "Never share an OTP; legitimate staff should not need you to read it aloud.",
+          "mistake": "Sharing the code can authorize a sign-in or transaction.",
+          "tip": "Treat every OTP as secret, including when a caller knows your name or account details.",
+          "hint": "The safe answer is to keep the one-time code private.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "PIN request",
+          "detail": "A bank representative should not ask you to disclose your card PIN.",
+          "why": "Ending the call avoids exposing your private PIN.",
+          "mistake": "No caller needs your PIN to cancel a payment.",
+          "tip": "Never disclose a card PIN over a call, message or email.",
+          "hint": "End the call without sharing the PIN.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Sensitive identity information",
+          "detail": "The caller's identity has not been verified, and the request is unnecessary.",
+          "why": "Use the number printed on your card to contact the bank yourself.",
+          "mistake": "Calling a number supplied by the caller may connect you back to the scammer.",
+          "tip": "Share identity details only when you have independently verified the organization and need.",
+          "hint": "Use a trusted official contact channel.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Pressure and isolation",
+          "detail": "Urgency and telling you not to verify are common manipulation tactics.",
+          "why": "Independent verification breaks the pressure tactic and checks whether the claim is real.",
+          "mistake": "Acting under pressure can lead to an avoidable mistake.",
+          "tip": "Pause, end unexpected calls, and contact the organization using a known number.",
+          "hint": "Take time to verify the story independently.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "The safe answer is to keep the one-time code private.",
+        "End the call without sharing the PIN."
+      ],
+      "learning": {
+        "whatHappened": "Suspicious Phone Call scenario: A pretend caller claims to be from a bank. Choose safe replies to requests for private information.",
+        "attacker": "An attacker may take advantage of the unsafe choice described in the scenario.",
+        "defend": "Use the recommended fix, verify requests independently, and keep recovery options current.",
+        "pakistan": "Use the same checks with Pakistani banking apps, mobile wallets and family accounts."
+      }
+    },
+    {
+      "title": "App Permissions",
+      "scenario": "Review a pretend app store. Select apps with permissions that do not fit their purpose and choose a safe action.",
+      "choices": {
+        "deny": "Deny permissions that are not needed",
+        "uninstall": "Do not install; remove the app",
+        "review": "Review the app and request only necessary access",
+        "trusted": "Choose a reputable app with a clear privacy policy"
+      },
+      "items": [
+        {
+          "title": "Bright Torch",
+          "detail": "A flashlight requests contacts, SMS and location access."
+        },
+        {
+          "title": "Free Movie Player",
+          "detail": "Unknown publisher; requests accessibility access and permission to install other apps."
+        },
+        {
+          "title": "School Timetable",
+          "detail": "Requests calendar access to add class reminders."
+        },
+        {
+          "title": "QR Scanner Plus",
+          "detail": "Publisher is unknown; privacy information is missing."
+        },
+        {
+          "title": "Clock",
+          "detail": "A built-in clock app requests no extra access."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Flashlight wants unrelated personal data",
+          "detail": "Contacts, messages and location are not needed to turn on a torch.",
+          "why": "Deny unrelated permissions and allow only access necessary for the feature.",
+          "mistake": "Granting unrelated access exposes private information without helping the app work.",
+          "tip": "Check each permission against what the app actually does.",
+          "hint": "The torch does not need your contacts, texts or location.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Unknown app requests powerful access",
+          "detail": "Accessibility and app-install permissions can give an app extensive control.",
+          "why": "Do not install an unknown app that requests powerful, unrelated permissions.",
+          "mistake": "Installing it could expose data or allow unwanted changes to the phone.",
+          "tip": "Install only apps from trusted publishers and review permissions before granting them.",
+          "hint": "Avoid this app because the publisher and requested access are concerning.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Permission needs review",
+          "detail": "Calendar access can be useful for reminders, but should be limited to that purpose.",
+          "why": "Review and grant only the access needed for the timetable feature.",
+          "mistake": "Automatically granting every permission gives apps more access than they need.",
+          "tip": "Use permission controls to allow access only while it is needed.",
+          "hint": "Allow only the calendar access required for reminders.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Unclear publisher and privacy details",
+          "detail": "The app's publisher and data practices are not explained.",
+          "why": "Choose an app from a reputable publisher with clear privacy information.",
+          "mistake": "An unknown publisher with no privacy details is not a trustworthy choice.",
+          "tip": "Check publisher reputation, reviews and privacy disclosures before installing.",
+          "hint": "Choose a better-known scanner with clear privacy details.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "The torch does not need your contacts, texts or location.",
+        "Avoid this app because the publisher and requested access are concerning."
+      ],
+      "learning": {
+        "whatHappened": "App Permissions scenario: Review a pretend app store. Select apps with permissions that do not fit their purpose and choose a safe action.",
+        "attacker": "An attacker may take advantage of the unsafe choice described in the scenario.",
+        "defend": "Use the recommended fix, verify requests independently, and keep recovery options current.",
+        "pakistan": "Use the same checks with Pakistani banking apps, mobile wallets and family accounts."
+      }
+    },
+    {
+      "title": "Firewall and Services",
+      "scenario": "A simulated server dashboard lists exposed services. Keep only the services required for this training website.",
+      "choices": {
+        "close": "Close the service if it is not required",
+        "keep": "Keep the required web service open",
+        "restrict": "Restrict access to approved administrators",
+        "secure": "Replace it with a secure, encrypted alternative"
+      },
+      "items": [
+        {
+          "title": "Telnet - port 23",
+          "detail": "Remote terminal connection sends information without encryption."
+        },
+        {
+          "title": "Database - port 5432",
+          "detail": "Database accepts connections from every internet address."
+        },
+        {
+          "title": "FTP - port 21",
+          "detail": "File transfer is configured without encryption."
+        },
+        {
+          "title": "HTTPS - port 443",
+          "detail": "Required for visitors to access the training website securely."
+        },
+        {
+          "title": "Health check - local only",
+          "detail": "Internal status service is reachable only from the server itself."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Unencrypted remote login",
+          "detail": "Telnet does not protect login details in transit.",
+          "why": "Close Telnet when it is not needed; use an encrypted admin method instead.",
+          "mistake": "Leaving Telnet open can expose administrator credentials.",
+          "tip": "Disable legacy services and use encrypted, access-controlled administration.",
+          "hint": "This remote login service is not needed for the website.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Public database access",
+          "detail": "The database should not accept connections from every address.",
+          "why": "Restrict database access to approved application hosts and administrators.",
+          "mistake": "A public database can expose or allow changes to stored information.",
+          "tip": "Keep databases private and allow only specifically approved connections.",
+          "hint": "Limit this service to the systems that need it.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Unencrypted file transfer",
+          "detail": "Basic FTP does not protect files or credentials in transit.",
+          "why": "Use a secure encrypted alternative for file transfer.",
+          "mistake": "Closing a needed transfer path is not a substitute for using a secure method.",
+          "tip": "Use an encrypted file-transfer method and strong access controls.",
+          "hint": "Replace this unencrypted service with a secure alternative.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Required secure website service",
+          "detail": "HTTPS on port 443 is needed for visitors to use the training website safely.",
+          "why": "Keep the required HTTPS service available so visitors can use the site securely.",
+          "mistake": "Closing the required HTTPS service would break safe access to the website.",
+          "tip": "Keep required public services available, and close or restrict everything else.",
+          "hint": "HTTPS on port 443 is needed for the website; keep it open.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "This remote login service is not needed for the website.",
+        "Limit this service to the systems that need it."
+      ],
+      "learning": {
+        "whatHappened": "Firewall and Services scenario: A simulated server dashboard lists exposed services. Keep only the services required for this training website.",
+        "attacker": "An attacker may take advantage of the unsafe choice described in the scenario.",
+        "defend": "Use the recommended fix, verify requests independently, and keep recovery options current.",
+        "pakistan": "Use the same checks with Pakistani banking apps, mobile wallets and family accounts."
+      }
+    },
+    {
+      "title": "Code Review",
+      "scenario": "Review short pretend code samples. Select each unsafe pattern and choose the secure development practice.",
+      "choices": {
+        "env": "Load secrets from a protected environment or secret store",
+        "params": "Use parameterized database queries",
+        "validate": "Validate input on the server before using it",
+        "debugOff": "Disable debug mode in production",
+        "private": "Keep secrets out of public repositories and rotate exposed ones"
+      },
+      "items": [
+        {
+          "title": "config.py",
+          "detail": "PASSWORD = \"super-secret-123\" is stored directly in source."
+        },
+        {
+          "title": "search.py",
+          "detail": "query = \"SELECT * FROM users WHERE name='\" + name + \"'\""
+        },
+        {
+          "title": "profile.py",
+          "detail": "The application uses a submitted age without checking its type or range."
+        },
+        {
+          "title": "settings.py",
+          "detail": "DEBUG = True is enabled on the public production site."
+        },
+        {
+          "title": "Public repository",
+          "detail": "A committed file contains an API key in the project history."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Hardcoded password",
+          "detail": "A secret in source can leak through code sharing, logs or backups.",
+          "why": "Load the secret at runtime from a protected environment or secret store.",
+          "mistake": "Hiding or renaming a hardcoded password does not keep it out of the source history.",
+          "tip": "Never commit credentials; rotate any secret that may have been exposed.",
+          "hint": "Move the secret out of the source code and protect it separately.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Query built by joining user input",
+          "detail": "Untrusted text is inserted directly into a database command.",
+          "why": "Parameterized queries keep data separate from the query instructions.",
+          "mistake": "Filtering a few characters is not as reliable as parameterized queries.",
+          "tip": "Use your database library's parameter binding rather than building query strings.",
+          "hint": "Pass the user's value as a query parameter.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Missing input validation",
+          "detail": "Unexpected input can cause errors or unsafe behavior.",
+          "why": "Validate type, format and acceptable range on the server.",
+          "mistake": "Browser-side checks alone can be bypassed; validate again on the server.",
+          "tip": "Treat all user input as untrusted and validate it where it is processed.",
+          "hint": "Check the input's type and limits before using it.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Debug mode in production",
+          "detail": "Debug output may reveal internal details to visitors.",
+          "why": "Disable debug mode in production and keep diagnostic details private.",
+          "mistake": "A public error page should not reveal stack traces or configuration.",
+          "tip": "Use safe error messages for users and private logs for administrators.",
+          "hint": "Turn off verbose debugging on the public site.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Secret in a public repository",
+          "detail": "Removing a key from the latest file may leave it in version history.",
+          "why": "Keep secrets out of public repositories and rotate any key that was exposed.",
+          "mistake": "Deleting a visible key does not invalidate it or remove every historical copy.",
+          "tip": "Use secret scanning and revoke exposed credentials immediately.",
+          "hint": "Revoke and rotate the key, then keep the replacement private.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Move the secret out of the source code and protect it separately.",
+        "Pass the user's value as a query parameter."
+      ],
+      "learning": {
+        "whatHappened": "Code Review scenario: Review short pretend code samples. Select each unsafe pattern and choose the secure development practice.",
+        "attacker": "An attacker may take advantage of the unsafe choice described in the scenario.",
+        "defend": "Use the recommended fix, verify requests independently, and keep recovery options current.",
+        "pakistan": "Use the same checks with Pakistani banking apps, mobile wallets and family accounts."
+      }
+    },
+    {
+      "title": "Incident Response",
+      "scenario": "A simulated account breach is underway. Select and complete each response step in the correct order.",
+      "choices": {
+        "identify": "Identify the compromised account from the sign-in logs",
+        "contain": "Temporarily disable or contain the compromised account",
+        "rotate": "Change the password from a clean, trusted device",
+        "twofa": "Enable two-step verification and review recovery methods",
+        "restore": "Restore affected files from a known-good backup",
+        "report": "Record what happened and notify the responsible support team"
+      },
+      "items": [
+        {
+          "title": "Sign-in log",
+          "detail": "Account: family-mail | New sign-in from an unfamiliar device at 02:14."
+        },
+        {
+          "title": "Contain access",
+          "detail": "Stop further access while the incident is investigated."
+        },
+        {
+          "title": "Credential rotation",
+          "detail": "Replace the exposed password after access is contained."
+        },
+        {
+          "title": "Account protection",
+          "detail": "Add a second sign-in factor and check recovery details."
+        },
+        {
+          "title": "File recovery",
+          "detail": "Restore affected files from a backup known to predate the incident."
+        },
+        {
+          "title": "Incident record",
+          "detail": "Document the timeline, actions taken and who was notified."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Identify the compromised account",
+          "detail": "The sign-in log shows an unfamiliar device accessing family-mail.",
+          "why": "Confirming the affected account helps focus the response.",
+          "mistake": "Changing settings before identifying the affected account can miss the breach.",
+          "tip": "Keep a record of suspicious sign-ins and investigate from a trusted device.",
+          "hint": "Start by using the log to identify which account was accessed.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Contain the account",
+          "detail": "Limit access before making recovery changes.",
+          "why": "Containment stops further misuse while you secure the account.",
+          "mistake": "Leaving a compromised account active allows more unauthorized actions.",
+          "tip": "Use the service's official recovery process to secure an account promptly.",
+          "hint": "Stop additional access before changing credentials.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Rotate the password",
+          "detail": "The old credential may be known to someone else.",
+          "why": "A new unique password prevents reuse of the compromised credential.",
+          "mistake": "Reusing the old password or changing it from an untrusted device is unsafe.",
+          "tip": "Change exposed passwords from a clean device and do not reuse them.",
+          "hint": "Set a new unique password from a device you trust.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Enable stronger sign-in protection",
+          "detail": "The account needs an additional sign-in check and safe recovery options.",
+          "why": "Two-step verification adds protection if a password is guessed or stolen.",
+          "mistake": "A password change alone does not add a second sign-in factor.",
+          "tip": "Enable two-step verification and review recovery email addresses and phone numbers.",
+          "hint": "Add a second factor and check the account's recovery methods.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Restore from a known-good backup",
+          "detail": "Use a backup from before the suspicious activity.",
+          "why": "A known-good backup can recover affected files without reintroducing damage.",
+          "mistake": "Restoring from an unknown or recently affected backup may bring the problem back.",
+          "tip": "Keep backups separate and periodically check that recovery works.",
+          "hint": "Choose a backup that predates the incident.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        },
+        {
+          "title": "Write an incident report",
+          "detail": "Capture the timeline, recovery actions and people who were notified.",
+          "why": "A clear record helps support teams investigate and prevents missed follow-up.",
+          "mistake": "Without a record, important actions and warnings may be forgotten.",
+          "tip": "Document facts, times and actions; avoid including passwords or OTPs in the report.",
+          "hint": "Finish by recording the timeline and notifying the responsible support team.",
+          "wrongExplanations": [
+            "This option does not address the evidence in this scenario.",
+            "It leaves the stated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Start by using the log to identify which account was accessed.",
+        "Stop additional access before changing credentials."
+      ],
+      "learning": {
+        "whatHappened": "Incident Response scenario: A simulated account breach is underway. Select and complete each response step in the correct order.",
+        "attacker": "An attacker may take advantage of the unsafe choice described in the scenario.",
+        "defend": "Use the recommended fix, verify requests independently, and keep recovery options current.",
+        "pakistan": "Use the same checks with Pakistani banking apps, mobile wallets and family accounts."
+      }
+    },
+    {
+      "title": "Two-Factor Authentication and SIM Swap",
+      "scenario": "Choose a strong sign-in factor and protect recovery from a simulated SIM-swap attempt.",
+      "choices": {
+        "c0": "Use a passkey or authenticator app",
+        "c1": "Add a carrier account PIN and port-out lock",
+        "c2": "Never share the OTP; verify in the official app",
+        "c3": "Keep SMS as the only factor and share codes with support"
+      },
+      "items": [
+        {
+          "title": "Primary email sign-in",
+          "detail": "Only an SMS code is offered for a high-value account."
+        },
+        {
+          "title": "Mobile carrier account",
+          "detail": "No account PIN or extra identity check is set."
+        },
+        {
+          "title": "Wallet recovery",
+          "detail": "A support caller asks the user to read an OTP aloud."
+        },
+        {
+          "title": "Training note",
+          "detail": "Recovery details are private and must not be shared."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Primary email sign-in",
+          "detail": "Only an SMS code is offered for a high-value account.",
+          "why": "Use a passkey or authenticator app directly addresses the evidence shown for Primary email sign-in.",
+          "mistake": "This does not resolve Primary email sign-in; verify the evidence before choosing another action.",
+          "tip": "Prefer passkeys or an authenticator app over SMS codes for important accounts; add a carrier account PIN.",
+          "hint": "Compare the first item with the objective: Primary email sign-in.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Mobile carrier account",
+          "detail": "No account PIN or extra identity check is set.",
+          "why": "Add a carrier account PIN and port-out lock directly addresses the evidence shown for Mobile carrier account.",
+          "mistake": "This does not resolve Mobile carrier account; verify the evidence before choosing another action.",
+          "tip": "Prefer passkeys or an authenticator app over SMS codes for important accounts; add a carrier account PIN.",
+          "hint": "Review the next record: Mobile carrier account.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Wallet recovery",
+          "detail": "A support caller asks the user to read an OTP aloud.",
+          "why": "Never share the OTP; verify in the official app directly addresses the evidence shown for Wallet recovery.",
+          "mistake": "This does not resolve Wallet recovery; verify the evidence before choosing another action.",
+          "tip": "Prefer passkeys or an authenticator app over SMS codes for important accounts; add a carrier account PIN.",
+          "hint": "Review the next record: Mobile carrier account.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: Primary email sign-in.",
+        "Review the next record: Mobile carrier account."
+      ],
+      "learning": {
+        "whatHappened": "Choose a strong sign-in factor and protect recovery from a simulated SIM-swap attempt.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "Pakistani mobile carriers and mobile-wallet account recovery."
+      }
+    },
+    {
+      "title": "Public Wi-Fi at a Cafe",
+      "scenario": "Review a cafe hotspot list and choose safer behavior before signing in.",
+      "choices": {
+        "c0": "Ask staff to confirm the exact network name",
+        "c1": "Avoid sensitive sign-ins on untrusted Wi-Fi",
+        "c2": "Use a trusted VPN and HTTPS when needed",
+        "c3": "Join the strongest-looking network and ignore warnings"
+      },
+      "items": [
+        {
+          "title": "Cafe_Free_WiFi",
+          "detail": "The cafe staff confirms this network name."
+        },
+        {
+          "title": "Cafe_Free_WiFi_Guest",
+          "detail": "A second, stronger-looking network appears without staff confirmation."
+        },
+        {
+          "title": "Wallet sign-in",
+          "detail": "The task asks for banking details over an unverified hotspot."
+        },
+        {
+          "title": "Cafe notice",
+          "detail": "Staff can confirm the official network name."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Cafe_Free_WiFi",
+          "detail": "The cafe staff confirms this network name.",
+          "why": "Ask staff to confirm the exact network name directly addresses the evidence shown for Cafe_Free_WiFi.",
+          "mistake": "This does not resolve Cafe_Free_WiFi; verify the evidence before choosing another action.",
+          "tip": "Confirm the cafe network name with staff, use HTTPS, avoid sensitive transactions on unknown Wi-Fi, and use a trusted VPN when appropriate.",
+          "hint": "Compare the first item with the objective: Cafe_Free_WiFi.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Cafe_Free_WiFi_Guest",
+          "detail": "A second, stronger-looking network appears without staff confirmation.",
+          "why": "Avoid sensitive sign-ins on untrusted Wi-Fi directly addresses the evidence shown for Cafe_Free_WiFi_Guest.",
+          "mistake": "This does not resolve Cafe_Free_WiFi_Guest; verify the evidence before choosing another action.",
+          "tip": "Confirm the cafe network name with staff, use HTTPS, avoid sensitive transactions on unknown Wi-Fi, and use a trusted VPN when appropriate.",
+          "hint": "Review the next record: Cafe_Free_WiFi_Guest.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Wallet sign-in",
+          "detail": "The task asks for banking details over an unverified hotspot.",
+          "why": "Use a trusted VPN and HTTPS when needed directly addresses the evidence shown for Wallet sign-in.",
+          "mistake": "This does not resolve Wallet sign-in; verify the evidence before choosing another action.",
+          "tip": "Confirm the cafe network name with staff, use HTTPS, avoid sensitive transactions on unknown Wi-Fi, and use a trusted VPN when appropriate.",
+          "hint": "Review the next record: Cafe_Free_WiFi_Guest.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: Cafe_Free_WiFi.",
+        "Review the next record: Cafe_Free_WiFi_Guest."
+      ],
+      "learning": {
+        "whatHappened": "Review a cafe hotspot list and choose safer behavior before signing in.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "Cafe, airport and university hotspots used for banking or mobile-wallet access."
+      }
+    },
+    {
+      "title": "QR and Marketplace Payment Scams",
+      "scenario": "A pretend buyer sends a payment screenshot and a QR code. Verify payment in the official app.",
+      "choices": {
+        "c0": "Check the transaction in the official wallet app",
+        "c1": "Do not scan a buyer's QR to receive money",
+        "c2": "Never share an OTP; report the request",
+        "c3": "Trust the screenshot and send the item immediately"
+      },
+      "items": [
+        {
+          "title": "Buyer QR code",
+          "detail": "Buyer says scanning it will release money to the seller."
+        },
+        {
+          "title": "Payment screenshot",
+          "detail": "A screenshot claims payment succeeded, but the wallet balance is unchanged."
+        },
+        {
+          "title": "Verification call",
+          "detail": "The buyer requests an OTP to complete a payment."
+        },
+        {
+          "title": "Official wallet",
+          "detail": "The wallet app shows the actual received balance."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Buyer QR code",
+          "detail": "Buyer says scanning it will release money to the seller.",
+          "why": "Do not scan a buyer's QR to receive money directly addresses the evidence shown for Buyer QR code.",
+          "mistake": "This does not resolve Buyer QR code; verify the evidence before choosing another action.",
+          "tip": "A screenshot is not proof of payment. Never scan a buyer's payment QR or share an OTP to receive money.",
+          "hint": "Compare the first item with the objective: Buyer QR code.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Payment screenshot",
+          "detail": "A screenshot claims payment succeeded, but the wallet balance is unchanged.",
+          "why": "Check the transaction in the official wallet app directly addresses the evidence shown for Payment screenshot.",
+          "mistake": "This does not resolve Payment screenshot; verify the evidence before choosing another action.",
+          "tip": "A screenshot is not proof of payment. Never scan a buyer's payment QR or share an OTP to receive money.",
+          "hint": "Review the next record: Payment screenshot.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Verification call",
+          "detail": "The buyer requests an OTP to complete a payment.",
+          "why": "Never share an OTP; report the request directly addresses the evidence shown for Verification call.",
+          "mistake": "This does not resolve Verification call; verify the evidence before choosing another action.",
+          "tip": "A screenshot is not proof of payment. Never scan a buyer's payment QR or share an OTP to receive money.",
+          "hint": "Review the next record: Payment screenshot.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: Buyer QR code.",
+        "Review the next record: Payment screenshot."
+      ],
+      "learning": {
+        "whatHappened": "A pretend buyer sends a payment screenshot and a QR code. Verify payment in the official app.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "Online marketplace sales and Easypaisa or JazzCash payment claims."
+      }
+    },
+    {
+      "title": "Ransomware Attachment",
+      "scenario": "A simulated office device shows an unexpected attachment and file warning. Contain first, then recover safely.",
+      "choices": {
+        "c0": "Do not open the attachment; report it",
+        "c1": "Disconnect the device and contact support",
+        "c2": "Restore from the verified offline backup",
+        "c3": "Keep using the device and reconnect backups"
+      },
+      "items": [
+        {
+          "title": "invoice_viewer.scr",
+          "detail": "Unexpected executable attachment from an unknown sender."
+        },
+        {
+          "title": "Network connection",
+          "detail": "The device is still connected to shared office storage."
+        },
+        {
+          "title": "Backup copy",
+          "detail": "A dated offline backup is available from before the warning."
+        },
+        {
+          "title": "Routine document",
+          "detail": "A known text document was already open before the alert."
+        }
+      ],
+      "issues": [
+        {
+          "title": "invoice_viewer.scr",
+          "detail": "Unexpected executable attachment from an unknown sender.",
+          "why": "Do not open the attachment; report it directly addresses the evidence shown for invoice_viewer.scr.",
+          "mistake": "This does not resolve invoice_viewer.scr; verify the evidence before choosing another action.",
+          "tip": "Disconnect a suspected infected device from networks, notify support, and restore only from a known-good backup after it is safe.",
+          "hint": "Compare the first item with the objective: invoice_viewer.scr.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Network connection",
+          "detail": "The device is still connected to shared office storage.",
+          "why": "Disconnect the device and contact support directly addresses the evidence shown for Network connection.",
+          "mistake": "This does not resolve Network connection; verify the evidence before choosing another action.",
+          "tip": "Disconnect a suspected infected device from networks, notify support, and restore only from a known-good backup after it is safe.",
+          "hint": "Review the next record: Network connection.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Backup copy",
+          "detail": "A dated offline backup is available from before the warning.",
+          "why": "Restore from the verified offline backup directly addresses the evidence shown for Backup copy.",
+          "mistake": "This does not resolve Backup copy; verify the evidence before choosing another action.",
+          "tip": "Disconnect a suspected infected device from networks, notify support, and restore only from a known-good backup after it is safe.",
+          "hint": "Review the next record: Network connection.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: invoice_viewer.scr.",
+        "Review the next record: Network connection."
+      ],
+      "learning": {
+        "whatHappened": "A simulated office device shows an unexpected attachment and file warning. Contain first, then recover safely.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "Home and small-office devices holding family photos or business records."
+      }
+    },
+    {
+      "title": "Social Media Oversharing and Account Takeover",
+      "scenario": "Review a pretend social profile and improve privacy and recovery settings.",
+      "choices": {
+        "c0": "Restrict sensitive details to a trusted audience",
+        "c1": "Update recovery contacts and test account recovery",
+        "c2": "Use a unique password and enable two-step verification",
+        "c3": "Leave public details and reuse the same password"
+      },
+      "items": [
+        {
+          "title": "Public profile",
+          "detail": "Birth date and family phone numbers are visible to everyone."
+        },
+        {
+          "title": "Recovery email",
+          "detail": "The recovery address belongs to an old, unused mailbox."
+        },
+        {
+          "title": "Password reuse",
+          "detail": "The social account shares its password with another service."
+        },
+        {
+          "title": "Audience controls",
+          "detail": "The profile offers a friends-only audience setting."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Public profile",
+          "detail": "Birth date and family phone numbers are visible to everyone.",
+          "why": "Restrict sensitive details to a trusted audience directly addresses the evidence shown for Public profile.",
+          "mistake": "This does not resolve Public profile; verify the evidence before choosing another action.",
+          "tip": "Limit public personal details, use a unique password, and keep recovery email and phone current.",
+          "hint": "Compare the first item with the objective: Public profile.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Recovery email",
+          "detail": "The recovery address belongs to an old, unused mailbox.",
+          "why": "Update recovery contacts and test account recovery directly addresses the evidence shown for Recovery email.",
+          "mistake": "This does not resolve Recovery email; verify the evidence before choosing another action.",
+          "tip": "Limit public personal details, use a unique password, and keep recovery email and phone current.",
+          "hint": "Review the next record: Recovery email.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Password reuse",
+          "detail": "The social account shares its password with another service.",
+          "why": "Use a unique password and enable two-step verification directly addresses the evidence shown for Password reuse.",
+          "mistake": "This does not resolve Password reuse; verify the evidence before choosing another action.",
+          "tip": "Limit public personal details, use a unique password, and keep recovery email and phone current.",
+          "hint": "Review the next record: Recovery email.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: Public profile.",
+        "Review the next record: Recovery email."
+      ],
+      "learning": {
+        "whatHappened": "Review a pretend social profile and improve privacy and recovery settings.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "Social accounts linked to school groups, family photos and mobile-wallet recovery."
+      }
+    },
+    {
+      "title": "Authentication Log Analysis",
+      "scenario": "Read a harmless mock authentication log, identify repeated failures, and select a measured response.",
+      "choices": {
+        "c0": "Review the account and block the observed source in the simulation",
+        "c1": "Apply rate limits and strengthen sign-in verification",
+        "c2": "Preserve the log and notify the responsible administrator",
+        "c3": "Disable all accounts and delete the log"
+      },
+      "items": [
+        {
+          "title": "02:13 / account demo",
+          "detail": "Several failed sign-ins appear in a short time window."
+        },
+        {
+          "title": "Source 192.0.2.44",
+          "detail": "Reserved documentation address repeats in the training log."
+        },
+        {
+          "title": "Successful family login",
+          "detail": "A known device signed in normally earlier that day."
+        },
+        {
+          "title": "Response policy",
+          "detail": "Limit repeated attempts and review the affected account."
+        }
+      ],
+      "issues": [
+        {
+          "title": "02:13 / account demo",
+          "detail": "Several failed sign-ins appear in a short time window.",
+          "why": "Apply rate limits and strengthen sign-in verification directly addresses the evidence shown for 02:13 / account demo.",
+          "mistake": "This does not resolve 02:13 / account demo; verify the evidence before choosing another action.",
+          "tip": "Use rate limits, multi-factor authentication and account-specific review; do not block broad networks without evidence.",
+          "hint": "Compare the first item with the objective: 02:13 / account demo.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Source 192.0.2.44",
+          "detail": "Reserved documentation address repeats in the training log.",
+          "why": "Review the account and block the observed source in the simulation directly addresses the evidence shown for Source 192.0.2.44.",
+          "mistake": "This does not resolve Source 192.0.2.44; verify the evidence before choosing another action.",
+          "tip": "Use rate limits, multi-factor authentication and account-specific review; do not block broad networks without evidence.",
+          "hint": "Review the next record: Source 192.0.2.44.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Successful family login",
+          "detail": "A known device signed in normally earlier that day.",
+          "why": "Preserve the log and notify the responsible administrator directly addresses the evidence shown for Successful family login.",
+          "mistake": "This does not resolve Successful family login; verify the evidence before choosing another action.",
+          "tip": "Use rate limits, multi-factor authentication and account-specific review; do not block broad networks without evidence.",
+          "hint": "Review the next record: Source 192.0.2.44.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: 02:13 / account demo.",
+        "Review the next record: Source 192.0.2.44."
+      ],
+      "learning": {
+        "whatHappened": "Read a harmless mock authentication log, identify repeated failures, and select a measured response.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "Repeated sign-in attempts against school portals and small-business email."
+      }
+    },
+    {
+      "title": "Linux File Permissions",
+      "scenario": "Inspect a simulated terminal listing and reduce overly broad file access.",
+      "choices": {
+        "c0": "Use least privilege for the owner and service group",
+        "c1": "Set the correct owner and group for the service",
+        "c2": "Remove write access from unrelated users",
+        "c3": "Make every file writable by every user"
+      },
+      "items": [
+        {
+          "title": "-rwxrwxrwx notes.conf",
+          "detail": "Every user can read, change and run a configuration file."
+        },
+        {
+          "title": "owner: root / service: web",
+          "detail": "The service account does not own the file it must safely read."
+        },
+        {
+          "title": "shared-data/",
+          "detail": "A private directory is writable by all local users."
+        },
+        {
+          "title": "-rw-r----- report.txt",
+          "detail": "Only the owner and approved group can read the report."
+        }
+      ],
+      "issues": [
+        {
+          "title": "-rwxrwxrwx notes.conf",
+          "detail": "Every user can read, change and run a configuration file.",
+          "why": "Use least privilege for the owner and service group directly addresses the evidence shown for -rwxrwxrwx notes.conf.",
+          "mistake": "This does not resolve -rwxrwxrwx notes.conf; verify the evidence before choosing another action.",
+          "tip": "Give files only the owner and service access they need; review ownership before changing permissions.",
+          "hint": "Compare the first item with the objective: -rwxrwxrwx notes.conf.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "owner: root / service: web",
+          "detail": "The service account does not own the file it must safely read.",
+          "why": "Set the correct owner and group for the service directly addresses the evidence shown for owner: root / service: web.",
+          "mistake": "This does not resolve owner: root / service: web; verify the evidence before choosing another action.",
+          "tip": "Give files only the owner and service access they need; review ownership before changing permissions.",
+          "hint": "Review the next record: owner: root / service: web.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "shared-data/",
+          "detail": "A private directory is writable by all local users.",
+          "why": "Remove write access from unrelated users directly addresses the evidence shown for shared-data/.",
+          "mistake": "This does not resolve shared-data/; verify the evidence before choosing another action.",
+          "tip": "Give files only the owner and service access they need; review ownership before changing permissions.",
+          "hint": "Review the next record: owner: root / service: web.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: -rwxrwxrwx notes.conf.",
+        "Review the next record: owner: root / service: web."
+      ],
+      "learning": {
+        "whatHappened": "Inspect a simulated terminal listing and reduce overly broad file access.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "Shared school-lab computers and small-office web servers."
+      }
+    },
+    {
+      "title": "Email Header Analysis",
+      "scenario": "Compare simplified sender-authentication results and decide which message is trustworthy.",
+      "choices": {
+        "c0": "Treat failed alignment as suspicious and verify separately",
+        "c1": "Use the known school channel for expected notices",
+        "c2": "Report the spoofed message and avoid replying",
+        "c3": "Trust the display name even when authentication fails"
+      },
+      "items": [
+        {
+          "title": "From: bank.example / DMARC fail",
+          "detail": "Displayed sender does not align with the authenticated domain."
+        },
+        {
+          "title": "SPF: pass / DKIM: pass",
+          "detail": "A known school newsletter domain passes both sample checks."
+        },
+        {
+          "title": "Reply-To: unrelated.example",
+          "detail": "The reply address differs from the claimed organization."
+        },
+        {
+          "title": "Expected class update",
+          "detail": "The family was expecting this message from the verified school channel."
+        }
+      ],
+      "issues": [
+        {
+          "title": "From: bank.example / DMARC fail",
+          "detail": "Displayed sender does not align with the authenticated domain.",
+          "why": "Treat failed alignment as suspicious and verify separately directly addresses the evidence shown for From: bank.example / DMARC fail.",
+          "mistake": "This does not resolve From: bank.example / DMARC fail; verify the evidence before choosing another action.",
+          "tip": "SPF, DKIM and DMARC results are useful signals, not proof by themselves; verify unusual requests independently.",
+          "hint": "Compare the first item with the objective: From: bank.example / DMARC fail.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "SPF: pass / DKIM: pass",
+          "detail": "A known school newsletter domain passes both sample checks.",
+          "why": "Use the known school channel for expected notices directly addresses the evidence shown for SPF: pass / DKIM: pass.",
+          "mistake": "This does not resolve SPF: pass / DKIM: pass; verify the evidence before choosing another action.",
+          "tip": "SPF, DKIM and DMARC results are useful signals, not proof by themselves; verify unusual requests independently.",
+          "hint": "Review the next record: SPF: pass / DKIM: pass.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Reply-To: unrelated.example",
+          "detail": "The reply address differs from the claimed organization.",
+          "why": "Report the spoofed message and avoid replying directly addresses the evidence shown for Reply-To: unrelated.example.",
+          "mistake": "This does not resolve Reply-To: unrelated.example; verify the evidence before choosing another action.",
+          "tip": "SPF, DKIM and DMARC results are useful signals, not proof by themselves; verify unusual requests independently.",
+          "hint": "Review the next record: SPF: pass / DKIM: pass.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: From: bank.example / DMARC fail.",
+        "Review the next record: SPF: pass / DKIM: pass."
+      ],
+      "learning": {
+        "whatHappened": "Compare simplified sender-authentication results and decide which message is trustworthy.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "School announcements, bank alerts and mobile-wallet support emails."
+      }
+    },
+    {
+      "title": "Encryption Basics",
+      "scenario": "Choose the right protection for stored passwords, private records and data in transit.",
+      "choices": {
+        "c0": "Use a password-hashing function with a unique salt",
+        "c1": "Encrypt the report with managed keys",
+        "c2": "Use HTTPS to protect data in transit",
+        "c3": "Store passwords as plain text for easy lookup"
+      },
+      "items": [
+        {
+          "title": "Stored password",
+          "detail": "The application needs to verify a password without storing its readable value."
+        },
+        {
+          "title": "Private report",
+          "detail": "Staff need to read this file later, but outsiders must not."
+        },
+        {
+          "title": "Password database",
+          "detail": "Identical passwords should not produce identical stored hashes."
+        },
+        {
+          "title": "Web connection",
+          "detail": "A browser sends account data to the official service."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Stored password",
+          "detail": "The application needs to verify a password without storing its readable value.",
+          "why": "Use a password-hashing function with a unique salt directly addresses the evidence shown for Stored password.",
+          "mistake": "This does not resolve Stored password; verify the evidence before choosing another action.",
+          "tip": "Hash passwords with a purpose-built password hashing function and unique salts; encrypt data that must later be read; use HTTPS in transit.",
+          "hint": "Compare the first item with the objective: Stored password.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Private report",
+          "detail": "Staff need to read this file later, but outsiders must not.",
+          "why": "Encrypt the report with managed keys directly addresses the evidence shown for Private report.",
+          "mistake": "This does not resolve Private report; verify the evidence before choosing another action.",
+          "tip": "Hash passwords with a purpose-built password hashing function and unique salts; encrypt data that must later be read; use HTTPS in transit.",
+          "hint": "Review the next record: Private report.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Password database",
+          "detail": "Identical passwords should not produce identical stored hashes.",
+          "why": "Use a password-hashing function with a unique salt directly addresses the evidence shown for Password database.",
+          "mistake": "This does not resolve Password database; verify the evidence before choosing another action.",
+          "tip": "Hash passwords with a purpose-built password hashing function and unique salts; encrypt data that must later be read; use HTTPS in transit.",
+          "hint": "Review the next record: Private report.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: Stored password.",
+        "Review the next record: Private report."
+      ],
+      "learning": {
+        "whatHappened": "Choose the right protection for stored passwords, private records and data in transit.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "Student records and account sign-ins for Pakistani online services."
+      }
+    },
+    {
+      "title": "Backup and Recovery: 3-2-1",
+      "scenario": "Build a small-office backup plan with three copies, two kinds of storage and one off-site copy.",
+      "choices": {
+        "c0": "Keep three copies across two storage types",
+        "c1": "Keep one isolated off-site copy",
+        "c2": "Test restoring files on a regular schedule",
+        "c3": "Keep every copy connected to the same computer"
+      },
+      "items": [
+        {
+          "title": "Working files",
+          "detail": "The live office files are the first copy, not a backup."
+        },
+        {
+          "title": "Local backup drive",
+          "detail": "A second copy is kept on the same desk as the computer."
+        },
+        {
+          "title": "Off-site protected copy",
+          "detail": "A separate encrypted copy is stored away from the office."
+        },
+        {
+          "title": "Recovery drill",
+          "detail": "No one has tested restoring a file from the backup."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Working files",
+          "detail": "The live office files are the first copy, not a backup.",
+          "why": "Keep three copies across two storage types directly addresses the evidence shown for Working files.",
+          "mistake": "This does not resolve Working files; verify the evidence before choosing another action.",
+          "tip": "Keep three copies on two storage types with one isolated off-site copy, and test recovery regularly.",
+          "hint": "Compare the first item with the objective: Working files.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Local backup drive",
+          "detail": "A second copy is kept on the same desk as the computer.",
+          "why": "Keep three copies across two storage types directly addresses the evidence shown for Local backup drive.",
+          "mistake": "This does not resolve Local backup drive; verify the evidence before choosing another action.",
+          "tip": "Keep three copies on two storage types with one isolated off-site copy, and test recovery regularly.",
+          "hint": "Review the next record: Local backup drive.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Off-site protected copy",
+          "detail": "A separate encrypted copy is stored away from the office.",
+          "why": "Test restoring files on a regular schedule directly addresses the evidence shown for Off-site protected copy.",
+          "mistake": "This does not resolve Off-site protected copy; verify the evidence before choosing another action.",
+          "tip": "Keep three copies on two storage types with one isolated off-site copy, and test recovery regularly.",
+          "hint": "Review the next record: Local backup drive.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: Working files.",
+        "Review the next record: Local backup drive."
+      ],
+      "learning": {
+        "whatHappened": "Build a small-office backup plan with three copies, two kinds of storage and one off-site copy.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "Small Pakistani businesses protecting payroll, invoices and customer records."
+      }
+    },
+    {
+      "title": "SQL Injection Recognition",
+      "scenario": "A harmless login-log sample contains unusual input. Choose the code-level fix, not a real test.",
+      "choices": {
+        "c0": "Use a parameterized query",
+        "c1": "Validate input on the server",
+        "c2": "Return a generic public error and log details privately",
+        "c3": "Join submitted text directly into the query"
+      },
+      "items": [
+        {
+          "title": "Login input",
+          "detail": "Harmless training text: ' OR demo = demo"
+        },
+        {
+          "title": "Query builder",
+          "detail": "The sample joins user text into a database command."
+        },
+        {
+          "title": "Database error",
+          "detail": "A public response displays detailed internal query information."
+        },
+        {
+          "title": "Normal sign-in",
+          "detail": "A valid account enters through the regular form."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Login input",
+          "detail": "Harmless training text: ' OR demo = demo",
+          "why": "Use a parameterized query directly addresses the evidence shown for Login input.",
+          "mistake": "This does not resolve Login input; verify the evidence before choosing another action.",
+          "tip": "Use parameterized queries, validate inputs on the server and keep detailed errors out of public responses.",
+          "hint": "Compare the first item with the objective: Login input.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Query builder",
+          "detail": "The sample joins user text into a database command.",
+          "why": "Use a parameterized query directly addresses the evidence shown for Query builder.",
+          "mistake": "This does not resolve Query builder; verify the evidence before choosing another action.",
+          "tip": "Use parameterized queries, validate inputs on the server and keep detailed errors out of public responses.",
+          "hint": "Review the next record: Query builder.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Database error",
+          "detail": "A public response displays detailed internal query information.",
+          "why": "Return a generic public error and log details privately directly addresses the evidence shown for Database error.",
+          "mistake": "This does not resolve Database error; verify the evidence before choosing another action.",
+          "tip": "Use parameterized queries, validate inputs on the server and keep detailed errors out of public responses.",
+          "hint": "Review the next record: Query builder.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: Login input.",
+        "Review the next record: Query builder."
+      ],
+      "learning": {
+        "whatHappened": "A harmless login-log sample contains unusual input. Choose the code-level fix, not a real test.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "School portals and local service websites that store account records."
+      }
+    },
+    {
+      "title": "Cross-Site Scripting: Safe Output",
+      "scenario": "Review a simulated comment preview and select the safe way to display user text.",
+      "choices": {
+        "c0": "Encode output for the correct HTML context",
+        "c1": "Render user text with textContent, not HTML insertion",
+        "c2": "Apply a restrictive content security policy",
+        "c3": "Trust every submitted comment as safe markup"
+      },
+      "items": [
+        {
+          "title": "Comment input",
+          "detail": "Harmless text marker: script-demo-text; the preview treats it as markup."
+        },
+        {
+          "title": "Page preview",
+          "detail": "Submitted text is inserted as HTML instead of visible text."
+        },
+        {
+          "title": "Stored comments",
+          "detail": "Other visitors see the same unsafe rendering."
+        },
+        {
+          "title": "Plain note",
+          "detail": "A static staff note is already displayed as text."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Comment input",
+          "detail": "Harmless text marker: script-demo-text; the preview treats it as markup.",
+          "why": "Render user text with textContent, not HTML insertion directly addresses the evidence shown for Comment input.",
+          "mistake": "This does not resolve Comment input; verify the evidence before choosing another action.",
+          "tip": "Encode untrusted text for its output context, use safe DOM APIs, and apply a restrictive content policy.",
+          "hint": "Compare the first item with the objective: Comment input.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Page preview",
+          "detail": "Submitted text is inserted as HTML instead of visible text.",
+          "why": "Encode output for the correct HTML context directly addresses the evidence shown for Page preview.",
+          "mistake": "This does not resolve Page preview; verify the evidence before choosing another action.",
+          "tip": "Encode untrusted text for its output context, use safe DOM APIs, and apply a restrictive content policy.",
+          "hint": "Review the next record: Page preview.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Stored comments",
+          "detail": "Other visitors see the same unsafe rendering.",
+          "why": "Render user text with textContent, not HTML insertion directly addresses the evidence shown for Stored comments.",
+          "mistake": "This does not resolve Stored comments; verify the evidence before choosing another action.",
+          "tip": "Encode untrusted text for its output context, use safe DOM APIs, and apply a restrictive content policy.",
+          "hint": "Review the next record: Page preview.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: Comment input.",
+        "Review the next record: Page preview."
+      ],
+      "learning": {
+        "whatHappened": "Review a simulated comment preview and select the safe way to display user text.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "Comments on school, community and small-business websites."
+      }
+    },
+    {
+      "title": "Secrets in a Public Repository",
+      "scenario": "A pretend repository contains a committed API key. Contain the exposure and prevent another commit.",
+      "choices": {
+        "c0": "Revoke the exposed key and issue a new one",
+        "c1": "Add local secret files to .gitignore",
+        "c2": "Enable secret scanning and review history",
+        "c3": "Delete the visible line and keep the same key active"
+      },
+      "items": [
+        {
+          "title": ".env in commit history",
+          "detail": "A training-only fake key string is visible in a public commit."
+        },
+        {
+          "title": "Active service key",
+          "detail": "The simulated key may still grant account access."
+        },
+        {
+          "title": ".gitignore",
+          "detail": "The ignore list does not exclude local secret files."
+        },
+        {
+          "title": "Secret scanning",
+          "detail": "No automated check warns before a secret is committed."
+        }
+      ],
+      "issues": [
+        {
+          "title": ".env in commit history",
+          "detail": "A training-only fake key string is visible in a public commit.",
+          "why": "Revoke the exposed key and issue a new one directly addresses the evidence shown for .env in commit history.",
+          "mistake": "This does not resolve .env in commit history; verify the evidence before choosing another action.",
+          "tip": "Revoke and rotate exposed keys immediately, remove secret files from future commits, and enable secret scanning.",
+          "hint": "Compare the first item with the objective: .env in commit history.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Active service key",
+          "detail": "The simulated key may still grant account access.",
+          "why": "Revoke the exposed key and issue a new one directly addresses the evidence shown for Active service key.",
+          "mistake": "This does not resolve Active service key; verify the evidence before choosing another action.",
+          "tip": "Revoke and rotate exposed keys immediately, remove secret files from future commits, and enable secret scanning.",
+          "hint": "Review the next record: Active service key.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": ".gitignore",
+          "detail": "The ignore list does not exclude local secret files.",
+          "why": "Add local secret files to .gitignore directly addresses the evidence shown for .gitignore.",
+          "mistake": "This does not resolve .gitignore; verify the evidence before choosing another action.",
+          "tip": "Revoke and rotate exposed keys immediately, remove secret files from future commits, and enable secret scanning.",
+          "hint": "Review the next record: Active service key.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: .env in commit history.",
+        "Review the next record: Active service key."
+      ],
+      "learning": {
+        "whatHappened": "A pretend repository contains a committed API key. Contain the exposure and prevent another commit.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "Student projects and small-business code shared on public hosting platforms."
+      }
+    },
+    {
+      "title": "Broken Access Control",
+      "scenario": "A simulated record page lets a user request a record that belongs to another account.",
+      "choices": {
+        "c0": "Check record ownership and role on every server request",
+        "c1": "Return only records authorized for the current user",
+        "c2": "Log and review denied cross-account requests",
+        "c3": "Hide the link but leave the server endpoint unchanged"
+      },
+      "items": [
+        {
+          "title": "Record 104",
+          "detail": "Signed-in demo user opens their own record."
+        },
+        {
+          "title": "Record 105",
+          "detail": "Changing a record number returns someone else's private data."
+        },
+        {
+          "title": "Server authorization",
+          "detail": "The server checks whether the current user owns the requested record."
+        },
+        {
+          "title": "Hidden menu item",
+          "detail": "A hidden link does not prevent a direct request."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Record 104",
+          "detail": "Signed-in demo user opens their own record.",
+          "why": "Return only records authorized for the current user directly addresses the evidence shown for Record 104.",
+          "mistake": "This does not resolve Record 104; verify the evidence before choosing another action.",
+          "tip": "Check authorization on the server for every requested record; hiding a button or changing a URL is not access control.",
+          "hint": "Compare the first item with the objective: Record 104.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Record 105",
+          "detail": "Changing a record number returns someone else's private data.",
+          "why": "Check record ownership and role on every server request directly addresses the evidence shown for Record 105.",
+          "mistake": "This does not resolve Record 105; verify the evidence before choosing another action.",
+          "tip": "Check authorization on the server for every requested record; hiding a button or changing a URL is not access control.",
+          "hint": "Review the next record: Record 105.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Server authorization",
+          "detail": "The server checks whether the current user owns the requested record.",
+          "why": "Check record ownership and role on every server request directly addresses the evidence shown for Server authorization.",
+          "mistake": "This does not resolve Server authorization; verify the evidence before choosing another action.",
+          "tip": "Check authorization on the server for every requested record; hiding a button or changing a URL is not access control.",
+          "hint": "Review the next record: Record 105.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: Record 104.",
+        "Review the next record: Record 105."
+      ],
+      "learning": {
+        "whatHappened": "A simulated record page lets a user request a record that belongs to another account.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "Student grades, delivery records and customer details in Pakistani web services."
+      }
+    },
+    {
+      "title": "Cloud Storage Misconfiguration",
+      "scenario": "Review a pretend cloud account and reduce public access and excessive permissions.",
+      "choices": {
+        "c0": "Set storage private and allow only named users",
+        "c1": "Replace broad permissions with a least-privilege role",
+        "c2": "Expire old links and review access logs",
+        "c3": "Leave data public and grant every tool administrator access"
+      },
+      "items": [
+        {
+          "title": "Public storage bucket",
+          "detail": "Anyone with the link can list and read training files."
+        },
+        {
+          "title": "Administrator role",
+          "detail": "A read-only report tool has full account permissions."
+        },
+        {
+          "title": "Sharing link",
+          "detail": "An old link remains available after the project ended."
+        },
+        {
+          "title": "Access log",
+          "detail": "The service records when objects are viewed."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Public storage bucket",
+          "detail": "Anyone with the link can list and read training files.",
+          "why": "Set storage private and allow only named users directly addresses the evidence shown for Public storage bucket.",
+          "mistake": "This does not resolve Public storage bucket; verify the evidence before choosing another action.",
+          "tip": "Keep storage private by default, grant narrowly scoped roles, and review access logs and sharing links.",
+          "hint": "Compare the first item with the objective: Public storage bucket.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Administrator role",
+          "detail": "A read-only report tool has full account permissions.",
+          "why": "Replace broad permissions with a least-privilege role directly addresses the evidence shown for Administrator role.",
+          "mistake": "This does not resolve Administrator role; verify the evidence before choosing another action.",
+          "tip": "Keep storage private by default, grant narrowly scoped roles, and review access logs and sharing links.",
+          "hint": "Review the next record: Administrator role.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Sharing link",
+          "detail": "An old link remains available after the project ended.",
+          "why": "Expire old links and review access logs directly addresses the evidence shown for Sharing link.",
+          "mistake": "This does not resolve Sharing link; verify the evidence before choosing another action.",
+          "tip": "Keep storage private by default, grant narrowly scoped roles, and review access logs and sharing links.",
+          "hint": "Review the next record: Administrator role.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: Public storage bucket.",
+        "Review the next record: Administrator role."
+      ],
+      "learning": {
+        "whatHappened": "Review a pretend cloud account and reduce public access and excessive permissions.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "Small offices storing invoices, family documents or student information in cloud services."
+      }
+    },
+    {
+      "title": "Malware Sandbox Report",
+      "scenario": "Read a simulated sandbox report and separate suspicious behavior from ordinary activity.",
+      "choices": {
+        "c0": "Treat unexpected persistence as suspicious",
+        "c1": "Escalate unexpected credential access",
+        "c2": "Isolate the device and preserve the report",
+        "c3": "Ignore all findings because the report is simulated"
+      },
+      "items": [
+        {
+          "title": "Startup change",
+          "detail": "The sample tries to run again after a simulated restart."
+        },
+        {
+          "title": "Credential access",
+          "detail": "The report notes an unexpected request to read saved sign-in data."
+        },
+        {
+          "title": "Outbound connection",
+          "detail": "A simulated process contacts an unrecognized external destination."
+        },
+        {
+          "title": "Document preview",
+          "detail": "A known text document opens without changing system settings."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Startup change",
+          "detail": "The sample tries to run again after a simulated restart.",
+          "why": "Treat unexpected persistence as suspicious directly addresses the evidence shown for Startup change.",
+          "mistake": "This does not resolve Startup change; verify the evidence before choosing another action.",
+          "tip": "Treat unexpected persistence, credential access and unexplained outbound connections as signals; isolate and escalate using approved procedures.",
+          "hint": "Compare the first item with the objective: Startup change.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Credential access",
+          "detail": "The report notes an unexpected request to read saved sign-in data.",
+          "why": "Escalate unexpected credential access directly addresses the evidence shown for Credential access.",
+          "mistake": "This does not resolve Credential access; verify the evidence before choosing another action.",
+          "tip": "Treat unexpected persistence, credential access and unexplained outbound connections as signals; isolate and escalate using approved procedures.",
+          "hint": "Review the next record: Credential access.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Outbound connection",
+          "detail": "A simulated process contacts an unrecognized external destination.",
+          "why": "Isolate the device and preserve the report directly addresses the evidence shown for Outbound connection.",
+          "mistake": "This does not resolve Outbound connection; verify the evidence before choosing another action.",
+          "tip": "Treat unexpected persistence, credential access and unexplained outbound connections as signals; isolate and escalate using approved procedures.",
+          "hint": "Review the next record: Credential access.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: Startup change.",
+        "Review the next record: Credential access."
+      ],
+      "learning": {
+        "whatHappened": "Read a simulated sandbox report and separate suspicious behavior from ordinary activity.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "Suspicious attachments received by school and small-business staff."
+      }
+    },
+    {
+      "title": "Digital Forensics Timeline",
+      "scenario": "Order simulated evidence events to reconstruct a clear incident timeline before taking action.",
+      "choices": {
+        "c0": "Place the earliest recorded evidence first",
+        "c1": "Keep timestamps with their time-zone context",
+        "c2": "Preserve notes before changing the device",
+        "c3": "Reorder events by guess and discard original times"
+      },
+      "items": [
+        {
+          "title": "08:02 / message arrives",
+          "detail": "A pretend attachment is delivered to the inbox."
+        },
+        {
+          "title": "08:07 / sign-in alert",
+          "detail": "An unfamiliar sign-in appears in the simulated account log."
+        },
+        {
+          "title": "08:10 / support notified",
+          "detail": "The account owner records the alert and contacts support."
+        },
+        {
+          "title": "08:15 / device isolated",
+          "detail": "A support-approved response disconnects the affected device."
+        }
+      ],
+      "issues": [
+        {
+          "title": "08:02 / message arrives",
+          "detail": "A pretend attachment is delivered to the inbox.",
+          "why": "Place the earliest recorded evidence first directly addresses the evidence shown for 08:02 / message arrives.",
+          "mistake": "This does not resolve 08:02 / message arrives; verify the evidence before choosing another action.",
+          "tip": "Preserve original evidence, note time zones and record each action so the timeline can be reviewed.",
+          "hint": "Compare the first item with the objective: 08:02 / message arrives.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "08:07 / sign-in alert",
+          "detail": "An unfamiliar sign-in appears in the simulated account log.",
+          "why": "Keep timestamps with their time-zone context directly addresses the evidence shown for 08:07 / sign-in alert.",
+          "mistake": "This does not resolve 08:07 / sign-in alert; verify the evidence before choosing another action.",
+          "tip": "Preserve original evidence, note time zones and record each action so the timeline can be reviewed.",
+          "hint": "Review the next record: 08:07 / sign-in alert.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "08:10 / support notified",
+          "detail": "The account owner records the alert and contacts support.",
+          "why": "Preserve notes before changing the device directly addresses the evidence shown for 08:10 / support notified.",
+          "mistake": "This does not resolve 08:10 / support notified; verify the evidence before choosing another action.",
+          "tip": "Preserve original evidence, note time zones and record each action so the timeline can be reviewed.",
+          "hint": "Review the next record: 08:07 / sign-in alert.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: 08:02 / message arrives.",
+        "Review the next record: 08:07 / sign-in alert."
+      ],
+      "learning": {
+        "whatHappened": "Order simulated evidence events to reconstruct a clear incident timeline before taking action.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "Investigating a compromised family email or small-office account."
+      }
+    },
+    {
+      "title": "Insider Threat: Safe Response",
+      "scenario": "Review a fictional export log. Respond to unusual behavior fairly, preserve evidence and notify the right team.",
+      "choices": {
+        "c0": "Preserve the audit record and notify the authorized team",
+        "c1": "Review whether access matches the person's role",
+        "c2": "Follow policy before limiting the account",
+        "c3": "Publicly accuse the person and erase the log"
+      },
+      "items": [
+        {
+          "title": "Bulk export at unusual time",
+          "detail": "A demo account exports far more records than its normal task requires."
+        },
+        {
+          "title": "Access outside role",
+          "detail": "The account requests a folder unrelated to its assigned work."
+        },
+        {
+          "title": "Audit record",
+          "detail": "A signed log records the export time and account identifier."
+        },
+        {
+          "title": "Routine report",
+          "detail": "A small scheduled export matches the approved daily task."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Bulk export at unusual time",
+          "detail": "A demo account exports far more records than its normal task requires.",
+          "why": "Preserve the audit record and notify the authorized team directly addresses the evidence shown for Bulk export at unusual time.",
+          "mistake": "This does not resolve Bulk export at unusual time; verify the evidence before choosing another action.",
+          "tip": "Follow a documented process, limit access only as authorized, preserve logs and avoid accusations based on one signal.",
+          "hint": "Compare the first item with the objective: Bulk export at unusual time.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Access outside role",
+          "detail": "The account requests a folder unrelated to its assigned work.",
+          "why": "Review whether access matches the person's role directly addresses the evidence shown for Access outside role.",
+          "mistake": "This does not resolve Access outside role; verify the evidence before choosing another action.",
+          "tip": "Follow a documented process, limit access only as authorized, preserve logs and avoid accusations based on one signal.",
+          "hint": "Review the next record: Access outside role.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Audit record",
+          "detail": "A signed log records the export time and account identifier.",
+          "why": "Preserve the audit record and notify the authorized team directly addresses the evidence shown for Audit record.",
+          "mistake": "This does not resolve Audit record; verify the evidence before choosing another action.",
+          "tip": "Follow a documented process, limit access only as authorized, preserve logs and avoid accusations based on one signal.",
+          "hint": "Review the next record: Access outside role.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: Bulk export at unusual time.",
+        "Review the next record: Access outside role."
+      ],
+      "learning": {
+        "whatHappened": "Review a fictional export log. Respond to unusual behavior fairly, preserve evidence and notify the right team.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "Small-business customer lists, school records and payroll exports."
+      }
+    },
+    {
+      "title": "Multi-Stage Attack: Break the Chain",
+      "scenario": "Map a simulated sequence from initial contact to account misuse, then choose a safe interruption at each stage.",
+      "choices": {
+        "c0": "Report the unexpected message without opening its link",
+        "c1": "Use the official app and do not enter credentials on the imitation",
+        "c2": "Contain the session and secure the account",
+        "c3": "Approve the transfer before checking the account"
+      },
+      "items": [
+        {
+          "title": "Unexpected message",
+          "detail": "A pretend delivery notice asks the user to check an account."
+        },
+        {
+          "title": "Look-alike sign-in page",
+          "detail": "A mock page imitates a familiar service and asks for a password."
+        },
+        {
+          "title": "New session alert",
+          "detail": "The simulated account reports a sign-in from an unknown device."
+        },
+        {
+          "title": "Transfer request",
+          "detail": "An unexpected payment request appears after the account alert."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Unexpected message",
+          "detail": "A pretend delivery notice asks the user to check an account.",
+          "why": "Report the unexpected message without opening its link directly addresses the evidence shown for Unexpected message.",
+          "mistake": "This does not resolve Unexpected message; verify the evidence before choosing another action.",
+          "tip": "Report suspicious messages early, protect sign-in factors, contain unusual sessions and notify the service through trusted channels.",
+          "hint": "Compare the first item with the objective: Unexpected message.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Look-alike sign-in page",
+          "detail": "A mock page imitates a familiar service and asks for a password.",
+          "why": "Use the official app and do not enter credentials on the imitation directly addresses the evidence shown for Look-alike sign-in page.",
+          "mistake": "This does not resolve Look-alike sign-in page; verify the evidence before choosing another action.",
+          "tip": "Report suspicious messages early, protect sign-in factors, contain unusual sessions and notify the service through trusted channels.",
+          "hint": "Review the next record: Look-alike sign-in page.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "New session alert",
+          "detail": "The simulated account reports a sign-in from an unknown device.",
+          "why": "Contain the session and secure the account directly addresses the evidence shown for New session alert.",
+          "mistake": "This does not resolve New session alert; verify the evidence before choosing another action.",
+          "tip": "Report suspicious messages early, protect sign-in factors, contain unusual sessions and notify the service through trusted channels.",
+          "hint": "Review the next record: Look-alike sign-in page.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: Unexpected message.",
+        "Review the next record: Look-alike sign-in page."
+      ],
+      "learning": {
+        "whatHappened": "Map a simulated sequence from initial contact to account misuse, then choose a safe interruption at each stage.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "Phishing aimed at mobile-wallet users and family email accounts."
+      }
+    },
+    {
+      "title": "Final Boss: Security Operations Shift",
+      "scenario": "Triage three simulated alerts under a timer. Prioritize, contain, eradicate, recover and document in order.",
+      "choices": {
+        "c0": "Triage all alerts and preserve the available evidence",
+        "c1": "Prioritize the active ransomware affecting shared files",
+        "c2": "Isolate the affected workstation and contain account sessions",
+        "c3": "Remove the cause, revoke access and rotate affected credentials",
+        "c4": "Recover only from a verified clean backup",
+        "c5": "Write a factual incident report and follow-up",
+        "c6": "Ignore the alerts and delete the evidence"
+      },
+      "items": [
+        {
+          "title": "Alert queue / three simulated signals",
+          "detail": "Unknown account login, ransomware-like file activity and an unusual bulk export are reported."
+        },
+        {
+          "title": "Prioritize / identify immediate impact",
+          "detail": "Shared office files are actively being renamed by a simulated ransomware process."
+        },
+        {
+          "title": "Contain / limit further harm",
+          "detail": "A shared workstation is affected; evidence should remain available for review."
+        },
+        {
+          "title": "Eradicate / remove the cause",
+          "detail": "Remove the simulated malware and revoke affected account sessions."
+        },
+        {
+          "title": "Recover / restore trusted service",
+          "detail": "The device is checked and a known-good backup is available."
+        },
+        {
+          "title": "Report / document the shift",
+          "detail": "The response timeline and actions must be recorded without copying secrets."
+        }
+      ],
+      "issues": [
+        {
+          "title": "Alert queue / three simulated signals",
+          "detail": "Unknown account login, ransomware-like file activity and an unusual bulk export are reported.",
+          "why": "Triage all alerts and preserve the available evidence directly addresses the evidence shown for Alert queue / three simulated signals.",
+          "mistake": "This does not resolve Alert queue / three simulated signals; verify the evidence before choosing another action.",
+          "tip": "Prioritize evidence-based impact, contain first, preserve evidence, recover from trusted sources and document decisions.",
+          "hint": "Compare the first item with the objective: Alert queue / three simulated signals.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Prioritize / identify immediate impact",
+          "detail": "Shared office files are actively being renamed by a simulated ransomware process.",
+          "why": "Prioritize the active ransomware affecting shared files directly addresses the evidence shown for Prioritize / identify immediate impact.",
+          "mistake": "This does not resolve Prioritize / identify immediate impact; verify the evidence before choosing another action.",
+          "tip": "Prioritize evidence-based impact, contain first, preserve evidence, recover from trusted sources and document decisions.",
+          "hint": "Review the next record: Prioritize / identify immediate impact.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Contain / limit further harm",
+          "detail": "A shared workstation is affected; evidence should remain available for review.",
+          "why": "Isolate the affected workstation and contain account sessions directly addresses the evidence shown for Contain / limit further harm.",
+          "mistake": "This does not resolve Contain / limit further harm; verify the evidence before choosing another action.",
+          "tip": "Prioritize evidence-based impact, contain first, preserve evidence, recover from trusted sources and document decisions.",
+          "hint": "Review the next record: Prioritize / identify immediate impact.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Eradicate / remove the cause",
+          "detail": "Remove the simulated malware and revoke affected account sessions.",
+          "why": "Remove the cause, revoke access and rotate affected credentials directly addresses the evidence shown for Eradicate / remove the cause.",
+          "mistake": "This does not resolve Eradicate / remove the cause; verify the evidence before choosing another action.",
+          "tip": "Prioritize evidence-based impact, contain first, preserve evidence, recover from trusted sources and document decisions.",
+          "hint": "Review the next record: Prioritize / identify immediate impact.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Recover / restore trusted service",
+          "detail": "The device is checked and a known-good backup is available.",
+          "why": "Recover only from a verified clean backup directly addresses the evidence shown for Recover / restore trusted service.",
+          "mistake": "This does not resolve Recover / restore trusted service; verify the evidence before choosing another action.",
+          "tip": "Prioritize evidence-based impact, contain first, preserve evidence, recover from trusted sources and document decisions.",
+          "hint": "Review the next record: Prioritize / identify immediate impact.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        },
+        {
+          "title": "Report / document the shift",
+          "detail": "The response timeline and actions must be recorded without copying secrets.",
+          "why": "Write a factual incident report and follow-up directly addresses the evidence shown for Report / document the shift.",
+          "mistake": "This does not resolve Report / document the shift; verify the evidence before choosing another action.",
+          "tip": "Prioritize evidence-based impact, contain first, preserve evidence, recover from trusted sources and document decisions.",
+          "hint": "Review the next record: Prioritize / identify immediate impact.",
+          "wrongExplanations": [
+            "This option does not address the main evidence.",
+            "It leaves the indicated risk unresolved."
+          ]
+        }
+      ],
+      "hints": [
+        "Compare the first item with the objective: Alert queue / three simulated signals.",
+        "Review the next record: Prioritize / identify immediate impact."
+      ],
+      "learning": {
+        "whatHappened": "Triage three simulated alerts under a timer. Prioritize, contain, eradicate, recover and document in order.",
+        "attacker": "An attacker may exploit the unsafe behavior or weak control represented in this simulation.",
+        "defend": "Apply the recommended control, verify unusual requests independently and preserve recovery options.",
+        "pakistan": "A simulated SOC protecting school services, family email and a mobile-wallet helpdesk."
+      }
+    }
+  ],
+  "glossary": {
+    "password": {
+      "title": "Password",
+      "definition": "A secret used to authenticate an account."
+    },
+    "password-manager": {
+      "title": "Password manager",
+      "definition": "A tool that stores unique passwords securely."
+    },
+    "phishing": {
+      "title": "Phishing",
+      "definition": "A deceptive message that tries to steal information or money."
+    },
+    "otp": {
+      "title": "One-time password",
+      "definition": "A short-lived code that must never be shared."
+    },
+    "domain": {
+      "title": "Domain",
+      "definition": "The registered name that identifies a website."
+    },
+    "wpa3": {
+      "title": "WPA3",
+      "definition": "A modern standard for protecting Wi-Fi networks."
+    },
+    "permission": {
+      "title": "App permission",
+      "definition": "A rule that controls which device resources an app can access."
+    },
+    "firewall": {
+      "title": "Firewall",
+      "definition": "A control that permits or blocks network connections."
+    },
+    "parameterized-query": {
+      "title": "Parameterized query",
+      "definition": "A database query that keeps input separate from instructions."
+    },
+    "incident-response": {
+      "title": "Incident response",
+      "definition": "A planned process to contain, investigate and recover from an incident."
+    },
+    "passkey": {
+      "title": "Passkey",
+      "definition": "A sign-in credential tied to a device or account that resists common password phishing."
+    },
+    "sim-swap": {
+      "title": "SIM swap",
+      "definition": "An attempt to move a phone number to a different SIM without the owner's permission."
+    },
+    "vpn": {
+      "title": "Virtual private network",
+      "definition": "A protected tunnel to a trusted network service; it does not make every website trustworthy."
+    },
+    "qr-payment": {
+      "title": "QR payment scam",
+      "definition": "A payment trick that uses a QR code to send a victim to an unsafe action or page."
+    },
+    "ransomware": {
+      "title": "Ransomware",
+      "definition": "Malware that can block access to files and demand payment."
+    },
+    "isolation": {
+      "title": "Isolation",
+      "definition": "Separating a suspected device or account to limit further impact."
+    },
+    "backup": {
+      "title": "Backup",
+      "definition": "A separate copy of information that can be used to recover it."
+    },
+    "privacy-controls": {
+      "title": "Privacy controls",
+      "definition": "Settings that limit who can see personal information."
+    },
+    "recovery-method": {
+      "title": "Recovery method",
+      "definition": "A verified alternate way to regain access to an account."
+    },
+    "authentication-log": {
+      "title": "Authentication log",
+      "definition": "A record of sign-in events and their outcomes."
+    },
+    "rate-limit": {
+      "title": "Rate limit",
+      "definition": "A control that limits how often an action can be repeated."
+    },
+    "mfa": {
+      "title": "Multi-factor authentication",
+      "definition": "Sign-in protection that requires more than one type of proof."
+    },
+    "file-permissions": {
+      "title": "File permissions",
+      "definition": "Rules that define who can read, change or run a file."
+    },
+    "least-privilege": {
+      "title": "Least privilege",
+      "definition": "Giving an account only the access needed for its task."
+    },
+    "ownership": {
+      "title": "File ownership",
+      "definition": "The user or group that controls a file or resource."
+    },
+    "spf": {
+      "title": "SPF",
+      "definition": "An email-domain policy that lists permitted sending systems."
+    },
+    "dkim": {
+      "title": "DKIM",
+      "definition": "A signature that helps verify an email was authorized by its sending domain."
+    },
+    "dmarc": {
+      "title": "DMARC",
+      "definition": "A policy that uses SPF and DKIM alignment to guide email handling."
+    },
+    "hashing": {
+      "title": "Hashing",
+      "definition": "A one-way transformation used to verify data without storing its original value."
+    },
+    "salting": {
+      "title": "Salting",
+      "definition": "Adding a unique random value before hashing to protect stored password hashes."
+    },
+    "encryption": {
+      "title": "Encryption",
+      "definition": "Transforming data so it can be read only with the appropriate key."
+    },
+    "sql-injection": {
+      "title": "SQL injection",
+      "definition": "A risk caused when untrusted input is treated as part of a database command."
+    },
+    "input-validation": {
+      "title": "Input validation",
+      "definition": "Checking that data matches expected types and limits before use."
+    },
+    "xss": {
+      "title": "Cross-site scripting",
+      "definition": "A risk where untrusted web content is interpreted as active page content."
+    },
+    "output-encoding": {
+      "title": "Output encoding",
+      "definition": "Converting characters so untrusted text displays as data, not markup."
+    },
+    "csp": {
+      "title": "Content security policy",
+      "definition": "A browser policy that restricts which sources may provide page content."
+    },
+    "secret": {
+      "title": "Secret",
+      "definition": "A private key, token or credential that must not be exposed."
+    },
+    "secret-scanning": {
+      "title": "Secret scanning",
+      "definition": "Automated checks that look for credentials accidentally added to code."
+    },
+    "gitignore": {
+      "title": ".gitignore",
+      "definition": "A project file that tells Git which local files not to include in new commits."
+    },
+    "broken-access-control": {
+      "title": "Broken access control",
+      "definition": "A flaw where a user can access data or actions beyond their authorization."
+    },
+    "authorization": {
+      "title": "Authorization",
+      "definition": "A check that decides what an identified user is allowed to access."
+    },
+    "cloud-bucket": {
+      "title": "Cloud storage bucket",
+      "definition": "A cloud storage container whose access should be explicitly controlled."
+    },
+    "iam-role": {
+      "title": "Identity and access role",
+      "definition": "A cloud identity role that grants a defined set of permissions."
+    },
+    "sandbox": {
+      "title": "Sandbox",
+      "definition": "An isolated environment used to observe a file without using real systems."
+    },
+    "malware": {
+      "title": "Malware",
+      "definition": "Software designed to perform unwanted or harmful actions."
+    },
+    "forensic-timeline": {
+      "title": "Forensic timeline",
+      "definition": "An ordered account of evidence and events during an investigation."
+    },
+    "evidence": {
+      "title": "Evidence",
+      "definition": "Information preserved to help understand and review an incident."
+    },
+    "insider-threat": {
+      "title": "Insider threat",
+      "definition": "A risk involving misuse of legitimate access by someone inside an organization."
+    },
+    "data-loss-prevention": {
+      "title": "Data loss prevention",
+      "definition": "Controls that help prevent sensitive information leaving approved locations."
+    },
+    "attack-chain": {
+      "title": "Attack chain",
+      "definition": "A sequence of actions an attacker may take to reach a goal."
+    },
+    "containment": {
+      "title": "Containment",
+      "definition": "Actions that limit an incident's further spread or impact."
+    },
+    "triage": {
+      "title": "Alert triage",
+      "definition": "Sorting alerts by urgency, evidence and potential impact."
+    },
+    "eradication": {
+      "title": "Eradication",
+      "definition": "Removing the cause of an incident after it has been contained."
+    },
+    "recovery": {
+      "title": "Recovery",
+      "definition": "Restoring normal service safely after an incident."
+    },
+    "3-2-1-backup": {
+      "title": "3-2-1 backup rule",
+      "definition": "Keep three copies on two storage types, with one copy off-site."
+    },
+    "evil-twin": {
+      "title": "Evil twin network",
+      "definition": "A fake Wi-Fi access point that imitates a trusted network name."
+    },
+    "https": {
+      "title": "HTTPS",
+      "definition": "A web connection protected with TLS; check the domain as well as the lock indicator."
+    }
+  },
+  "chapters": [
+    "Foundations",
+    "Everyday Threats",
+    "Digital Life",
+    "Networks and Systems",
+    "Web and Cloud Security",
+    "Incident Response and Forensics"
+  ],
+  "districts": ["Bank District", "Bazaar", "University", "Cafe Wi-Fi Street", "Data Center", "SOC Tower"],
+  "skills": {
+    "passwords": "Passwords",
+    "phishing": "Phishing",
+    "social-engineering": "Social engineering",
+    "network": "Networks",
+    "web": "Web security",
+    "cloud": "Cloud security",
+    "response": "Incident response"
+  },
+  "ranks": {
+    "Recruit": "Recruit",
+    "Analyst": "Analyst",
+    "Defender": "Defender",
+    "Hunter": "Hunter",
+    "Architect": "Architect"
+  },
+  "achievements": {
+    "perfect-level": {
+      "title": "Perfect Level",
+      "description": "Complete a level without mistakes or hints."
+    },
+    "boss-slayer": {
+      "title": "Boss Slayer",
+      "description": "Complete a chapter boss level."
+    },
+    "code-reviewer": {
+      "title": "Code Reviewer",
+      "description": "Complete a secure code review level."
+    },
+    "phishing-expert": {
+      "title": "Phishing Expert",
+      "description": "Complete the phishing awareness level."
+    },
+    "no-hints-chapter": {
+      "title": "Independent Defender",
+      "description": "Complete a full chapter without hints."
+    },
+    "seven-day-streak": {
+      "title": "Seven-Day Streak",
+      "description": "Complete levels on seven consecutive days."
+    },
+    "full-campaign": {
+      "title": "Campaign Complete",
+      "description": "Complete all six chapters."
+    }
+  }
+}

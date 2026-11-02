@@ -1,0 +1,53 @@
+{
+  "id": 7,
+  "type": "permissions",
+  "items": [0, 1, 2, 3, 4],
+  "choices": ["deny", "uninstall", "review", "trusted"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "deny",
+      "wrongFixes": ["uninstall", "review"],
+      "terms": ["permission", "phishing"],
+      "difficulty": 4
+    },
+    {
+      "item": 1,
+      "fix": "uninstall",
+      "wrongFixes": ["deny", "review"],
+      "terms": ["permission", "phishing"],
+      "difficulty": 1
+    },
+    {
+      "item": 2,
+      "fix": "review",
+      "wrongFixes": ["deny", "uninstall"],
+      "terms": ["permission", "phishing"],
+      "difficulty": 2
+    },
+    {
+      "item": 3,
+      "fix": "trusted",
+      "wrongFixes": ["deny", "uninstall"],
+      "terms": ["permission", "phishing"],
+      "difficulty": 3
+    }
+  ],
+  "chapter": 2,
+  "title": {
+    "en": "App Permissions",
+    "ur": "ایپ کی اجازتیں"
+  },
+  "difficulty": "learner",
+  "skillTag": "social-engineering",
+  "glossaryTerms": ["permission", "phishing"],
+  "learningCard": true,
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ]
+}

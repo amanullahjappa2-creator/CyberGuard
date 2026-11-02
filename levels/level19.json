@@ -1,0 +1,46 @@
+{
+  "id": 19,
+  "chapter": 4,
+  "title": {
+    "en": "Encryption Basics",
+    "ur": "انکرپشن کے بنیادی اصول"
+  },
+  "difficulty": "learner",
+  "skillTag": "web",
+  "type": "code",
+  "items": [0, 1, 2, 3],
+  "choices": ["c0", "c1", "c2", "c3"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "c0",
+      "wrongFixes": ["c1", "c2"],
+      "terms": ["hashing", "salting", "encryption", "https"],
+      "difficulty": 4
+    },
+    {
+      "item": 1,
+      "fix": "c1",
+      "wrongFixes": ["c0", "c2"],
+      "terms": ["hashing", "salting", "encryption", "https"],
+      "difficulty": 1
+    },
+    {
+      "item": 2,
+      "fix": "c0",
+      "wrongFixes": ["c1", "c2"],
+      "terms": ["hashing", "salting", "encryption", "https"],
+      "difficulty": 2
+    }
+  ],
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ],
+  "glossaryTerms": ["hashing", "salting", "encryption", "https"],
+  "learningCard": true
+}

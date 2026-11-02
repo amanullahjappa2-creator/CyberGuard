@@ -1,0 +1,367 @@
+[
+  {
+    "id": 1,
+    "chapter": 1,
+    "title": {
+      "en": "Weak Passwords",
+      "ur": "کمزور پاس ورڈ"
+    },
+    "difficulty": "learner",
+    "skillTag": "passwords",
+    "type": "password-list",
+    "boss": false
+  },
+  {
+    "id": 2,
+    "chapter": 1,
+    "title": {
+      "en": "Phishing Email",
+      "ur": "جعلی ای میل"
+    },
+    "difficulty": "learner",
+    "skillTag": "phishing",
+    "type": "inbox",
+    "boss": false
+  },
+  {
+    "id": 3,
+    "chapter": 1,
+    "title": {
+      "en": "Scam Messages",
+      "ur": "دھوکے والے پیغامات"
+    },
+    "difficulty": "learner",
+    "skillTag": "social-engineering",
+    "type": "chat",
+    "boss": false
+  },
+  {
+    "id": 4,
+    "chapter": 1,
+    "title": {
+      "en": "Fake Websites",
+      "ur": "جعلی ویب سائٹ"
+    },
+    "difficulty": "learner",
+    "skillTag": "web",
+    "type": "url-list",
+    "boss": false
+  },
+  {
+    "id": 5,
+    "chapter": 1,
+    "title": {
+      "en": "Wi-Fi Router Safety",
+      "ur": "وائی فائی راؤٹر کی حفاظت"
+    },
+    "difficulty": "defender",
+    "skillTag": "network",
+    "type": "router",
+    "boss": true
+  },
+  {
+    "id": 6,
+    "chapter": 2,
+    "title": {
+      "en": "Suspicious Phone Call",
+      "ur": "مشکوک فون کال"
+    },
+    "difficulty": "learner",
+    "skillTag": "social-engineering",
+    "type": "dialogue",
+    "boss": false
+  },
+  {
+    "id": 7,
+    "chapter": 2,
+    "title": {
+      "en": "App Permissions",
+      "ur": "ایپ کی اجازتیں"
+    },
+    "difficulty": "learner",
+    "skillTag": "social-engineering",
+    "type": "permissions",
+    "boss": false
+  },
+  {
+    "id": 8,
+    "chapter": 2,
+    "title": {
+      "en": "Firewall and Services",
+      "ur": "فائر وال اور سروسز"
+    },
+    "difficulty": "learner",
+    "skillTag": "network",
+    "type": "ports",
+    "boss": false
+  },
+  {
+    "id": 9,
+    "chapter": 2,
+    "title": {
+      "en": "Code Review",
+      "ur": "کوڈ کا جائزہ"
+    },
+    "difficulty": "learner",
+    "skillTag": "web",
+    "type": "code",
+    "boss": false
+  },
+  {
+    "id": 10,
+    "chapter": 2,
+    "title": {
+      "en": "Incident Response",
+      "ur": "واقعے کا ردعمل"
+    },
+    "difficulty": "defender",
+    "skillTag": "response",
+    "type": "incident",
+    "boss": true,
+    "mode": "ordered"
+  },
+  {
+    "id": 11,
+    "chapter": 3,
+    "title": {
+      "en": "Two-Factor Authentication and SIM Swap",
+      "ur": "دو مرحلوں کی تصدیق اور سم سواپ"
+    },
+    "difficulty": "learner",
+    "skillTag": "passwords",
+    "type": "auth",
+    "boss": false
+  },
+  {
+    "id": 12,
+    "chapter": 3,
+    "title": {
+      "en": "Public Wi-Fi at a Cafe",
+      "ur": "کیفے کا عوامی وائی فائی"
+    },
+    "difficulty": "defender",
+    "skillTag": "network",
+    "type": "wifi",
+    "boss": false
+  },
+  {
+    "id": 13,
+    "chapter": 3,
+    "title": {
+      "en": "QR and Marketplace Payment Scams",
+      "ur": "کیو آر اور مارکیٹ پلیس ادائیگی کا دھوکا"
+    },
+    "difficulty": "learner",
+    "skillTag": "social-engineering",
+    "type": "marketplace",
+    "boss": false
+  },
+  {
+    "id": 14,
+    "chapter": 3,
+    "title": {
+      "en": "Ransomware Attachment",
+      "ur": "رینسم ویئر اٹیچمنٹ"
+    },
+    "difficulty": "defender",
+    "skillTag": "response",
+    "type": "incident",
+    "boss": false,
+    "mode": "ordered"
+  },
+  {
+    "id": 15,
+    "chapter": 3,
+    "title": {
+      "en": "Social Media Oversharing and Account Takeover",
+      "ur": "سوشل میڈیا کی زائد معلومات اور اکاؤنٹ پر قبضہ"
+    },
+    "difficulty": "learner",
+    "skillTag": "passwords",
+    "type": "privacy",
+    "boss": true
+  },
+  {
+    "id": 16,
+    "chapter": 4,
+    "title": {
+      "en": "Authentication Log Analysis",
+      "ur": "تصدیقی لاگ کا تجزیہ"
+    },
+    "difficulty": "defender",
+    "skillTag": "network",
+    "type": "log",
+    "boss": false
+  },
+  {
+    "id": 17,
+    "chapter": 4,
+    "title": {
+      "en": "Linux File Permissions",
+      "ur": "لینکس فائل کی اجازتیں"
+    },
+    "difficulty": "learner",
+    "skillTag": "network",
+    "type": "terminal",
+    "boss": false
+  },
+  {
+    "id": 18,
+    "chapter": 4,
+    "title": {
+      "en": "Email Header Analysis",
+      "ur": "ای میل ہیڈر کا تجزیہ"
+    },
+    "difficulty": "defender",
+    "skillTag": "phishing",
+    "type": "headers",
+    "boss": false
+  },
+  {
+    "id": 19,
+    "chapter": 4,
+    "title": {
+      "en": "Encryption Basics",
+      "ur": "انکرپشن کے بنیادی اصول"
+    },
+    "difficulty": "learner",
+    "skillTag": "web",
+    "type": "code",
+    "boss": false
+  },
+  {
+    "id": 20,
+    "chapter": 4,
+    "title": {
+      "en": "Backup and Recovery: 3-2-1",
+      "ur": "بیک اپ اور بحالی: 3-2-1"
+    },
+    "difficulty": "expert",
+    "skillTag": "response",
+    "type": "backup",
+    "boss": true
+  },
+  {
+    "id": 21,
+    "chapter": 5,
+    "title": {
+      "en": "SQL Injection Recognition",
+      "ur": "SQL انجیکشن کی پہچان"
+    },
+    "difficulty": "learner",
+    "skillTag": "web",
+    "type": "log",
+    "boss": false
+  },
+  {
+    "id": 22,
+    "chapter": 5,
+    "title": {
+      "en": "Cross-Site Scripting: Safe Output",
+      "ur": "کراس سائٹ اسکرپٹنگ: محفوظ آؤٹ پٹ"
+    },
+    "difficulty": "defender",
+    "skillTag": "web",
+    "type": "code",
+    "boss": false
+  },
+  {
+    "id": 23,
+    "chapter": 5,
+    "title": {
+      "en": "Secrets in a Public Repository",
+      "ur": "عوامی ریپوزٹری میں خفیہ معلومات"
+    },
+    "difficulty": "learner",
+    "skillTag": "cloud",
+    "type": "repository",
+    "boss": false
+  },
+  {
+    "id": 24,
+    "chapter": 5,
+    "title": {
+      "en": "Broken Access Control",
+      "ur": "رسائی کے کنٹرول کی خرابی"
+    },
+    "difficulty": "defender",
+    "skillTag": "web",
+    "type": "web-app",
+    "boss": false
+  },
+  {
+    "id": 25,
+    "chapter": 5,
+    "title": {
+      "en": "Cloud Storage Misconfiguration",
+      "ur": "کلاؤڈ ذخیرے کی غلط ترتیب"
+    },
+    "difficulty": "expert",
+    "skillTag": "cloud",
+    "type": "cloud",
+    "boss": true
+  },
+  {
+    "id": 26,
+    "chapter": 6,
+    "title": {
+      "en": "Malware Sandbox Report",
+      "ur": "مالویئر سینڈ باکس رپورٹ"
+    },
+    "difficulty": "defender",
+    "skillTag": "response",
+    "type": "sandbox",
+    "boss": false
+  },
+  {
+    "id": 27,
+    "chapter": 6,
+    "title": {
+      "en": "Digital Forensics Timeline",
+      "ur": "ڈیجیٹل تفتیش کی ٹائم لائن"
+    },
+    "difficulty": "learner",
+    "skillTag": "response",
+    "type": "timeline",
+    "boss": false,
+    "mode": "ordered"
+  },
+  {
+    "id": 28,
+    "chapter": 6,
+    "title": {
+      "en": "Insider Threat: Safe Response",
+      "ur": "اندرونی خطرہ: محفوظ ردعمل"
+    },
+    "difficulty": "defender",
+    "skillTag": "response",
+    "type": "log",
+    "boss": false
+  },
+  {
+    "id": 29,
+    "chapter": 6,
+    "title": {
+      "en": "Multi-Stage Attack: Break the Chain",
+      "ur": "کئی مرحلوں والا حملہ: سلسلہ روکیں"
+    },
+    "difficulty": "learner",
+    "skillTag": "response",
+    "type": "timeline",
+    "boss": false,
+    "mode": "ordered"
+  },
+  {
+    "id": 30,
+    "chapter": 6,
+    "title": {
+      "en": "Final Boss: Security Operations Shift",
+      "ur": "آخری باس: سیکیورٹی آپریشنز کی شفٹ"
+    },
+    "difficulty": "expert",
+    "skillTag": "response",
+    "type": "alerts",
+    "boss": true,
+    "mode": "ordered"
+  }
+]

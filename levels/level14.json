@@ -1,0 +1,47 @@
+{
+  "id": 14,
+  "chapter": 3,
+  "title": {
+    "en": "Ransomware Attachment",
+    "ur": "رینسم ویئر اٹیچمنٹ"
+  },
+  "difficulty": "defender",
+  "skillTag": "response",
+  "type": "incident",
+  "mode": "ordered",
+  "items": [0, 1, 2, 3],
+  "choices": ["c0", "c1", "c2", "c3"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "c0",
+      "wrongFixes": ["c1", "c2"],
+      "terms": ["ransomware", "isolation", "backup"],
+      "difficulty": 3
+    },
+    {
+      "item": 1,
+      "fix": "c1",
+      "wrongFixes": ["c0", "c2"],
+      "terms": ["ransomware", "isolation", "backup"],
+      "difficulty": 4
+    },
+    {
+      "item": 2,
+      "fix": "c2",
+      "wrongFixes": ["c0", "c1"],
+      "terms": ["ransomware", "isolation", "backup"],
+      "difficulty": 1
+    }
+  ],
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ],
+  "glossaryTerms": ["ransomware", "isolation", "backup"],
+  "learningCard": true
+}

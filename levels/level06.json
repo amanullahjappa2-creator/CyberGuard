@@ -1,0 +1,53 @@
+{
+  "id": 6,
+  "type": "dialogue",
+  "items": [0, 1, 2, 3],
+  "choices": ["never", "official", "hangup", "verify"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "never",
+      "wrongFixes": ["official", "hangup"],
+      "terms": ["phishing", "otp"],
+      "difficulty": 3
+    },
+    {
+      "item": 1,
+      "fix": "hangup",
+      "wrongFixes": ["never", "official"],
+      "terms": ["phishing", "otp"],
+      "difficulty": 4
+    },
+    {
+      "item": 2,
+      "fix": "official",
+      "wrongFixes": ["never", "hangup"],
+      "terms": ["phishing", "otp"],
+      "difficulty": 1
+    },
+    {
+      "item": 3,
+      "fix": "verify",
+      "wrongFixes": ["never", "official"],
+      "terms": ["phishing", "otp"],
+      "difficulty": 2
+    }
+  ],
+  "chapter": 2,
+  "title": {
+    "en": "Suspicious Phone Call",
+    "ur": "مشکوک فون کال"
+  },
+  "difficulty": "learner",
+  "skillTag": "social-engineering",
+  "glossaryTerms": ["phishing", "otp"],
+  "learningCard": true,
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ]
+}

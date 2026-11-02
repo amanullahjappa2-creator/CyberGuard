@@ -1,0 +1,46 @@
+{
+  "id": 12,
+  "chapter": 3,
+  "title": {
+    "en": "Public Wi-Fi at a Cafe",
+    "ur": "کیفے کا عوامی وائی فائی"
+  },
+  "difficulty": "defender",
+  "skillTag": "network",
+  "type": "wifi",
+  "items": [0, 1, 2, 3],
+  "choices": ["c0", "c1", "c2", "c3"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "c0",
+      "wrongFixes": ["c1", "c2"],
+      "terms": ["evil-twin", "vpn", "https"],
+      "difficulty": 1
+    },
+    {
+      "item": 1,
+      "fix": "c1",
+      "wrongFixes": ["c0", "c2"],
+      "terms": ["evil-twin", "vpn", "https"],
+      "difficulty": 2
+    },
+    {
+      "item": 2,
+      "fix": "c2",
+      "wrongFixes": ["c0", "c1"],
+      "terms": ["evil-twin", "vpn", "https"],
+      "difficulty": 3
+    }
+  ],
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ],
+  "glossaryTerms": ["evil-twin", "vpn", "https"],
+  "learningCard": true
+}

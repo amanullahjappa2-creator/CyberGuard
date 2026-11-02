@@ -1,0 +1,60 @@
+{
+  "id": 9,
+  "type": "code",
+  "items": [0, 1, 2, 3, 4],
+  "choices": ["env", "params", "validate", "debugOff", "private"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "env",
+      "wrongFixes": ["params", "validate"],
+      "terms": ["parameterized-query", "password"],
+      "difficulty": 2
+    },
+    {
+      "item": 1,
+      "fix": "params",
+      "wrongFixes": ["env", "validate"],
+      "terms": ["parameterized-query", "password"],
+      "difficulty": 3
+    },
+    {
+      "item": 2,
+      "fix": "validate",
+      "wrongFixes": ["env", "params"],
+      "terms": ["parameterized-query", "password"],
+      "difficulty": 4
+    },
+    {
+      "item": 3,
+      "fix": "debugOff",
+      "wrongFixes": ["env", "params"],
+      "terms": ["parameterized-query", "password"],
+      "difficulty": 1
+    },
+    {
+      "item": 4,
+      "fix": "private",
+      "wrongFixes": ["env", "params"],
+      "terms": ["parameterized-query", "password"],
+      "difficulty": 2
+    }
+  ],
+  "chapter": 2,
+  "title": {
+    "en": "Code Review",
+    "ur": "کوڈ کا جائزہ"
+  },
+  "difficulty": "learner",
+  "skillTag": "web",
+  "glossaryTerms": ["parameterized-query", "password"],
+  "learningCard": true,
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ]
+}

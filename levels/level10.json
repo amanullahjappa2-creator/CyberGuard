@@ -1,0 +1,68 @@
+{
+  "id": 10,
+  "type": "incident",
+  "mode": "ordered",
+  "items": [0, 1, 2, 3, 4, 5],
+  "choices": ["identify", "contain", "rotate", "twofa", "restore", "report"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "identify",
+      "wrongFixes": ["contain", "rotate"],
+      "terms": ["incident-response", "otp"],
+      "difficulty": 3
+    },
+    {
+      "item": 1,
+      "fix": "contain",
+      "wrongFixes": ["identify", "rotate"],
+      "terms": ["incident-response", "otp"],
+      "difficulty": 4
+    },
+    {
+      "item": 2,
+      "fix": "rotate",
+      "wrongFixes": ["identify", "contain"],
+      "terms": ["incident-response", "otp"],
+      "difficulty": 1
+    },
+    {
+      "item": 3,
+      "fix": "twofa",
+      "wrongFixes": ["identify", "contain"],
+      "terms": ["incident-response", "otp"],
+      "difficulty": 2
+    },
+    {
+      "item": 4,
+      "fix": "restore",
+      "wrongFixes": ["identify", "contain"],
+      "terms": ["incident-response", "otp"],
+      "difficulty": 3
+    },
+    {
+      "item": 5,
+      "fix": "report",
+      "wrongFixes": ["identify", "contain"],
+      "terms": ["incident-response", "otp"],
+      "difficulty": 4
+    }
+  ],
+  "chapter": 2,
+  "title": {
+    "en": "Incident Response",
+    "ur": "واقعے کا ردعمل"
+  },
+  "difficulty": "defender",
+  "skillTag": "response",
+  "glossaryTerms": ["incident-response", "otp"],
+  "learningCard": true,
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "id": 13,
+  "chapter": 3,
+  "title": {
+    "en": "QR and Marketplace Payment Scams",
+    "ur": "کیو آر اور مارکیٹ پلیس ادائیگی کا دھوکا"
+  },
+  "difficulty": "learner",
+  "skillTag": "social-engineering",
+  "type": "marketplace",
+  "items": [0, 1, 2, 3],
+  "choices": ["c0", "c1", "c2", "c3"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "c1",
+      "wrongFixes": ["c0", "c2"],
+      "terms": ["qr-payment", "otp", "phishing"],
+      "difficulty": 2
+    },
+    {
+      "item": 1,
+      "fix": "c0",
+      "wrongFixes": ["c1", "c2"],
+      "terms": ["qr-payment", "otp", "phishing"],
+      "difficulty": 3
+    },
+    {
+      "item": 2,
+      "fix": "c2",
+      "wrongFixes": ["c0", "c1"],
+      "terms": ["qr-payment", "otp", "phishing"],
+      "difficulty": 4
+    }
+  ],
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ],
+  "glossaryTerms": ["qr-payment", "otp", "phishing"],
+  "learningCard": true
+}

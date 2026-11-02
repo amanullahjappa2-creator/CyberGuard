@@ -1,0 +1,53 @@
+{
+  "id": 3,
+  "type": "chat",
+  "items": [0, 1, 2, 3],
+  "choices": ["ignore", "block", "report", "verify"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "verify",
+      "wrongFixes": ["ignore", "block"],
+      "terms": ["phishing", "otp"],
+      "difficulty": 4
+    },
+    {
+      "item": 1,
+      "fix": "block",
+      "wrongFixes": ["ignore", "report"],
+      "terms": ["phishing", "otp"],
+      "difficulty": 1
+    },
+    {
+      "item": 2,
+      "fix": "report",
+      "wrongFixes": ["ignore", "block"],
+      "terms": ["phishing", "otp"],
+      "difficulty": 2
+    },
+    {
+      "item": 3,
+      "fix": "ignore",
+      "wrongFixes": ["block", "report"],
+      "terms": ["phishing", "otp"],
+      "difficulty": 3
+    }
+  ],
+  "chapter": 1,
+  "title": {
+    "en": "Scam Messages",
+    "ur": "دھوکے والے پیغامات"
+  },
+  "difficulty": "learner",
+  "skillTag": "social-engineering",
+  "glossaryTerms": ["phishing", "otp"],
+  "learningCard": true,
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ]
+}

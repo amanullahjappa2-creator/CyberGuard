@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b1624" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'"
+    />
+    <title>CyberGuard - Class dashboard</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./" id="home-link">CyberGuard</a>
+      <nav class="toolbar" aria-label="Display options">
+        <button class="button button-quiet" id="language-toggle" type="button">اردو</button>
+      </nav>
+    </header>
+    <main id="teacher-app" class="app-shell" tabindex="-1">
+      <div class="loading" role="status">Loading class dashboard...</div>
+    </main>
+    <footer class="site-footer">CyberGuard classroom scoreboard</footer>
+    <script type="module" src="js/teacher.js"></script>
+  </body>
+</html>

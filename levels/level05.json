@@ -1,0 +1,60 @@
+{
+  "id": 5,
+  "type": "router",
+  "items": [0, 1, 2, 3, 4],
+  "choices": ["change", "close", "modern", "update"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "change",
+      "wrongFixes": ["close", "modern"],
+      "terms": ["wpa3", "password"],
+      "difficulty": 2
+    },
+    {
+      "item": 1,
+      "fix": "close",
+      "wrongFixes": ["change", "modern"],
+      "terms": ["wpa3", "password"],
+      "difficulty": 3
+    },
+    {
+      "item": 2,
+      "fix": "modern",
+      "wrongFixes": ["change", "close"],
+      "terms": ["wpa3", "password"],
+      "difficulty": 4
+    },
+    {
+      "item": 3,
+      "fix": "close",
+      "wrongFixes": ["change", "modern"],
+      "terms": ["wpa3", "password"],
+      "difficulty": 1
+    },
+    {
+      "item": 4,
+      "fix": "update",
+      "wrongFixes": ["change", "close"],
+      "terms": ["wpa3", "password"],
+      "difficulty": 2
+    }
+  ],
+  "chapter": 1,
+  "title": {
+    "en": "Wi-Fi Router Safety",
+    "ur": "وائی فائی راؤٹر کی حفاظت"
+  },
+  "difficulty": "defender",
+  "skillTag": "network",
+  "glossaryTerms": ["wpa3", "password"],
+  "learningCard": true,
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "id": 28,
+  "chapter": 6,
+  "title": {
+    "en": "Insider Threat: Safe Response",
+    "ur": "اندرونی خطرہ: محفوظ ردعمل"
+  },
+  "difficulty": "defender",
+  "skillTag": "response",
+  "type": "log",
+  "items": [0, 1, 2, 3],
+  "choices": ["c0", "c1", "c2", "c3"],
+  "issues": [
+    {
+      "item": 0,
+      "fix": "c0",
+      "wrongFixes": ["c1", "c2"],
+      "terms": ["insider-threat", "data-loss-prevention", "evidence"],
+      "difficulty": 1
+    },
+    {
+      "item": 1,
+      "fix": "c1",
+      "wrongFixes": ["c0", "c2"],
+      "terms": ["insider-threat", "data-loss-prevention", "evidence"],
+      "difficulty": 2
+    },
+    {
+      "item": 2,
+      "fix": "c0",
+      "wrongFixes": ["c1", "c2"],
+      "terms": ["insider-threat", "data-loss-prevention", "evidence"],
+      "difficulty": 3
+    }
+  ],
+  "hints": [
+    {
+      "issue": 0
+    },
+    {
+      "issue": 1
+    }
+  ],
+  "glossaryTerms": ["insider-threat", "data-loss-prevention", "evidence"],
+  "learningCard": true
+}
