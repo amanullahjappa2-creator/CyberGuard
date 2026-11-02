@@ -216,7 +216,7 @@ export class GameEngine {
     this.state = null;
   }
 
-  recommendMission(catalog = this.levels) {
+  recommendLevel(catalog = this.levels) {
     return chooseRecommendation(catalog, this.progress);
   }
 

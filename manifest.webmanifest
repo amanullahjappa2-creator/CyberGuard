@@ -1,7 +1,7 @@
 {
-  "name": "CyberGuard Security Defender",
+  "name": "CyberGuard Academy",
   "short_name": "CyberGuard",
-  "description": "An offline learning game for safer digital habits.",
+  "description": "Bilingual cyber safety learning with offline scenario levels.",
   "lang": "en",
   "start_url": "./index.html",
   "scope": "./",

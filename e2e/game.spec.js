@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("plays level one, switches language and theme, and keeps progress after reload", async ({ page }) => {
+test("completes a level, switches language and theme, and keeps progress after reload", async ({ page }) => {
   const apiRequests = [];
   let uploadedScore;
   page.on("request", (request) => {
@@ -8,7 +8,7 @@ test("plays level one, switches language and theme, and keeps progress after rel
     if (new URL(request.url()).pathname === "/api/score") uploadedScore = request.postDataJSON();
   });
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Become a security defender" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Build practical cyber safety skills" })).toBeVisible();
   const appOutlineStyle = await page.locator("#app").evaluate((app) => getComputedStyle(app).outlineStyle);
   expect(appOutlineStyle).toBe("none");
   await expect(page.locator(".skill-radar")).toBeVisible();
@@ -18,7 +18,7 @@ test("plays level one, switches language and theme, and keeps progress after rel
     .evaluateAll((labels) => labels.map((label) => getComputedStyle(label).fill));
   expect(radarFill).not.toBe("rgb(0, 0, 0)");
   expect(radarLabelFills.every((fill) => fill !== "rgb(0, 0, 0)")).toBe(true);
-  await page.getByRole("button", { name: "Start training" }).click();
+  await page.getByRole("button", { name: "Start learning" }).click();
 
   const answers = [
     ["Email account", "Replace it with a long, hard-to-guess passphrase"],
@@ -33,7 +33,7 @@ test("plays level one, switches language and theme, and keeps progress after rel
 
   await expect(page.getByRole("heading", { name: "Weak Passwords" })).toBeVisible();
   await expect(page.getByText("LEVEL COMPLETE")).toBeVisible();
-  await page.getByRole("button", { name: "Home" }).last().click();
+  await page.getByRole("button", { name: "Dashboard" }).last().click();
   await page.getByRole("button", { name: "Switch language" }).click();
   await page.getByRole("button", { name: "لائٹ تھیم" }).click();
   await expect(page.locator("html")).toHaveAttribute("lang", "ur");
@@ -46,22 +46,24 @@ test("plays level one, switches language and theme, and keeps progress after rel
   await page.evaluate(() => navigator.serviceWorker.ready);
   await page.context().setOffline(true);
   await page.reload();
-  await expect(page.getByRole("heading", { name: "سیکیورٹی محافظ بنیں" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "سائبر حفاظت کی عملی مہارتیں سیکھیں" })).toBeVisible();
   await expect(page.getByText("2 / 30").first()).toBeVisible();
   await page
     .getByRole("navigation", { name: "Primary navigation" })
-    .getByRole("button", { name: "لیول نقشہ" })
+    .getByRole("button", { name: "لیولز" })
     .click();
-  const missions = page.locator(".city-mission:not(.is-locked)");
-  await missions.first().focus();
-  await page.keyboard.press("ArrowRight");
-  await expect(missions.nth(1)).toBeFocused();
-  await page.keyboard.press("Enter");
-  await page.getByRole("button", { name: "مشن کھولیں" }).click();
+  const levels = page.locator(".level-card:not(:disabled)");
+  await expect(page.locator(".level-card")).toHaveCount(30);
+  await expect(page.locator(".city-map")).toHaveCount(0);
+  await expect(levels).toHaveCount(2);
+  await levels.first().focus();
+  await page.keyboard.press("Tab");
+  await expect(levels.nth(1)).toBeFocused();
+  await levels.nth(1).click();
   await expect(page.getByRole("heading", { name: "جعلی ای میل" })).toBeVisible();
   await page
     .getByRole("navigation", { name: "Primary navigation" })
-    .getByRole("button", { name: "کارکردگی رپورٹ" })
+    .locator('[data-screen="report"]')
     .click();
   await expect(page.getByText(/رازداری:/)).toBeVisible();
   const joinButton = page.getByRole("button", { name: "درجہ بندی میں شامل ہوں" });

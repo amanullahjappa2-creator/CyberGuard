@@ -26,8 +26,6 @@ let dictionarySearch = "";
 let difficulty = "defender";
 let timerHandle = null;
 let activeAudioContext = null;
-let selectedMissionId = null;
-let lastRecommendation = null;
 
 function readPreference(key, allowed, fallback) {
   try {
@@ -103,11 +101,10 @@ function applyPreferences() {
   document.querySelectorAll(".nav-link").forEach((navLink) => {
     const label = copy[navLink.dataset.labelKey];
     if (label) navLink.textContent = label;
-    navLink.classList.toggle(
-      "is-active",
-      navLink.dataset.screen === screen || (screen === "game" && navLink.dataset.screen === "map"),
-    );
-    navLink.setAttribute("aria-current", navLink.dataset.screen === screen ? "page" : "false");
+    const active =
+      navLink.dataset.screen === screen || (screen === "level" && navLink.dataset.screen === "levels");
+    navLink.classList.toggle("is-active", active);
+    navLink.setAttribute("aria-current", active ? "page" : "false");
   });
 }
 
@@ -144,7 +141,7 @@ async function startLevel(id, options = {}) {
   }
   const variant = options.variant ?? (options.mode === "practice" ? Math.floor(Math.random() * 3) : 0);
   if (!engine.beginLevel(id, { difficulty, ...options, variant })) return;
-  screen = "game";
+  screen = "level";
   feedback = null;
   render();
 }
@@ -167,11 +164,9 @@ function renderHome() {
   const copy = currentLocale();
   const ui = copy.ui;
   const hero = element("section", "hero");
-  hero.append(element("p", "level-number", ui.gameLabel));
+  hero.append(element("p", "level-number", ui.academyLabel));
   hero.append(element("h1", "", ui.welcomeTitle));
   hero.append(element("p", "", ui.welcomeBody));
-  const rank = currentLocale().ranks?.[engine.progress.rank] ?? engine.progress.rank;
-  hero.append(element("p", "rank-value", `${ui.playerRank}: ${rank}`));
   const actions = element("div", "hero-actions");
   const savedLevel = engine.progress.current?.levelId;
   if (savedLevel) {
@@ -194,9 +189,10 @@ function renderHome() {
       ),
     );
   } else {
-    actions.append(button(ui.startGame, () => startLevel(engine.progress.unlocked), "button button-primary"));
+    actions.append(
+      button(ui.startLearning, () => startLevel(engine.progress.unlocked), "button button-primary"),
+    );
   }
-  actions.append(element("span", "muted", `${ui.totalScore}: ${engine.getTotalScore()}`));
   const daily = engine.getDailyChallenge();
   actions.append(
     button(
@@ -231,30 +227,28 @@ function renderHome() {
   campaign.append(
     element("p", "muted", `${ui.unlocked}: ${engine.progress.unlocked} / ${engine.levels.length}`),
   );
-  campaign.append(button(ui.navMap, () => navigate("map"), "button button-primary"));
+  campaign.append(button(ui.navLevels, () => navigate("levels"), "button button-primary"));
   dashboard.append(campaign);
   const dashboardRank = element("section", "dashboard-card rank-card");
   const scoreCopy = element("div");
-  scoreCopy.append(element("p", "muted", ui.totalScore));
-  scoreCopy.append(element("strong", "rank-value", String(engine.getTotalScore())));
+  const completedLevels = Object.keys(engine.progress.levels).length;
+  const progressPercent = Math.round((completedLevels / engine.levels.length) * 100);
+  scoreCopy.append(element("p", "muted", ui.overallProgress));
+  scoreCopy.append(element("strong", "rank-value", `${progressPercent}%`));
   scoreCopy.append(
-    element(
-      "p",
-      "muted",
-      `${ui.experience}: ${engine.progress.xp} · ${ui.playerLevel}: ${engine.progress.playerLevel}`,
-    ),
+    element("p", "muted", `${completedLevels} / ${engine.levels.length} ${ui.levelsCompleted}`),
   );
-  dashboardRank.append(scoreCopy, element("span", "rank-value", rank));
+  dashboardRank.append(scoreCopy);
   dashboard.append(dashboardRank);
   dashboard.append(renderSkillRadar());
   app.append(dashboard);
-  const recommendation = engine.recommendMission();
+  const recommendation = engine.recommendLevel();
   if (recommendation) {
     const card = element("section", "dashboard-card recommendation-card");
-    const missionCopy = copy.levels[recommendation.id - 1];
+    const levelCopy = copy.levels[recommendation.id - 1];
     const skillName = copy.skills[recommendation.skillTag] ?? recommendation.skillTag;
-    card.append(element("p", "eyebrow", ui.recommendedMission));
-    card.append(element("h2", "", `${ui.mission} ${recommendation.id}: ${missionCopy.title}`));
+    card.append(element("p", "eyebrow", ui.recommendedLevel));
+    card.append(element("h2", "", `${ui.level} ${recommendation.id}: ${levelCopy.title}`));
     const reason =
       recommendation.accuracy === null
         ? ui.recommendationNewSkill.replace("{skill}", skillName)
@@ -265,7 +259,7 @@ function renderHome() {
     card.append(element("p", "", reason));
     card.append(
       button(
-        ui.launchMission,
+        ui.openLevel,
         () =>
           startLevel(recommendation.id, {
             mode: recommendation.id < engine.progress.unlocked ? "practice" : "campaign",
@@ -274,10 +268,9 @@ function renderHome() {
       ),
     );
     app.append(card);
-    lastRecommendation = recommendation;
   }
   if (engine.progress.unlocked > 1) {
-    const progressSection = element("section", "panel game-header");
+    const progressSection = element("section", "panel level-header");
     progressSection.append(element("h2", "", ui.overallProgress));
     const track = element("div", "progress-track");
     const fill = element("div", "progress-fill");
@@ -303,188 +296,56 @@ function navigate(nextScreen) {
   render();
 }
 
-function renderMap() {
+function renderLevels() {
   const copy = currentLocale();
   const ui = copy.ui;
   const heading = element("header", "page-heading");
-  heading.append(element("p", "eyebrow", ui.gameLabel));
-  heading.append(element("h1", "", ui.navMap));
-  heading.append(element("p", "", ui.cityMapIntro));
-  const mapPanel = element("section", "panel city-map-panel");
-  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.classList.add("city-map");
-  svg.setAttribute("viewBox", "0 0 1000 600");
-  svg.setAttribute("role", "group");
-  svg.setAttribute("aria-label", ui.navMap);
-  svg.append(svgElement("title", {}, ui.cityMapIntro));
-  const positions = [
-    { x: 175, y: 145 },
-    { x: 500, y: 145 },
-    { x: 825, y: 145 },
-    { x: 175, y: 440 },
-    { x: 500, y: 440 },
-    { x: 825, y: 440 },
-  ];
-  const road = svgElement("path", {
-    d: "M175 145 H500 H825 M175 440 H500 H825 M175 145 V440 M500 145 V440 M825 145 V440",
-    class: "city-roads",
-  });
-  svg.append(road);
-  const currentMission = Math.min(engine.progress.unlocked, 30);
-  const currentChapter = Math.ceil(currentMission / 5);
-  const currentPosition = missionPosition(currentMission, positions, language === "ur");
-  const marker = svgElement("g", {
-    class: "city-player-marker",
-    transform: `translate(${currentPosition.x} ${currentPosition.y})`,
-    "aria-label": ui.playerRank,
-  });
-  marker.append(svgElement("circle", { r: "17", class: "player-marker-ring" }));
-  marker.append(svgElement("circle", { r: "7", cy: "-2", class: "player-marker-head" }));
-  marker.append(svgElement("path", { d: "M-9 12 Q0 -2 9 12", class: "player-marker-body" }));
+  heading.append(element("p", "eyebrow", ui.academyLabel));
+  heading.append(element("h1", "", ui.navLevels));
+  heading.append(element("p", "", ui.levelsIntro));
+  const chapterList = element("div", "chapter-list");
   for (let chapter = 1; chapter <= 6; chapter += 1) {
-    const center = positions[chapter - 1];
-    const reflected = language === "ur" ? 1000 - center.x : center.x;
-    const group = svgElement("g", {
-      class: `city-district${chapter > currentChapter ? " is-locked" : ""}`,
-      transform: `translate(${reflected} ${center.y})`,
-    });
-    group.append(
-      svgElement("rect", {
-        x: "-140",
-        y: "-55",
-        width: "280",
-        height: "170",
-        rx: "22",
-        class: "district-ground",
-      }),
+    const chapterLevels = engine.levels.filter((level) => level.chapter === chapter);
+    if (!chapterLevels.length) continue;
+    const section = element("section", "panel chapter-levels");
+    const sectionHeading = element("div", "section-heading");
+    sectionHeading.append(element("h2", "", `${ui.chapter} ${chapter}: ${copy.chapters[chapter - 1]}`));
+    const completed = chapterLevels.filter((level) => engine.progress.levels[level.id]).length;
+    sectionHeading.append(
+      element("span", "muted", `${completed} / ${chapterLevels.length} ${ui.levelsCompleted}`),
     );
-    const districtName = currentLocale().districts?.[chapter - 1] ?? currentLocale().chapters[chapter - 1];
-    group.append(svgElement("text", { x: "0", y: "-28", class: "district-title" }, districtName));
-    const districtLevels = engine.levels.filter((level) => level.chapter === chapter);
-    districtLevels.forEach((level, index) => {
-      const offsets = [
-        [-82, 8],
-        [-28, 8],
-        [26, 8],
-        [-55, 62],
-        [0, 62],
-      ];
-      const [x, y] = offsets[index];
+    section.append(sectionHeading);
+    const grid = element("div", "level-grid");
+    chapterLevels.forEach((level) => {
       const id = level.id;
       const result = engine.progress.levels[id];
       const unlocked = id <= engine.progress.unlocked;
-      const selected = id === selectedMissionId;
-      const node = svgElement("g", {
-        class: `city-mission${unlocked ? "" : " is-locked"}${result ? " is-complete" : ""}${level.boss ? " is-boss" : ""}${selected ? " is-selected" : ""}`,
-        transform: `translate(${x} ${y})`,
-        role: "button",
-        tabindex: unlocked ? "0" : "-1",
-        "aria-disabled": String(!unlocked),
-        "aria-pressed": String(selected),
-        "aria-label": `${ui.mission} ${id}: ${copy.levels[id - 1].title}, ${result ? `${result.stars} / 3` : unlocked ? ui.available : ui.lockedLevel}`,
-      });
-      node.append(svgElement("title", {}, `${ui.mission} ${id}: ${copy.levels[id - 1].title}`));
-      node.append(
-        svgElement("rect", {
-          x: "-21",
-          y: "-17",
-          width: "42",
-          height: "38",
-          rx: "7",
-          class: "mission-building",
-        }),
-      );
-      node.append(svgElement("path", { d: "M-25 -17 0 -29 25 -17", class: "mission-roof" }));
-      node.append(
-        svgElement("text", { x: "0", y: "5", class: "mission-number" }, String(id).padStart(2, "0")),
-      );
-      if (result) {
-        node.append(svgElement("text", { x: "0", y: "34", class: "mission-stars" }, `${result.stars}/3`));
-      } else if (!unlocked) {
-        node.append(svgElement("text", { x: "0", y: "34", class: "mission-lock" }, "—"));
-      }
-      const select = () => {
-        selectedMissionId = id;
-        render();
-      };
-      node.addEventListener("click", select);
-      node.addEventListener("keydown", (event) => {
-        const nodes = [...svg.querySelectorAll(".city-mission:not(.is-locked)")];
-        const indexInNodes = nodes.indexOf(node);
-        const step =
-          event.key === "ArrowRight"
-            ? language === "ur"
-              ? 1
-              : -1
-            : event.key === "ArrowLeft"
-              ? language === "ur"
-                ? -1
-                : 1
-              : event.key === "ArrowDown"
-                ? 5
-                : event.key === "ArrowUp"
-                  ? -5
-                  : 0;
-        if (step) {
-          event.preventDefault();
-          nodes[(indexInNodes + step + nodes.length) % nodes.length]?.focus();
-        } else if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          select();
-        }
-      });
-      group.append(node);
-    });
-    svg.append(group);
-  }
-  svg.append(marker);
-  mapPanel.append(svg);
-  const missionCard = element("section", "dashboard-card city-mission-detail");
-  const selectedId = selectedMissionId ?? lastRecommendation?.id;
-  const selectedLevel = engine.levels.find((level) => level.id === selectedId);
-  if (selectedLevel && selectedLevel.id <= engine.progress.unlocked) {
-    const missionCopy = copy.levels[selectedLevel.id - 1];
-    missionCard.append(element("p", "eyebrow", `${ui.mission} ${selectedLevel.id}`));
-    missionCard.append(element("h2", "", missionCopy.title));
-    missionCard.append(element("h3", "", ui.missionBriefing));
-    missionCard.append(element("p", "", missionCopy.scenario));
-    missionCard.append(element("h3", "", ui.missionObjective));
-    missionCard.append(element("p", "", missionCopy.issues[0]?.tip ?? ui.scenarioInstructions));
-    missionCard.append(
-      button(
-        ui.launchMission,
+      const levelCopy = copy.levels[id - 1];
+      const status = result ? ui.levelCompleted : unlocked ? ui.available : ui.lockedLevel;
+      const isAssessment = [10, 20, 25, 30].includes(id);
+      const card = button(
+        "",
         () =>
-          startLevel(selectedLevel.id, {
-            mode: engine.progress.levels[selectedLevel.id] ? "practice" : "campaign",
+          startLevel(id, {
+            mode: result || id < engine.progress.unlocked ? "practice" : "campaign",
           }),
-        "button button-primary",
-      ),
-    );
-  } else {
-    missionCard.append(element("p", "muted", ui.selectMission));
+        `level-card${result ? " is-complete" : ""}${isAssessment ? " is-assessment" : ""}`,
+      );
+      card.disabled = !unlocked;
+      card.setAttribute(
+        "aria-label",
+        `${ui.level} ${String(id).padStart(2, "0")}: ${levelCopy.title}. ${status}`,
+      );
+      card.append(element("span", "level-number", `${ui.level} ${String(id).padStart(2, "0")}`));
+      card.append(element("strong", "", levelCopy.title));
+      card.append(element("span", "", copy.skills[level.skillTag] ?? level.skillTag));
+      card.append(element("span", "level-status", isAssessment ? `${ui.assessment} · ${status}` : status));
+      grid.append(card);
+    });
+    section.append(grid);
+    chapterList.append(section);
   }
-  app.replaceChildren(heading, mapPanel, missionCard);
-}
-
-function svgElement(tag, attributes = {}, content) {
-  const node = document.createElementNS("http://www.w3.org/2000/svg", tag);
-  Object.entries(attributes).forEach(([name, value]) => node.setAttribute(name, value));
-  if (content !== undefined) node.textContent = content;
-  return node;
-}
-
-function missionPosition(id, districtPositions, rtl) {
-  const chapter = Math.ceil(id / 5);
-  const center = districtPositions[chapter - 1];
-  const offsets = [
-    [-82, 8],
-    [-28, 8],
-    [26, 8],
-    [-55, 62],
-    [0, 62],
-  ];
-  const [offsetX, offsetY] = offsets[(id - 1) % 5];
-  return { x: (rtl ? 1000 - center.x : center.x) + (rtl ? -offsetX : offsetX), y: center.y + offsetY };
+  app.replaceChildren(heading, chapterList);
 }
 
 function makeSettingRow(title, description, control) {
@@ -515,7 +376,7 @@ function selectSetting(label, options, selected, onChange) {
 function renderSettings() {
   const ui = currentLocale().ui;
   const heading = element("header", "page-heading");
-  heading.append(element("p", "eyebrow", ui.gameLabel));
+  heading.append(element("p", "eyebrow", ui.academyLabel));
   heading.append(element("h1", "", ui.settingsTitle));
   const list = element("div", "settings-list");
   list.append(
@@ -690,7 +551,7 @@ function resetProgress() {
 function renderBadges() {
   const copy = currentLocale();
   const heading = element("header", "page-heading");
-  heading.append(element("p", "eyebrow", copy.ui.gameLabel));
+  heading.append(element("p", "eyebrow", copy.ui.academyLabel));
   heading.append(element("h1", "", copy.ui.navBadges));
   const grid = element("div", "level-grid");
   for (const [id, badge] of Object.entries(copy.achievements ?? {})) {
@@ -707,7 +568,7 @@ function renderBadges() {
 function renderDictionary() {
   const copy = currentLocale();
   const heading = element("header", "page-heading");
-  heading.append(element("p", "eyebrow", copy.ui.gameLabel));
+  heading.append(element("p", "eyebrow", copy.ui.academyLabel));
   heading.append(element("h1", "", copy.ui.navDictionary));
   const search = document.createElement("input");
   search.className = "search-input";
@@ -800,7 +661,7 @@ function renderPerformanceReport() {
   const ui = copy.ui;
   const report = buildPerformanceReport(engine.progress);
   const heading = element("header", "page-heading");
-  heading.append(element("p", "eyebrow", ui.gameLabel));
+  heading.append(element("p", "eyebrow", ui.academyLabel));
   heading.append(element("h1", "", ui.navReport));
   heading.append(element("p", "", ui.reportIntro));
   const actions = element("div", "hero-actions report-actions no-print");
@@ -858,9 +719,7 @@ function renderPerformanceReport() {
   if (!levels.length) times.append(element("p", "muted", ui.noReportData));
   levels.forEach((level) => {
     const row = element("div", "report-session-row");
-    row.append(
-      element("span", "", `${ui.mission} ${level.levelId}: ${copy.levels[level.levelId - 1].title}`),
-    );
+    row.append(element("span", "", `${ui.level} ${level.levelId}: ${copy.levels[level.levelId - 1].title}`));
     row.append(element("strong", "", `${level.averageSeconds} ${ui.seconds}`));
     row.append(
       element("span", "muted", `${ui.hintsUsed}: ${level.hints} · ${ui.mistakesBySkill}: ${level.mistakes}`),
@@ -1129,13 +988,13 @@ function answer(choiceId) {
   render();
 }
 
-function renderGame() {
+function renderLevel() {
   const ui = currentLocale().ui;
   const level = engine.levels.find((entry) => entry.id === engine.state.levelId);
   const labels = currentLocale().levels[level.id - 1];
   const completeCount = engine.state.issues.filter((issue) => issue.resolved).length;
-  const header = element("section", "panel game-header");
-  const heading = element("div", "game-heading");
+  const header = element("section", "panel level-header");
+  const heading = element("div", "level-heading");
   const titleGroup = element("div");
   titleGroup.append(element("p", "level-number", `${ui.level} ${level.id} / ${engine.levels.length}`));
   titleGroup.append(element("h1", "", labels.title));
@@ -1235,7 +1094,7 @@ function formatTime(seconds) {
 }
 
 function ensureTimer() {
-  if (screen !== "game" || engine.state?.timerSeconds === null) {
+  if (screen !== "level" || engine.state?.timerSeconds === null) {
     if (timerHandle !== null) window.clearInterval(timerHandle);
     timerHandle = null;
     return;
@@ -1400,7 +1259,7 @@ function renderFinal() {
 }
 
 function render() {
-  if (screen !== "game" && timerHandle !== null) {
+  if (screen !== "level" && timerHandle !== null) {
     window.clearInterval(timerHandle);
     timerHandle = null;
   }
@@ -1408,11 +1267,11 @@ function render() {
   app.classList.toggle("rtl-content", language === "ur");
   app.classList.toggle("text-large", textSize === "large");
   app.classList.toggle("motion-reduced", reducedMotion);
-  if (screen === "game" && engine.state) renderGame();
+  if (screen === "level" && engine.state) renderLevel();
   else if (screen === "summary" && summaryResult) renderSummary();
   else if (screen === "failed" && engine.state) renderFailed();
   else if (screen === "final") renderFinal();
-  else if (screen === "map") renderMap();
+  else if (screen === "levels") renderLevels();
   else if (screen === "report") renderPerformanceReport();
   else if (screen === "settings") renderSettings();
   else if (screen === "badges") renderBadges();
@@ -1452,7 +1311,7 @@ async function initialize() {
       fetch("./level-catalog.json"),
     ]);
     if (!enResponse.ok || !urResponse.ok || !catalogResponse.ok)
-      throw new Error("Could not load the language files or mission catalog.");
+      throw new Error("Could not load the language files or level catalog.");
     locales = { en: await enResponse.json(), ur: await urResponse.json() };
     const levels = await catalogResponse.json();
     engine = new GameEngine(levels, locales);

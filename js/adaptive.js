@@ -169,9 +169,9 @@ export function chooseRecommendation(catalog, progress) {
     );
   const weakest = rankedSkills[0];
   const skillTag = weakest?.skillTag ?? candidates[0].skillTag;
-  const mission = candidates.find((level) => level.skillTag === skillTag) ?? candidates[0];
+  const level = candidates.find((candidate) => candidate.skillTag === skillTag) ?? candidates[0];
   return {
-    ...mission,
+    ...level,
     mastery: weakest?.mastery ?? Math.round(mastery[skillTag] ?? INITIAL_MASTERY),
     accuracy: weakest?.accuracy ?? null,
     skillTag,
