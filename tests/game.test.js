@@ -6,6 +6,7 @@ import {
   GameEngine,
   playerLevelForXp,
   rankForXp,
+  shuffleChoices,
   validateLevel,
 } from "../js/engine.js";
 import { exportProgress, importProgress, parseProgressImport } from "../js/storage.js";
@@ -15,6 +16,7 @@ const locales = {
   en: await file("../lang/en.json"),
   ur: await file("../lang/ur.json"),
 };
+const catalog = await file("../level-catalog.json");
 const levels = await Promise.all(
   Array.from({ length: 30 }, (_, index) => file(`../levels/level${String(index + 1).padStart(2, "0")}.json`)),
 );
@@ -38,12 +40,55 @@ test("all thirty levels have complete fixes, explanations and translations", () 
   });
 });
 
+test("answer choices shuffle deterministically across attempts and cover each position", () => {
+  const choices = ["correct", "wrong-a", "wrong-b"];
+  const positions = new Set(
+    Array.from({ length: 60 }, (_, attempt) => {
+      const firstOrder = shuffleChoices(choices, `attempt-${attempt}`);
+      assert.deepEqual(firstOrder, shuffleChoices(choices, `attempt-${attempt}`));
+      return firstOrder.indexOf("correct");
+    }),
+  );
+  assert.deepEqual([...positions].sort(), [0, 1, 2]);
+});
+
 test("migrated levels define chapter metadata, two hints and alternatives", () => {
   levels.forEach((level) => {
     assert.ok(level.chapter >= 1 && level.chapter <= 6);
     assert.equal(level.hints.length, 2);
     level.issues.forEach((issue) => assert.equal(issue.wrongFixes.length, 2));
   });
+});
+
+test("chapter catalogue preserves the difficulty curve, duration, issue count and lab markers", () => {
+  const allowedRanges = [
+    [1, 2],
+    [2, 3],
+    [2, 3],
+    [3, 4],
+    [3, 5],
+    [4, 5],
+  ];
+  assert.equal(catalog.length, 30);
+  for (let chapter = 1; chapter <= 6; chapter += 1) {
+    const chapterLevels = catalog.filter((level) => level.chapter === chapter);
+    const [minimum, maximum] = allowedRanges[chapter - 1];
+    assert.equal(chapterLevels.length, 5);
+    assert.ok(chapterLevels.every((level) => level.levelRating >= minimum && level.levelRating <= maximum));
+    assert.deepEqual(
+      chapterLevels.map((level) => level.levelRating),
+      chapterLevels
+        .map((level) => level.levelRating)
+        .slice()
+        .sort((left, right) => left - right),
+    );
+    assert.equal(chapterLevels.at(-1).lab, true);
+    chapterLevels.forEach((level) => {
+      assert.equal(level.issueCount, levels[level.id - 1].issues.length);
+      assert.equal(level.estimatedMinutes, level.issueCount);
+      assert.equal(level.lab, level.id % 5 === 0);
+    });
+  }
 });
 
 test("level data rejects a missing fix explanation and translated issue", () => {
@@ -69,6 +114,21 @@ test("wrong fixes reduce trust and a correct fix adds score", () => {
   game.selectIssue(0);
   assert.equal(game.answer(levels[0].issues[0].fix).type, "correct");
   assert.equal(game.state.score, 100);
+});
+
+test("answer order stays fixed within an attempt and varies between new attempts", () => {
+  installMemoryStorage();
+  const game = new GameEngine(levels, locales);
+  game.beginLevel(1);
+  const firstOrder = game.getAnswerChoices(0);
+  assert.deepEqual(game.getAnswerChoices(0), firstOrder);
+  const attemptOrders = new Set([JSON.stringify(firstOrder)]);
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    game.state.sessionId = `new-attempt-${attempt}`;
+    game.state.choiceOrders = {};
+    attemptOrders.add(JSON.stringify(game.getAnswerChoices(0)));
+  }
+  assert.ok(attemptOrders.size > 1);
 });
 
 test("hints are limited and lower the score", () => {

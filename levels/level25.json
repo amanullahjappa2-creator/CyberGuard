@@ -8,7 +8,10 @@
   "difficulty": "expert",
   "skillTag": "cloud",
   "type": "cloud",
-  "boss": true,
+  "levelRating": 5,
+  "estimatedMinutes": 3,
+  "issueCount": 3,
+  "lab": true,
   "items": [0, 1, 2, 3],
   "choices": ["c0", "c1", "c2", "c3"],
   "issues": [

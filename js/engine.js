@@ -66,6 +66,27 @@ export function dailyChallengeForDate(date = new Date(), unlocked = 1, totalLeve
   return { date: dateKey, levelId: (unsignedHash % available) + 1, variant: unsignedHash % 3 };
 }
 
+export function shuffleChoices(choices, seed) {
+  const shuffled = [...choices];
+  let state = 2166136261;
+  for (const character of String(seed)) {
+    state ^= character.charCodeAt(0);
+    state = Math.imul(state, 16777619);
+  }
+  const random = () => {
+    state = (state + 0x6d2b79f5) | 0;
+    let value = state;
+    value = Math.imul(value ^ (value >>> 15), value | 1);
+    value ^= value + Math.imul(value ^ (value >>> 7), value | 61);
+    return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
+  };
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+  return shuffled;
+}
+
 function normalizeProgress(progress) {
   const defaults = createNewProgress();
   const normalized = { ...defaults, ...progress };
@@ -108,6 +129,13 @@ export function validateLevel(level, localeFiles) {
   if (errors.length) return errors;
   if (!Number.isInteger(level.chapter) || level.chapter !== Math.ceil(level.id / 5))
     errors.push("invalid chapter");
+  if (!Number.isInteger(level.levelRating) || level.levelRating < 1 || level.levelRating > 5)
+    errors.push("invalid level rating");
+  if (!Number.isInteger(level.estimatedMinutes) || level.estimatedMinutes < 3 || level.estimatedMinutes > 6)
+    errors.push("invalid estimated duration");
+  if (!Number.isInteger(level.issueCount) || level.issueCount !== level.issues.length)
+    errors.push("invalid issue count metadata");
+  if (level.lab !== (level.id % 5 === 0)) errors.push("invalid chapter lab marker");
   if (!level.title?.en || !level.title?.ur) errors.push("missing bilingual level title");
   if (!["learner", "defender", "expert"].includes(level.difficulty)) errors.push("invalid difficulty");
   if (!SKILL_TAGS.includes(level.skillTag)) errors.push("invalid skill tag");
@@ -255,6 +283,7 @@ export class GameEngine {
       ? {
           ...saved,
           difficulty: saved.difficulty ?? difficulty,
+          choiceOrders: saved.choiceOrders ?? {},
           trustMax: saved.trustMax ?? DIFFICULTIES[difficulty].trust,
           hintLimit: saved.hintLimit ?? DIFFICULTIES[difficulty].hints,
           timerSeconds: saved.timerSeconds ?? null,
@@ -265,6 +294,7 @@ export class GameEngine {
       : {
           levelId: id,
           issues: level.issues.map(() => ({ flagged: false, resolved: false })),
+          choiceOrders: {},
           trust: DIFFICULTIES[difficulty].trust + adaptive.extraTrust,
           trustMax: DIFFICULTIES[difficulty].trust + adaptive.extraTrust,
           hints: 0,
@@ -302,6 +332,35 @@ export class GameEngine {
     this.progress.current = this.state;
     this.persist();
     return true;
+  }
+
+  getAnswerChoices(issueIndex) {
+    if (!this.state) return [];
+    const level = this.levels.find((entry) => entry.id === this.state.levelId);
+    const issue = level?.issues[issueIndex];
+    if (!issue) return [];
+    const expectedCount =
+      Math.min(issue.wrongFixes.length, this.state.adaptive?.distractors ?? issue.wrongFixes.length) + 1;
+    this.state.choiceOrders ??= {};
+    const savedOrder = this.state.choiceOrders[issueIndex];
+    const validSavedOrder =
+      Array.isArray(savedOrder) &&
+      savedOrder.length === expectedCount &&
+      new Set(savedOrder).size === expectedCount &&
+      savedOrder.includes(issue.fix) &&
+      savedOrder.every((choice) => [issue.fix, ...issue.wrongFixes].includes(choice));
+    if (validSavedOrder) return [...savedOrder];
+    const distractors = shuffleChoices(
+      issue.wrongFixes,
+      `${this.state.sessionId}:${issueIndex}:distractors`,
+    ).slice(0, expectedCount - 1);
+    const choices = shuffleChoices(
+      [issue.fix, ...distractors],
+      `${this.state.sessionId}:${issueIndex}:answers`,
+    );
+    this.state.choiceOrders[issueIndex] = choices;
+    this.persist();
+    return [...choices];
   }
 
   selectIssue(index) {

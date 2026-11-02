@@ -12,6 +12,7 @@ const app = document.querySelector("#app");
 const languageButton = document.querySelector("#language-toggle");
 const themeButton = document.querySelector("#theme-toggle");
 const homeLink = document.querySelector("#home-link");
+const userMenu = document.querySelector("#user-menu");
 let engine;
 let locales;
 let language = "en";
@@ -88,8 +89,10 @@ function applyPreferences() {
   document.documentElement.lang = language;
   document.documentElement.dir = language === "ur" ? "rtl" : "ltr";
   document.body.dataset.theme = theme;
+  document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#070b14" : "#edf3f7";
   const copy = currentLocale()?.ui;
   if (!copy) return;
+  document.querySelector("#user-menu-trigger").textContent = copy.userMenu;
   languageButton.textContent = language === "en" ? "اردو" : "English";
   languageButton.setAttribute("aria-label", copy.switchLanguage);
   themeButton.textContent = theme === "light" ? copy.darkTheme : copy.lightTheme;
@@ -105,6 +108,11 @@ function applyPreferences() {
       navLink.dataset.screen === screen || (screen === "level" && navLink.dataset.screen === "levels");
     navLink.classList.toggle("is-active", active);
     navLink.setAttribute("aria-current", active ? "page" : "false");
+  });
+  document.querySelectorAll(".menu-link[data-screen]").forEach((menuLink) => {
+    const label = copy[menuLink.dataset.labelKey];
+    if (label) menuLink.textContent = label;
+    menuLink.setAttribute("aria-current", menuLink.dataset.screen === screen ? "page" : "false");
   });
 }
 
@@ -290,6 +298,13 @@ function showToast(message) {
   }, 3600);
 }
 
+function closeUserMenu() {
+  // Let the native details toggle finish before closing it programmatically.
+  window.setTimeout(() => {
+    userMenu.open = false;
+  }, 0);
+}
+
 function navigate(nextScreen) {
   screen = nextScreen;
   feedback = null;
@@ -308,12 +323,30 @@ function renderLevels() {
     const chapterLevels = engine.levels.filter((level) => level.chapter === chapter);
     if (!chapterLevels.length) continue;
     const section = element("section", "panel chapter-levels");
+    section.dataset.chapter = String(chapter);
     const sectionHeading = element("div", "section-heading");
-    sectionHeading.append(element("h2", "", `${ui.chapter} ${chapter}: ${copy.chapters[chapter - 1]}`));
+    const headingCopy = element("div", "chapter-heading-copy");
+    headingCopy.append(element("p", "eyebrow", `${ui.chapter} ${String(chapter).padStart(2, "0")}`));
+    headingCopy.append(element("h2", "", copy.chapters[chapter - 1]));
+    headingCopy.append(element("p", "chapter-description", copy.chapterDescriptions[chapter - 1]));
+    sectionHeading.append(headingCopy);
     const completed = chapterLevels.filter((level) => engine.progress.levels[level.id]).length;
-    sectionHeading.append(
-      element("span", "muted", `${completed} / ${chapterLevels.length} ${ui.levelsCompleted}`),
-    );
+    const progressCopy = ui.chapterProgress
+      .replace("{completed}", String(completed))
+      .replace("{total}", String(chapterLevels.length));
+    const progress = element("div", "chapter-progress");
+    const progressLabel = element("span", "muted", progressCopy);
+    const progressTrack = element("div", "progress-track");
+    progressTrack.setAttribute("role", "progressbar");
+    progressTrack.setAttribute("aria-label", `${ui.chapter} ${chapter}: ${progressCopy}`);
+    progressTrack.setAttribute("aria-valuemin", "0");
+    progressTrack.setAttribute("aria-valuemax", String(chapterLevels.length));
+    progressTrack.setAttribute("aria-valuenow", String(completed));
+    const progressFill = element("span", "progress-fill");
+    progressFill.style.width = `${(completed / chapterLevels.length) * 100}%`;
+    progressTrack.append(progressFill);
+    progress.append(progressLabel, progressTrack);
+    sectionHeading.append(progress);
     section.append(sectionHeading);
     const grid = element("div", "level-grid");
     chapterLevels.forEach((level) => {
@@ -321,25 +354,70 @@ function renderLevels() {
       const result = engine.progress.levels[id];
       const unlocked = id <= engine.progress.unlocked;
       const levelCopy = copy.levels[id - 1];
-      const status = result ? ui.levelCompleted : unlocked ? ui.available : ui.lockedLevel;
-      const isAssessment = [10, 20, 25, 30].includes(id);
+      const current = !result && id === engine.progress.unlocked;
+      const status = result
+        ? ui.levelCompleted
+        : !unlocked
+          ? ui.lockedByPrevious.replace("{level}", String(id - 1))
+          : current
+            ? ui.currentLevel
+            : ui.available;
+      const stars = result?.stars ?? 0;
+      const starLabel = ui.starsEarned.replace("{stars}", String(stars));
+      const ratingText = ui.difficultyScore
+        .replace("{label}", ui.levelDifficulty)
+        .replace("{rating}", String(level.levelRating));
       const card = button(
         "",
         () =>
           startLevel(id, {
             mode: result || id < engine.progress.unlocked ? "practice" : "campaign",
           }),
-        `level-card${result ? " is-complete" : ""}${isAssessment ? " is-assessment" : ""}`,
+        `level-card${result ? " is-complete" : ""}${current ? " is-current" : ""}${level.lab ? " is-lab" : ""}`,
       );
       card.disabled = !unlocked;
+      card.dataset.levelId = String(id);
       card.setAttribute(
         "aria-label",
-        `${ui.level} ${String(id).padStart(2, "0")}: ${levelCopy.title}. ${status}`,
+        `${ui.level} ${String(id).padStart(2, "0")}: ${levelCopy.title}. ${copy.skills[level.skillTag] ?? level.skillTag}. ${ratingText}. ${ui.estimatedMinutes.replace("{minutes}", String(level.estimatedMinutes))}. ${ui.issueCount.replace("{count}", String(level.issueCount))}. ${starLabel}. ${status}${level.lab ? `. ${ui.lab}` : ""}`,
       );
-      card.append(element("span", "level-number", `${ui.level} ${String(id).padStart(2, "0")}`));
+      const topLine = element("span", "level-card-top");
+      topLine.append(element("span", "level-number", `${ui.level} ${String(id).padStart(2, "0")}`));
+      if (level.lab) topLine.append(element("span", "level-kind", ui.lab));
+      card.append(topLine);
       card.append(element("strong", "", levelCopy.title));
-      card.append(element("span", "", copy.skills[level.skillTag] ?? level.skillTag));
-      card.append(element("span", "level-status", isAssessment ? `${ui.assessment} · ${status}` : status));
+      const skill = element("span", "skill-tag", copy.skills[level.skillTag] ?? level.skillTag);
+      skill.dataset.skillTag = level.skillTag;
+      card.append(skill);
+      const metadata = element("span", "level-card-meta");
+      const difficulty = element("span", "level-rating");
+      difficulty.setAttribute("aria-hidden", "true");
+      for (let dot = 1; dot <= 5; dot += 1) {
+        difficulty.append(element("i", `rating-dot${dot <= level.levelRating ? " is-filled" : ""}`));
+      }
+      const difficultyLabel = element(
+        "span",
+        "sr-only",
+        ui.difficultyScore
+          .replace("{label}", ui.levelDifficulty)
+          .replace("{rating}", String(level.levelRating)),
+      );
+      metadata.append(difficultyLabel, difficulty);
+      metadata.append(
+        element(
+          "span",
+          "level-estimate",
+          ui.estimatedMinutes.replace("{minutes}", String(level.estimatedMinutes)),
+        ),
+      );
+      card.append(metadata);
+      const details = element("span", "level-card-meta");
+      details.append(
+        element("span", "", ui.issueCount.replace("{count}", String(level.issueCount))),
+        element("span", "level-stars", starLabel),
+      );
+      card.append(details);
+      card.append(element("span", "level-status", status));
       grid.append(card);
     });
     section.append(grid);
@@ -596,15 +674,15 @@ function renderDictionary() {
   app.replaceChildren(heading, search, results);
 }
 
-function renderSkillRadar() {
+function renderSkillRadar(title = currentLocale().ui.mastery) {
   const copy = currentLocale();
   const section = element("section", "dashboard-card");
-  section.append(element("h2", "", copy.ui.mastery));
+  section.append(element("h2", "", title));
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.classList.add("skill-radar");
   svg.setAttribute("viewBox", "0 0 320 280");
   svg.setAttribute("role", "img");
-  svg.setAttribute("aria-label", copy.ui.mastery);
+  svg.setAttribute("aria-label", title);
   const center = { x: 160, y: 137 };
   const radius = 92;
   const points = SKILL_TAGS.map((skill, index) => {
@@ -686,11 +764,11 @@ function renderPerformanceReport() {
   hints.append(element("p", "rank-value", String(report.totalHints)));
   hints.append(element("p", "muted", `${ui.totalScore}: ${report.totalScore}`));
   summary.append(hints);
-  const mastery = renderSkillRadar();
+  const mastery = renderSkillRadar(ui.radarTitle);
   mastery.classList.add("report-card");
   summary.append(mastery);
   const skillCard = element("section", "report-card");
-  skillCard.append(element("h2", "", ui.mastery));
+  skillCard.append(element("h2", "", ui.skillBreakdown));
   SKILL_TAGS.forEach((skillTag) => {
     const stats = report.skillStats[skillTag];
     const row = element("div", "report-skill");
@@ -698,6 +776,7 @@ function renderPerformanceReport() {
     const bar = document.createElement("progress");
     bar.max = 100;
     bar.value = stats.mastery;
+    bar.dataset.skillTag = skillTag;
     bar.setAttribute("aria-label", `${copy.skills[skillTag]} ${stats.mastery}%`);
     row.append(bar);
     row.append(element("strong", "", `${stats.mastery}%`));
@@ -1052,11 +1131,7 @@ function renderLevel() {
     action.append(element("p", "muted", issueCopy.detail));
     action.append(element("p", "", ui.chooseFix));
     const choices = element("div", "choice-list");
-    const issue = level.issues[selectedIndex];
-    const distractorCount = engine.state.adaptive?.distractors ?? 2;
-    const choiceIds = issue.wrongFixes
-      ? [issue.fix, ...issue.wrongFixes.slice(0, distractorCount)]
-      : level.choices;
+    const choiceIds = engine.getAnswerChoices(selectedIndex);
     choiceIds.forEach((choiceId) => {
       choices.append(button(labels.choices[choiceId], () => answer(choiceId), "button choice-button"));
     });
@@ -1281,6 +1356,7 @@ function render() {
 }
 
 languageButton.addEventListener("click", () => {
+  closeUserMenu();
   language = language === "en" ? "ur" : "en";
   feedback = null;
   writePreference("cyberguard-language", language);
@@ -1291,6 +1367,7 @@ window.addEventListener("online", () => {
   void syncOptedInScoreboard();
 });
 themeButton.addEventListener("click", () => {
+  closeUserMenu();
   theme = theme === "light" ? "dark" : "light";
   writePreference("cyberguard-theme", theme);
   applyPreferences();
@@ -1300,7 +1377,16 @@ homeLink.addEventListener("click", (event) => {
   if (engine) openHome();
 });
 document.querySelectorAll(".nav-link").forEach((navLink) => {
-  navLink.addEventListener("click", () => navigate(navLink.dataset.screen));
+  navLink.addEventListener("click", () => {
+    userMenu.open = false;
+    navigate(navLink.dataset.screen);
+  });
+});
+document.querySelectorAll(".menu-link[data-screen]").forEach((menuLink) => {
+  menuLink.addEventListener("click", () => {
+    userMenu.open = false;
+    navigate(menuLink.dataset.screen);
+  });
 });
 
 async function initialize() {

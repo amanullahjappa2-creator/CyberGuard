@@ -49,5 +49,9 @@
     {
       "issue": 1
     }
-  ]
+  ],
+  "levelRating": 2,
+  "estimatedMinutes": 4,
+  "issueCount": 4,
+  "lab": false
 }

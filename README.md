@@ -53,6 +53,12 @@ review the explanation and practical guidance. English and Urdu, right-to-left
 layout, light and dark themes, keyboard controls, self-hosted fonts, responsive
 layouts and offline use are supported.
 
+The Levels screen groups missions by chapter and shows each mission's skill,
+difficulty rating, estimated duration, issue count, completion stars, and lock
+status. Answer choices are shuffled per attempt and remain stable while that
+attempt is in progress. Dashboard, Levels, Reports and Dictionary are the primary
+destinations; Badges, Settings, language and theme controls are in the Options menu.
+
 ## Current project structure
 
 - `index.html`, `css/`, `js/`: application shell, interface, level engine, local
@@ -66,8 +72,8 @@ layouts and offline use are supported.
 - `.github/workflows/ci.yml`: automated lint, formatting and test checks.
 - `service-worker.js`, `manifest.webmanifest`: offline installation support.
 
-See [ARCHITECTURE.md](./ARCHITECTURE.md) for existing components, migration status
-and the Academy modules that remain to be implemented.
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for existing components, current navigation,
+known limitations and the Academy modules that remain to be implemented.
 
 ## Checks
 

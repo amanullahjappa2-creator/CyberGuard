@@ -64,5 +64,9 @@
     {
       "issue": 1
     }
-  ]
+  ],
+  "levelRating": 3,
+  "estimatedMinutes": 6,
+  "issueCount": 6,
+  "lab": true
 }

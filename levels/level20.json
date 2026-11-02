@@ -8,7 +8,10 @@
   "difficulty": "expert",
   "skillTag": "response",
   "type": "backup",
-  "boss": true,
+  "levelRating": 4,
+  "estimatedMinutes": 3,
+  "issueCount": 3,
+  "lab": true,
   "items": [0, 1, 2, 3],
   "choices": ["c0", "c1", "c2", "c3"],
   "issues": [

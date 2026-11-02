@@ -10,7 +10,7 @@ test("completes a level, switches language and theme, and keeps progress after r
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "Build practical cyber safety skills" })).toBeVisible();
   const appOutlineStyle = await page.locator("#app").evaluate((app) => getComputedStyle(app).outlineStyle);
-  expect(appOutlineStyle).toBe("none");
+  expect(appOutlineStyle).not.toBe("none");
   await expect(page.locator(".skill-radar")).toBeVisible();
   const radarFill = await page.locator(".radar-data").evaluate((polygon) => getComputedStyle(polygon).fill);
   const radarLabelFills = await page
@@ -34,7 +34,11 @@ test("completes a level, switches language and theme, and keeps progress after r
   await expect(page.getByRole("heading", { name: "Weak Passwords" })).toBeVisible();
   await expect(page.getByText("LEVEL COMPLETE")).toBeVisible();
   await page.getByRole("button", { name: "Dashboard" }).last().click();
+  await expect(page.locator(".primary-nav .nav-link")).toHaveCount(4);
+  await page.locator("#user-menu-trigger").click();
   await page.getByRole("button", { name: "Switch language" }).click();
+  await expect(page.locator("#user-menu")).not.toHaveAttribute("open", "");
+  await page.locator("#user-menu-trigger").click();
   await page.getByRole("button", { name: "لائٹ تھیم" }).click();
   await expect(page.locator("html")).toHaveAttribute("lang", "ur");
   await expect(page.locator("body")).toHaveAttribute("data-theme", "light");
@@ -65,7 +69,17 @@ test("completes a level, switches language and theme, and keeps progress after r
     .getByRole("navigation", { name: "Primary navigation" })
     .locator('[data-screen="report"]')
     .click();
+  await expect(page.getByRole("heading", { name: "مہارت کی تفصیل" })).toBeVisible();
   await expect(page.getByText(/رازداری:/)).toBeVisible();
+  await page.setViewportSize({ width: 360, height: 800 });
+  const fitsPhone = await page.evaluate(
+    () =>
+      document.documentElement.scrollWidth <= window.innerWidth &&
+      document.querySelector("#primary-nav").scrollWidth <=
+        document.querySelector("#primary-nav").clientWidth,
+  );
+  expect(fitsPhone).toBe(true);
+  await page.setViewportSize({ width: 1366, height: 900 });
   const joinButton = page.getByRole("button", { name: "درجہ بندی میں شامل ہوں" });
   await expect(joinButton).toBeVisible();
   await joinButton.click();
@@ -80,7 +94,4 @@ test("completes a level, switches language and theme, and keeps progress after r
   await page.getByRole("link", { name: "استاد کا ڈیش بورڈ" }).click();
   await page.getByRole("button", { name: "کلاس بنائیں" }).click();
   await expect(page.locator('input[name="classCode"]')).toHaveValue(/[A-Z2-9]{6}/);
-  await page.setViewportSize({ width: 390, height: 844 });
-  const fitsPhone = await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth);
-  expect(fitsPhone).toBe(true);
 });

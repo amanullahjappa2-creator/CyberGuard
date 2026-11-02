@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0b1624" />
+    <meta name="theme-color" content="#070b14" />
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="icon" href="assets/cyberguard.svg" type="image/svg+xml" />
     <meta
@@ -23,25 +23,36 @@
             />
           </svg>
         </span>
-        <span>CyberGuard</span>
+        <span>CyberGuard Academy</span>
       </a>
       <nav class="primary-nav" id="primary-nav" aria-label="Primary navigation">
         <button class="nav-link is-active" data-screen="home" data-label-key="navHome" type="button"></button>
         <button class="nav-link" data-screen="levels" data-label-key="navLevels" type="button"></button>
         <button class="nav-link" data-screen="report" data-label-key="navReport" type="button"></button>
-        <button class="nav-link" data-screen="badges" data-label-key="navBadges" type="button"></button>
         <button
           class="nav-link"
           data-screen="dictionary"
           data-label-key="navDictionary"
           type="button"
         ></button>
-        <button class="nav-link" data-screen="settings" data-label-key="navSettings" type="button"></button>
       </nav>
-      <nav class="toolbar" aria-label="Display options">
-        <button class="button button-quiet" id="language-toggle" type="button">اردو</button>
-        <button class="button button-quiet" id="theme-toggle" type="button"></button>
-      </nav>
+      <div class="toolbar">
+        <details class="user-menu" id="user-menu">
+          <summary class="button button-quiet" id="user-menu-trigger"></summary>
+          <div class="user-menu-panel">
+            <button class="menu-link" id="language-toggle" type="button">اردو</button>
+            <button class="menu-link" id="theme-toggle" type="button"></button>
+            <span class="menu-divider" aria-hidden="true"></span>
+            <button class="menu-link" data-screen="badges" data-label-key="navBadges" type="button"></button>
+            <button
+              class="menu-link"
+              data-screen="settings"
+              data-label-key="navSettings"
+              type="button"
+            ></button>
+          </div>
+        </details>
+      </div>
     </header>
     <main id="app" class="app-shell" tabindex="-1">
       <div class="loading" role="status">Loading CyberGuard...</div>

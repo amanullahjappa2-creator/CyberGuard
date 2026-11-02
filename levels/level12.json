@@ -8,6 +8,10 @@
   "difficulty": "defender",
   "skillTag": "network",
   "type": "wifi",
+  "levelRating": 2,
+  "estimatedMinutes": 3,
+  "issueCount": 3,
+  "lab": false,
   "items": [0, 1, 2, 3],
   "choices": ["c0", "c1", "c2", "c3"],
   "issues": [

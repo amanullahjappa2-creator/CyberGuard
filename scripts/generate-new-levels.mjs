@@ -6,6 +6,9 @@ const item = (titleEn, detailEn, titleUr, detailUr) => ({
   detail: pair(detailEn, detailUr),
 });
 const choice = (en, ur) => pair(en, ur);
+const LEVEL_RATINGS = [
+  1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 5, 4, 4, 4, 5, 5,
+];
 
 const definitions = [
   {
@@ -532,7 +535,7 @@ const definitions = [
     id: 20,
     skillTag: "response",
     type: "backup",
-    boss: true,
+    lab: true,
     title: pair("Backup and Recovery: 3-2-1", "بیک اپ اور بحالی: 3-2-1"),
     scenario: pair(
       "Build a small-office backup plan with three copies, two kinds of storage and one off-site copy.",
@@ -814,7 +817,7 @@ const definitions = [
     id: 25,
     skillTag: "cloud",
     type: "cloud",
-    boss: true,
+    lab: true,
     title: pair("Cloud Storage Misconfiguration", "کلاؤڈ ذخیرے کی غلط ترتیب"),
     scenario: pair(
       "Review a pretend cloud account and reduce public access and excessive permissions.",
@@ -1105,7 +1108,7 @@ const definitions = [
     skillTag: "response",
     type: "alerts",
     mode: "ordered",
-    boss: true,
+    lab: true,
     timedByDefault: true,
     timerSeconds: 240,
     title: pair("Final Lab: Security Operations Shift", "آخری لیب: سیکیورٹی آپریشنز کی شفٹ"),
@@ -1358,11 +1361,14 @@ function makeLevel(definition) {
     id: definition.id,
     chapter: Math.ceil(definition.id / 5),
     title: definition.title,
-    difficulty: definition.boss ? "expert" : definition.id % 2 ? "learner" : "defender",
+    difficulty: definition.lab ? "expert" : definition.id % 2 ? "learner" : "defender",
     skillTag: definition.skillTag,
     type: definition.type,
+    levelRating: LEVEL_RATINGS[definition.id - 1],
+    estimatedMinutes: issueCount,
+    issueCount,
+    lab: definition.id % 5 === 0,
     ...(definition.mode ? { mode: definition.mode } : {}),
-    ...(definition.boss ? { boss: true } : {}),
     ...(definition.timedByDefault ? { timedByDefault: true } : {}),
     ...(definition.timerSeconds ? { timerSeconds: definition.timerSeconds } : {}),
     items: definition.items.map((_, index) => index),
@@ -1465,7 +1471,10 @@ for (let id = 1; id <= 10; id += 1) {
     difficulty: level.difficulty,
     skillTag: level.skillTag,
     type: level.type,
-    boss: level.boss ?? id % 5 === 0,
+    levelRating: LEVEL_RATINGS[id - 1],
+    estimatedMinutes: level.issues.length,
+    issueCount: level.issues.length,
+    lab: id % 5 === 0,
     mode: level.mode,
   });
 }
@@ -1478,7 +1487,10 @@ for (const definition of definitions) {
     difficulty: level.difficulty,
     skillTag: level.skillTag,
     type: level.type,
-    boss: level.boss ?? level.id % 5 === 0,
+    levelRating: LEVEL_RATINGS[level.id - 1],
+    estimatedMinutes: level.issues.length,
+    issueCount: level.issues.length,
+    lab: level.id % 5 === 0,
     mode: level.mode,
   });
 }
