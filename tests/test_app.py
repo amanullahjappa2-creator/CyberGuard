@@ -310,7 +310,7 @@ class ScoreboardApiTests(unittest.TestCase):
         )
         connection = sqlite3.connect(database)
         try:
-            self.assertEqual(connection.execute("PRAGMA user_version").fetchone()[0], 4)
+            self.assertEqual(connection.execute("PRAGMA user_version").fetchone()[0], 5)
             self.assertEqual(
                 connection.execute("SELECT class_code FROM classes").fetchone()[0],
                 "ABC234",
@@ -333,8 +333,153 @@ class ScoreboardApiTests(unittest.TestCase):
                     "SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'class_members'"
                 ).fetchone()
             )
+            self.assertIsNotNone(
+                connection.execute(
+                    "SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'student_progress'"
+                ).fetchone()
+            )
         finally:
             connection.close()
+
+    def test_student_progress_backup_is_private_validated_and_idempotent(self):
+        self.assertEqual(self.client.get("/api/student/progress").status_code, 401)
+        password = "safe-example-password-2026"
+        registration = self.post(
+            "/api/auth/register",
+            {
+                "fullName": "Student Example",
+                "username": "student01",
+                "email": "student@example.test",
+                "password": password,
+                "confirmPassword": password,
+            },
+        )
+        self.assertEqual(registration.status_code, 201)
+        csrf = self.client.get("/api/csrf").get_json()["token"]
+        endpoint = "/api/student/progress"
+        self.assertEqual(self.client.get(endpoint).get_json(), {"progress": None, "updatedAt": None})
+        progress = {
+            "schemaVersion": 2,
+            "unlocked": 2,
+            "levels": {"1": {"score": 300, "stars": 2, "hints": 1, "xpGranted": True}},
+            "finished": False,
+            "xp": 100,
+            "achievements": ["first-clear"],
+            "mastery": {"phishing": 1},
+            "adaptive": {
+                "masteryScores": {"phishing": 75},
+                "events": [
+                    {
+                        "sessionId": "attempt-1",
+                        "levelId": 1,
+                        "skillTag": "phishing",
+                        "issueIndex": 0,
+                        "difficulty": 2,
+                        "outcome": "correct",
+                        "hintUsed": False,
+                        "seconds": 12,
+                        "timestamp": 1_800_000_000_000,
+                        "masteryBefore": 50,
+                        "masteryAfter": 60,
+                    }
+                ],
+                "sessions": [
+                    {
+                        "sessionId": "attempt-1",
+                        "levelId": 1,
+                        "skillTag": "phishing",
+                        "accuracy": 100,
+                        "elapsedSeconds": 60,
+                        "hints": 0,
+                        "mistakes": 0,
+                        "score": 300,
+                        "completedAt": "2026-01-01T00:00:00Z",
+                    }
+                ],
+            },
+            "sessionHistory": [
+                {
+                    "sessionId": "attempt-1",
+                    "levelId": 1,
+                    "skillTag": "phishing",
+                    "accuracy": 100,
+                    "elapsedSeconds": 60,
+                    "hints": 0,
+                    "mistakes": 0,
+                    "score": 300,
+                    "completedAt": "2026-01-01T00:00:00Z",
+                }
+            ],
+            "unlockedTerms": ["phishing"],
+            "streak": {"count": 2, "lastDate": "2026-01-01"},
+            "certificateId": None,
+            "name": "Local certificate name",
+            "current": {"levelId": 1},
+        }
+        self.assertEqual(
+            self.client.put(endpoint, json={"progress": progress}).status_code,
+            403,
+        )
+        saved = self.client.put(
+            endpoint,
+            json={"progress": progress},
+            headers={"X-CSRF-Token": csrf},
+        )
+        self.assertEqual(saved.status_code, 200)
+        first_timestamp = saved.get_json()["updatedAt"]
+        restored = self.client.get(endpoint).get_json()
+        self.assertEqual(restored["progress"]["levels"], progress["levels"])
+        self.assertNotIn("name", restored["progress"])
+        self.assertNotIn("current", restored["progress"])
+        self.assertEqual(restored["updatedAt"], first_timestamp)
+        repeated = self.client.put(
+            endpoint,
+            json={"progress": progress},
+            headers={"X-CSRF-Token": csrf},
+        )
+        self.assertEqual(repeated.status_code, 200)
+        self.assertEqual(repeated.get_json()["updatedAt"], first_timestamp)
+
+        invalid = {**progress, "levels": {"1": {"score": 100_000_000, "stars": 2}}}
+        rejected = self.client.put(
+            endpoint,
+            json={"progress": invalid},
+            headers={"X-CSRF-Token": csrf},
+        )
+        self.assertEqual(rejected.status_code, 400)
+        malicious_outcome = {
+            **progress,
+            "adaptive": {**progress["adaptive"], "events": [{**progress["adaptive"]["events"][0], "outcome": []}]},
+        }
+        self.assertEqual(
+            self.client.put(
+                endpoint,
+                json={"progress": malicious_outcome},
+                headers={"X-CSRF-Token": csrf},
+            ).status_code,
+            400,
+        )
+
+        other_student = self.app.test_client()
+        other_csrf = other_student.get("/api/csrf").get_json()["token"]
+        other_student.post(
+            "/api/auth/register",
+            json={
+                "fullName": "Other Student",
+                "username": "student02",
+                "email": "student2@example.test",
+                "password": password,
+                "confirmPassword": password,
+            },
+            headers={"X-CSRF-Token": other_csrf},
+        )
+        self.assertIsNone(other_student.get(endpoint).get_json()["progress"])
+        delete_csrf = self.client.get("/api/csrf").get_json()["token"]
+        self.assertEqual(
+            self.client.delete(endpoint, headers={"X-CSRF-Token": delete_csrf}).status_code,
+            200,
+        )
+        self.assertIsNone(self.client.get(endpoint).get_json()["progress"])
 
     def test_teacher_invite_and_owned_classes_enforce_account_roles(self):
         teacher_response = self.post(
@@ -350,6 +495,7 @@ class ScoreboardApiTests(unittest.TestCase):
         )
         self.assertEqual(teacher_response.status_code, 201)
         self.assertEqual(teacher_response.get_json()["user"]["role"], "teacher")
+        self.assertEqual(self.client.get("/api/student/progress").status_code, 403)
 
         csrf = self.client.get("/api/csrf").get_json()["token"]
         class_response = self.client.post(

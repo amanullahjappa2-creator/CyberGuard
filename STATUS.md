@@ -1,8 +1,9 @@
 # CyberGuard Academy Implementation Status
 
 The project is an offline-first learning application with an optional Flask
-scoreboard and newly added student-account API foundations. Existing functionality
-is retained; items marked missing are not implied to exist elsewhere in the codebase.
+scoreboard, student accounts, teacher-owned classes, and explicit private
+student-progress backups. Existing functionality is retained; items marked
+missing are not implied to exist elsewhere in the codebase.
 
 ## What exists
 
@@ -18,17 +19,21 @@ is retained; items marked missing are not implied to exist elsewhere in the code
 - An optional Flask/SQLite scoreboard with nickname consent, CSRF tokens,
   process-local rate limits, score-range checks, class codes, teacher-token
   reports and CSV export.
-- Versioned SQLite migrations and initial student registration, login, current-user
-  and logout endpoints. Passwords use Werkzeug scrypt hashes, and account creation
-  cannot assign teacher/admin roles from browser input.
+- Versioned SQLite migrations; student registration, login, current-user, logout
+  and progress backup APIs. Students can explicitly upload, restore or delete
+  their account-owned progress, with no automatic upload. Backups exclude the
+  certificate name and unfinished attempt. Passwords use Werkzeug scrypt hashes,
+  and account creation cannot assign teacher/admin roles from browser input.
 - Node, Python and Playwright test suites, ESLint, Prettier and GitHub Actions CI.
 
 ## Broken or unfinished items
 
 - No baseline test failures were found before Phase 2: 27 Node tests, 6 Python
   tests and 1 Playwright test pass; lint and formatting pass.
-- The bilingual Account screen is connected to the student-account API; account
-  identity is not yet linked to local learning progress or dashboards.
+- Cloud progress is an explicit account backup, not live synchronization: local
+  progress remains authoritative during play, and a restore replaces this
+  browser's progress only after confirmation. No account-linked dashboard or
+  teacher-level progress reporting is implemented.
 - Teacher onboarding requires a server invite; there is no admin provisioning,
   account recovery, email verification or complete role-based authorization.
   Legacy class creation still returns bearer teacher tokens; account-owned teacher
@@ -124,12 +129,11 @@ made that the missing features or platform-security controls are complete.
   is unavailable. The service worker bypasses API URLs rather than using its
   offline cache for authentication.
 - This is not a complete authentication phase: no account recovery, email
-  verification, admin setup, server-side session revocation or account-linked
-  game progress yet. Legacy bearer-token class creation remains for compatibility.
+  verification, admin setup or server-side session revocation. Legacy
+  bearer-token class creation remains for compatibility.
 - Verification before wiring the Account screen: 29 Node tests, 10 Python API
   tests, 1 Playwright flow, ESLint, Prettier, Python compilation and
-  `git diff --check` passed. The local SQLite database is at schema version 4;
-  its existing scoreboard row counts remain unchanged.
+  `git diff --check` passed. The migration preserved existing scoreboard rows.
 
 ## Student account interface
 
@@ -168,14 +172,28 @@ made that the missing features or platform-security controls are complete.
 ## Latest verification
 
 - `npm test`: 30 passing.
-- Python API tests: 13 passing.
+- Python API tests: 14 passing.
 - Playwright: 3 passing, including student auth, teacher-owned classroom
-  management, membership approval/removal and offline progress.
+  management, explicit account-progress upload/restore/delete, membership
+  approval/removal and offline progress.
 - ESLint, Prettier, Python compilation and `git diff --check`: passing.
+
+## Student progress backup
+
+- Migration version 5 adds one private progress snapshot per student, keyed by
+  the authenticated account and removed when that account is deleted.
+- The Account screen lets students explicitly replace the account backup,
+  restore it to this browser after confirmation, or delete it. No game activity
+  is automatically uploaded, and local learning continues offline.
+- The API accepts bounded, validated learning data only; it omits the certificate
+  name and unfinished attempt, requires CSRF protection for changes, rejects
+  teacher access, and returns data only to its owning student.
+- Repeat uploads of an unchanged snapshot are idempotent. Tests cover private
+  account boundaries, role restrictions, invalid payloads, idempotency, backup
+  deletion and the browser restore flow.
 
 ## Implementation order
 
-Continue with authenticated authorization and classroom ownership before adding
-teacher/student portals; then connect student progress to server-side records.
-Build and verify in small stages while preserving offline learning and existing
-scoreboard data.
+Continue with learning content and assessment modules, then connect account
+progress to carefully scoped learner/teacher reports. Keep local play available
+offline and verify every increment against the bilingual browser flow.

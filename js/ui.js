@@ -719,7 +719,10 @@ function renderAccount() {
       teacherDashboard.href = "./teacher.html";
       panel.append(teacherDashboard);
     }
-    if (account.role === "student") renderStudentClasses(panel, ui);
+    if (account.role === "student") {
+      renderStudentProgress(panel, ui);
+      renderStudentClasses(panel, ui);
+    }
     const logout = button(
       ui.accountLogout,
       async () => {
@@ -827,6 +830,80 @@ function renderAccount() {
   }
   page.append(panel);
   app.replaceChildren(page);
+}
+
+function progressForCloud(progress) {
+  return {
+    schemaVersion: 2,
+    unlocked: progress.unlocked,
+    levels: progress.levels,
+    finished: progress.finished === true,
+    xp: progress.xp,
+    achievements: progress.achievements,
+    mastery: progress.mastery,
+    adaptive: progress.adaptive,
+    sessionHistory: progress.sessionHistory,
+    unlockedTerms: progress.unlockedTerms,
+    streak: progress.streak,
+    certificateId: progress.certificateId,
+  };
+}
+
+function renderStudentProgress(panel, ui) {
+  const section = element("section", "account-progress");
+  section.append(element("h2", "", ui.accountProgressTitle));
+  section.append(element("p", "muted", ui.accountProgressPrivacy));
+  const actions = element("div", "hero-actions");
+  actions.append(
+    button(
+      ui.accountProgressUpload,
+      async () => {
+        if (!window.confirm(ui.accountProgressUploadConfirm)) return;
+        await requestApi("student/progress", "PUT", {
+          progress: progressForCloud(engine.progress),
+        });
+        accountMessage = ui.accountProgressUploaded;
+        accountError = false;
+        render();
+      },
+      "button button-primary",
+    ),
+  );
+  actions.append(
+    button(
+      ui.accountProgressDownload,
+      async () => {
+        const result = await requestApi("student/progress");
+        if (!result.progress) {
+          accountMessage = ui.accountProgressEmpty;
+          accountError = false;
+          render();
+          return;
+        }
+        if (!window.confirm(ui.accountProgressDownloadConfirm)) return;
+        saveImportedProgress(
+          JSON.stringify({ ...result.progress, name: engine.progress.name, schemaVersion: 2 }),
+        );
+        window.location.reload();
+      },
+      "button",
+    ),
+  );
+  actions.append(
+    button(
+      ui.accountProgressDelete,
+      async () => {
+        if (!window.confirm(ui.accountProgressDeleteConfirm)) return;
+        await requestApi("student/progress", "DELETE");
+        accountMessage = ui.accountProgressDeleted;
+        accountError = false;
+        render();
+      },
+      "button button-danger",
+    ),
+  );
+  section.append(actions);
+  panel.append(section);
 }
 
 function renderStudentClasses(panel, ui) {

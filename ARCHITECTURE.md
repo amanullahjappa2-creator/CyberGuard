@@ -8,8 +8,9 @@ scenario levels, local progress and reporting, and an optional Flask/SQLite
 scoreboard. Primary navigation exposes Dashboard, Levels, Reports and Dictionary;
 Badges, Settings, language and theme controls are grouped in the Options menu.
 Learn modules, formal assessments, assignments and content administration are not
-implemented yet. The bilingual Account screen uses the initial student
-registration/login endpoints but is not yet linked to local learning progress.
+implemented yet. The bilingual Account screen provides registration/login and
+student-controlled progress backup, restore and deletion. Local progress remains
+available offline and is not uploaded automatically.
 
 The `pre-polish` tag preserves the application before this cleanup pass. The former
 map is replaced by the chapter-based level list, reusing the existing progression,
@@ -33,8 +34,8 @@ scenario engine and renderers.
   fix identifiers. `level-catalog.json` supplies lightweight index metadata.
 - `lang/en.json` and `lang/ur.json` hold English and Urdu UI and scenario content.
 - `app.py` implements the optional privacy-consented nickname scoreboard,
-  teacher reports, initial student registration/login APIs, and transactional,
-  versioned SQLite migrations. Teacher accounts activated by the server invite
+  teacher reports, student registration/login and private student progress backup
+  APIs, and transactional, versioned SQLite migrations. Teacher accounts activated by the server invite
   code can create owned classes; report endpoints enforce owner identity.
   Students can request membership in owned classes; teachers approve/reject
   pending requests and remove active members.

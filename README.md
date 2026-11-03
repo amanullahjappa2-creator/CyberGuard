@@ -6,10 +6,11 @@ local progress and reports, and an optional nickname-only scoreboard. It does no
 perform real security tests, access real accounts, or send network traffic during
 offline learning.
 
-The Academy transition is staged. The Flask API now includes the first student
-registration and login endpoints with versioned SQLite migrations, but the browser
-app does not yet include account screens, teacher/admin portals, structured lessons,
-formal assessments, assignments or content administration.
+The Academy transition is staged. The Flask API provides student accounts,
+teacher-owned classes and account-linked progress backups. Local progress remains
+the gameplay source of truth; signed-in students explicitly choose when to upload,
+restore or delete their backup. Structured lessons, formal assessments,
+assignments and content administration are not yet implemented.
 
 ## Run locally
 
@@ -42,8 +43,10 @@ CSRF protection, rate limiting, input validation and score sanity checks. Teache
 reports are available from the Reports screen.
 
 The API also exposes `POST /api/auth/register`, `POST /api/auth/login`,
-`GET /api/auth/me` and `POST /api/auth/logout`. Mutations require the same-origin
-CSRF token from `GET /api/csrf` in the `X-CSRF-Token` header. Registration creates
+`GET /api/auth/me`, `POST /api/auth/logout`, and the student-owned
+`GET/PUT/DELETE /api/student/progress` backup endpoints. Mutations require the
+same-origin CSRF token from `GET /api/csrf` in the `X-CSRF-Token` header.
+Registration creates
 a student by default; a teacher account requires the server-configured
 `CYBERGUARD_TEACHER_INVITE_CODE`, and browser-supplied roles are ignored. Passwords
 are stored as scrypt hashes. Teachers can create account-owned classes and view
@@ -55,8 +58,10 @@ recovery, email verification, admin onboarding and migration of legacy token-own
 classes are not implemented. Legacy token-based class creation remains for
 compatibility. Score uploads to account-owned classes require an active student
 membership; membership requests only apply to account-owned classes, and legacy
-nickname scores remain unverified. Do not use this stage to store sensitive
-student records or deploy as a production LMS.
+nickname scores remain unverified. Students can explicitly replace or restore a
+private account progress backup; it excludes the certificate name and unfinished
+attempt, and is never synchronized automatically. Do not use this stage to store
+sensitive student records or deploy as a production LMS.
 
 ## Learning levels
 

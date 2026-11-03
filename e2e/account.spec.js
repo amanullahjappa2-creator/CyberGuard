@@ -4,10 +4,11 @@ test("student can register, sign in, and sign out through the bilingual account 
   const username = `learner${Date.now()}`;
   const email = `${username}@example.test`;
   const password = "safe-example-password-2026";
+  page.on("dialog", (dialog) => dialog.accept());
 
   await page.goto("/");
   await page.locator("#user-menu-trigger").click();
-  await page.getByRole("button", { name: "Account" }).click();
+  await page.getByRole("button", { name: "Account", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Account" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Sign in" })).toBeVisible();
 
@@ -22,8 +23,22 @@ test("student can register, sign in, and sign out through the bilingual account 
   await expect(page.getByRole("heading", { name: "Signed in" })).toBeVisible();
   await expect(page.locator(".account-panel")).toContainText(username);
   await expect(page.locator(".account-panel")).toContainText("student");
+  await page.getByRole("button", { name: "Upload this browser's progress" }).click();
+  await expect(page.locator(".account-message")).toContainText("saved to your account");
+  await Promise.all([
+    page.waitForNavigation({ waitUntil: "domcontentloaded" }),
+    page.getByRole("button", { name: "Restore account progress" }).click(),
+  ]);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("cyberguard-progress-v1")).unlocked)).toBe(
+    1,
+  );
   await page.locator("#user-menu-trigger").click();
-  await page.getByRole("button", { name: "Account" }).click();
+  await page.getByRole("button", { name: "Account", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Signed in" })).toBeVisible();
+  await page.getByRole("button", { name: "Delete cloud backup" }).click();
+  await expect(page.locator(".account-message")).toContainText("backup was deleted");
+  await page.locator("#user-menu-trigger").click();
+  await page.getByRole("button", { name: "Account", exact: true }).click();
   await page.getByRole("button", { name: "Sign out" }).click();
   await expect(page.getByText("You have been signed out.")).toBeVisible();
 
@@ -35,7 +50,7 @@ test("student can register, sign in, and sign out through the bilingual account 
   await page.locator("#user-menu-trigger").click();
   await page.getByRole("button", { name: "Switch language" }).click();
   await page.locator("#user-menu-trigger").click();
-  await expect(page.getByRole("button", { name: "اکاؤنٹ" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "اکاؤنٹ", exact: true })).toBeVisible();
 });
 
 test("teacher invite owns classes and approves a student join request", async ({ page, browser }) => {

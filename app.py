@@ -3,6 +3,7 @@ import hashlib
 import hmac
 import io
 import json
+import math
 import os
 import re
 import secrets
@@ -26,6 +27,7 @@ CLASS_CODE_PATTERN = re.compile(r"^[A-Z2-9]{6}$")
 USERNAME_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{2,23}$")
 EMAIL_PATTERN = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 MAX_SCORE_PER_ISSUE = 125
+MAX_PROGRESS_BYTES = 1024 * 1024
 
 
 def load_level_score_caps():
@@ -50,7 +52,7 @@ def create_app(test_config=None):
         SECRET_KEY=os.environ.get("CYBERGUARD_SECRET_KEY") or secrets.token_hex(32),
         DATABASE=os.environ.get("CYBERGUARD_DATABASE", str(ROOT / "instance" / "cyberguard.sqlite3")),
         TEACHER_INVITE_CODE=os.environ.get("CYBERGUARD_TEACHER_INVITE_CODE", ""),
-        MAX_CONTENT_LENGTH=16 * 1024,
+        MAX_CONTENT_LENGTH=MAX_PROGRESS_BYTES,
         RATE_LIMIT=30,
         RATE_WINDOW_SECONDS=60,
         SESSION_COOKIE_HTTPONLY=True,
@@ -156,11 +158,23 @@ def create_app(test_config=None):
         )
         connection.execute("CREATE INDEX IF NOT EXISTS class_members_user_idx ON class_members(user_id, status)")
 
+    def migrate_student_progress_schema(connection):
+        connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS student_progress (
+                user_id INTEGER PRIMARY KEY REFERENCES users(user_id) ON DELETE CASCADE,
+                progress_json TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            )
+            """
+        )
+
     DATABASE_MIGRATIONS = (
         (1, migrate_legacy_schema),
         (2, migrate_accounts_schema),
         (3, migrate_teacher_ownership_schema),
         (4, migrate_class_membership_schema),
+        (5, migrate_student_progress_schema),
     )
 
     def initialize_db():
@@ -281,6 +295,257 @@ def create_app(test_config=None):
                 return False
             seen.add(level_id)
         return True
+
+    def is_finite_number(value):
+        return isinstance(value, (int, float)) and not isinstance(value, bool) and (
+            isinstance(value, int) or math.isfinite(value)
+        )
+
+    def normalize_student_progress(value):
+        if not isinstance(value, dict) or value.get("schemaVersion") != 2:
+            return None
+        unlocked = value.get("unlocked")
+        levels = value.get("levels")
+        xp = value.get("xp", 0)
+        if (
+            not isinstance(unlocked, int)
+            or isinstance(unlocked, bool)
+            or not 1 <= unlocked <= 30
+            or not isinstance(levels, dict)
+            or len(levels) > 30
+            or not is_finite_number(xp)
+            or not 0 <= xp <= 10_000_000
+        ):
+            return None
+        normalized_levels = {}
+        for level_id, record in levels.items():
+            if (
+                not isinstance(level_id, str)
+                or not re.fullmatch(r"(?:[1-9]|[12]\d|30)", level_id)
+                or not 1 <= int(level_id) <= unlocked
+                or not isinstance(record, dict)
+            ):
+                return None
+            number = int(level_id)
+            score = record.get("score")
+            stars = record.get("stars")
+            hints = record.get("hints", 0)
+            xp_granted = record.get("xpGranted", False)
+            if (
+                not isinstance(score, int)
+                or isinstance(score, bool)
+                or not 0 <= score <= LEVEL_SCORE_CAPS[number]
+                or not isinstance(stars, int)
+                or isinstance(stars, bool)
+                or not 0 <= stars <= 3
+                or not isinstance(hints, int)
+                or isinstance(hints, bool)
+                or not 0 <= hints <= 100
+                or not isinstance(xp_granted, bool)
+            ):
+                return None
+            normalized_levels[level_id] = {
+                "score": score,
+                "stars": stars,
+                "hints": hints,
+                "xpGranted": xp_granted,
+            }
+
+        achievements = value.get("achievements", [])
+        if (
+            not isinstance(achievements, list)
+            or len(achievements) > 100
+            or any(not isinstance(item, str) or len(item) > 64 for item in achievements)
+        ):
+            return None
+        mastery = value.get("mastery", {})
+        if not isinstance(mastery, dict) or set(mastery) - set(SKILL_TAGS):
+            return None
+        normalized_mastery = {}
+        for skill, score in mastery.items():
+            if (
+                not is_finite_number(score)
+                or not 0 <= score <= 100
+            ):
+                return None
+            normalized_mastery[skill] = score
+
+        adaptive = value.get("adaptive", {})
+        if not isinstance(adaptive, dict):
+            return None
+        mastery_scores = adaptive.get("masteryScores", {})
+        events = adaptive.get("events", [])
+        sessions = adaptive.get("sessions", [])
+        if (
+            not isinstance(mastery_scores, dict)
+            or set(mastery_scores) - set(SKILL_TAGS)
+            or not isinstance(events, list)
+            or len(events) > 2000
+            or not isinstance(sessions, list)
+            or len(sessions) > 200
+        ):
+            return None
+        normalized_mastery_scores = {}
+        for skill, score in mastery_scores.items():
+            if (
+                not is_finite_number(score)
+                or not 0 <= score <= 100
+            ):
+                return None
+            normalized_mastery_scores[skill] = score
+
+        def normalize_session(item):
+            if not isinstance(item, dict):
+                return None
+            level_id = item.get("levelId")
+            accuracy = item.get("accuracy")
+            skill = item.get("skillTag")
+            elapsed = item.get("elapsedSeconds", 0)
+            hints = item.get("hints", 0)
+            mistakes = item.get("mistakes", 0)
+            score = item.get("score", 0)
+            session_id = item.get("sessionId", "")
+            completed_at = item.get("completedAt", "")
+            if (
+                not isinstance(level_id, int)
+                or isinstance(level_id, bool)
+                or not 1 <= level_id <= 30
+                or skill not in SKILL_TAGS
+                or not is_finite_number(accuracy)
+                or not 0 <= accuracy <= 100
+                or not is_finite_number(elapsed)
+                or not 0 <= elapsed <= 86400
+                or any(not isinstance(count, int) or isinstance(count, bool) or not 0 <= count <= 100
+                       for count in (hints, mistakes))
+                or not is_finite_number(score)
+                or not 0 <= score <= 100000
+                or not isinstance(session_id, str)
+                or len(session_id) > 100
+                or not isinstance(completed_at, str)
+                or len(completed_at) > 40
+            ):
+                return None
+            return {
+                "sessionId": session_id,
+                "levelId": level_id,
+                "skillTag": skill,
+                "accuracy": accuracy,
+                "elapsedSeconds": elapsed,
+                "hints": hints,
+                "mistakes": mistakes,
+                "score": score,
+                "completedAt": completed_at,
+            }
+
+        normalized_sessions = []
+        for item in sessions:
+            normalized = normalize_session(item)
+            if normalized is None:
+                return None
+            normalized_sessions.append(normalized)
+        normalized_history = value.get("sessionHistory", [])
+        if not isinstance(normalized_history, list) or len(normalized_history) > 200:
+            return None
+        normalized_history = [normalize_session(item) for item in normalized_history]
+        if any(item is None for item in normalized_history):
+            return None
+
+        normalized_events = []
+        for item in events:
+            if not isinstance(item, dict):
+                return None
+            level_id = item.get("levelId")
+            skill = item.get("skillTag")
+            outcome = item.get("outcome")
+            difficulty = item.get("difficulty")
+            issue_index = item.get("issueIndex", 0)
+            seconds = item.get("seconds", 0)
+            timestamp = item.get("timestamp", 0)
+            before = item.get("masteryBefore", 50)
+            after = item.get("masteryAfter", 50)
+            session_id = item.get("sessionId", "")
+            if (
+                not isinstance(level_id, int)
+                or isinstance(level_id, bool)
+                or not 1 <= level_id <= 30
+                or not isinstance(skill, str)
+                or skill not in SKILL_TAGS
+                or not isinstance(outcome, str)
+                or outcome not in {"correct", "wrong", "hint"}
+                or not isinstance(difficulty, int)
+                or isinstance(difficulty, bool)
+                or not 1 <= difficulty <= 5
+                or not isinstance(issue_index, int)
+                or isinstance(issue_index, bool)
+                or not 0 <= issue_index <= 5
+                or not is_finite_number(seconds)
+                or not 0 <= seconds <= 3600
+                or not is_finite_number(timestamp)
+                or any(
+                    not is_finite_number(value)
+                    or not 0 <= value <= 100
+                    for value in (before, after)
+                )
+                or not isinstance(session_id, str)
+                or len(session_id) > 100
+            ):
+                return None
+            normalized_events.append(
+                {
+                    "sessionId": session_id,
+                    "levelId": level_id,
+                    "skillTag": skill,
+                    "issueIndex": issue_index,
+                    "difficulty": difficulty,
+                    "outcome": outcome,
+                    "hintUsed": item.get("hintUsed") is True,
+                    "seconds": seconds,
+                    "category": skill,
+                    "timestamp": timestamp,
+                    "masteryBefore": before,
+                    "masteryAfter": after,
+                }
+            )
+
+        terms = value.get("unlockedTerms", [])
+        streak = value.get("streak", {"count": 0, "lastDate": None})
+        certificate_id = value.get("certificateId")
+        finished = value.get("finished", False)
+        if (
+            not isinstance(terms, list)
+            or len(terms) > 200
+            or any(not isinstance(term, str) or len(term) > 80 for term in terms)
+            or not isinstance(streak, dict)
+            or not isinstance(streak.get("count", 0), int)
+            or isinstance(streak.get("count", 0), bool)
+            or not 0 <= streak.get("count", 0) <= 10000
+            or (
+                streak.get("lastDate") is not None
+                and (not isinstance(streak["lastDate"], str) or len(streak["lastDate"]) > 10)
+            )
+            or (certificate_id is not None and (not isinstance(certificate_id, str) or len(certificate_id) > 80))
+            or not isinstance(finished, bool)
+            or (finished and unlocked != 30)
+        ):
+            return None
+        return {
+            "schemaVersion": 2,
+            "unlocked": unlocked,
+            "levels": normalized_levels,
+            "finished": finished,
+            "xp": xp,
+            "achievements": list(dict.fromkeys(achievements)),
+            "mastery": normalized_mastery,
+            "adaptive": {
+                "masteryScores": normalized_mastery_scores,
+                "events": normalized_events,
+                "sessions": normalized_sessions,
+            },
+            "sessionHistory": normalized_history,
+            "unlockedTerms": list(dict.fromkeys(terms)),
+            "streak": {"count": streak.get("count", 0), "lastDate": streak.get("lastDate")},
+            "certificateId": certificate_id,
+        }
 
     def teacher_class(class_code):
         with db_connection() as connection:
@@ -495,6 +760,72 @@ def create_app(test_config=None):
         if not user:
             return jsonify(error="Authentication is required."), 401
         return jsonify(user=public_user(user))
+
+    @app.get("/api/student/progress")
+    @rate_limited
+    def get_student_progress():
+        user = authenticated_user()
+        if not user:
+            return jsonify(error="Authentication is required."), 401
+        if user["role"] != "student":
+            return jsonify(error="Student authorization is required."), 403
+        with db_connection() as connection:
+            record = connection.execute(
+                "SELECT progress_json, updated_at FROM student_progress WHERE user_id = ?",
+                (user["user_id"],),
+            ).fetchone()
+        return jsonify(
+            progress=json.loads(record["progress_json"]) if record else None,
+            updatedAt=record["updated_at"] if record else None,
+        )
+
+    @app.put("/api/student/progress")
+    @rate_limited
+    @require_csrf
+    def save_student_progress():
+        user = authenticated_user()
+        if not user:
+            return jsonify(error="Authentication is required."), 401
+        if user["role"] != "student":
+            return jsonify(error="Student authorization is required."), 403
+        data = payload()
+        progress = normalize_student_progress(data.get("progress") if data else None)
+        if progress is None:
+            return jsonify(error="Learning progress has an invalid or unsupported format."), 400
+        progress_json = json.dumps(progress, ensure_ascii=True, separators=(",", ":"), allow_nan=False)
+        if len(progress_json.encode("utf-8")) > MAX_PROGRESS_BYTES:
+            return jsonify(error="Learning progress is larger than the allowed backup size."), 413
+        timestamp = datetime.now(timezone.utc).isoformat()
+        with db_connection() as connection:
+            connection.execute(
+                """
+                INSERT INTO student_progress (user_id, progress_json, updated_at)
+                VALUES (?, ?, ?)
+                ON CONFLICT(user_id) DO UPDATE SET
+                    progress_json = excluded.progress_json,
+                    updated_at = excluded.updated_at
+                WHERE student_progress.progress_json != excluded.progress_json
+                """,
+                (user["user_id"], progress_json, timestamp),
+            )
+            record = connection.execute(
+                "SELECT updated_at FROM student_progress WHERE user_id = ?",
+                (user["user_id"],),
+            ).fetchone()
+        return jsonify(saved=True, updatedAt=record["updated_at"])
+
+    @app.delete("/api/student/progress")
+    @rate_limited
+    @require_csrf
+    def delete_student_progress():
+        user = authenticated_user()
+        if not user:
+            return jsonify(error="Authentication is required."), 401
+        if user["role"] != "student":
+            return jsonify(error="Student authorization is required."), 403
+        with db_connection() as connection:
+            connection.execute("DELETE FROM student_progress WHERE user_id = ?", (user["user_id"],))
+        return jsonify(deleted=True)
 
     @app.post("/api/auth/logout")
     @rate_limited
