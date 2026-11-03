@@ -124,6 +124,100 @@ export function parseProgressImport(raw) {
   };
 }
 
+function mergeUniqueRecords(records, keyForRecord, limit, compare) {
+  const merged = new Map();
+  for (const record of records) {
+    for (const item of record) {
+      const key = keyForRecord(item);
+      const existing = merged.get(key);
+      if (!existing || compare(item, existing) > 0) merged.set(key, item);
+    }
+  }
+  return [...merged.values()].sort(compare).slice(-limit);
+}
+
+export function mergeProgressSnapshots(local, remote) {
+  if (!local && !remote) throw new Error("At least one progress snapshot is required.");
+  const localProgress = parseProgressImport(JSON.stringify(local ?? remote));
+  const remoteProgress = parseProgressImport(JSON.stringify(remote ?? local));
+  const levelIds = new Set([...Object.keys(localProgress.levels), ...Object.keys(remoteProgress.levels)]);
+  const levels = Object.fromEntries(
+    [...levelIds].map((id) => {
+      const localLevel = localProgress.levels[id];
+      const remoteLevel = remoteProgress.levels[id];
+      if (!localLevel) return [id, remoteLevel];
+      if (!remoteLevel) return [id, localLevel];
+      return [
+        id,
+        {
+          score: Math.max(localLevel.score, remoteLevel.score),
+          stars: Math.max(localLevel.stars, remoteLevel.stars),
+          hints: Math.min(localLevel.hints, remoteLevel.hints),
+          xpGranted: localLevel.xpGranted || remoteLevel.xpGranted,
+        },
+      ];
+    }),
+  );
+  const events = mergeUniqueRecords(
+    [localProgress.adaptive.events, remoteProgress.adaptive.events],
+    (event) => JSON.stringify(event),
+    2000,
+    (left, right) => left.timestamp - right.timestamp,
+  );
+  const mergeSessions = (left, right) =>
+    mergeUniqueRecords(
+      [left, right],
+      (session) => session.sessionId || JSON.stringify(session),
+      200,
+      (first, second) =>
+        first.completedAt.localeCompare(second.completedAt) ||
+        first.score - second.score ||
+        first.accuracy - second.accuracy,
+    );
+  const masteryScores = {};
+  for (const skill of Object.keys(localProgress.adaptive.masteryScores)) {
+    const latestObservation = events.filter((event) => event.skillTag === skill).at(-1);
+    masteryScores[skill] =
+      latestObservation?.masteryAfter ??
+      Math.max(localProgress.adaptive.masteryScores[skill], remoteProgress.adaptive.masteryScores[skill]);
+  }
+  const localStreak = localProgress.streak;
+  const remoteStreak = remoteProgress.streak;
+  const streak =
+    (remoteStreak.lastDate ?? "") > (localStreak.lastDate ?? "") ||
+    (remoteStreak.lastDate === localStreak.lastDate && remoteStreak.count > localStreak.count)
+      ? remoteStreak
+      : localStreak;
+  const merged = parseProgressImport(
+    JSON.stringify({
+      schemaVersion: 2,
+      unlocked: Math.max(localProgress.unlocked, remoteProgress.unlocked),
+      levels,
+      finished: localProgress.finished || remoteProgress.finished,
+      xp: Math.max(localProgress.xp, remoteProgress.xp),
+      achievements: [...localProgress.achievements, ...remoteProgress.achievements],
+      mastery: Object.fromEntries(
+        Object.keys(localProgress.mastery).map((skill) => [
+          skill,
+          Math.max(localProgress.mastery[skill], remoteProgress.mastery[skill]),
+        ]),
+      ),
+      adaptive: {
+        masteryScores,
+        events,
+        sessions: mergeSessions(localProgress.adaptive.sessions, remoteProgress.adaptive.sessions),
+      },
+      sessionHistory: mergeSessions(localProgress.sessionHistory, remoteProgress.sessionHistory),
+      unlockedTerms: [...localProgress.unlockedTerms, ...remoteProgress.unlockedTerms],
+      streak,
+      certificateId: localProgress.certificateId ?? remoteProgress.certificateId,
+    }),
+  );
+  merged.name = local?.name ?? remote?.name ?? "";
+  merged.current = local?.current ?? null;
+  return merged;
+}
+
 export function importProgress(raw) {
   const progress = parseProgressImport(raw);
   saveProgress(progress);

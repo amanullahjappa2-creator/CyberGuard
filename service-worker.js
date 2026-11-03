@@ -1,4 +1,4 @@
-const CACHE_NAME = "cyberguard-static-v16";
+const CACHE_NAME = "cyberguard-static-v17";
 const CORE_ASSETS = [
   "./",
   "./index.html",

@@ -4,12 +4,18 @@ import { readFile } from "node:fs/promises";
 import {
   dailyChallengeForDate,
   GameEngine,
+  createNewProgress,
   playerLevelForXp,
   rankForXp,
   shuffleChoices,
   validateLevel,
 } from "../js/engine.js";
-import { exportProgress, importProgress, parseProgressImport } from "../js/storage.js";
+import {
+  exportProgress,
+  importProgress,
+  mergeProgressSnapshots,
+  parseProgressImport,
+} from "../js/storage.js";
 
 const file = (path) => readFile(new URL(path, import.meta.url), "utf8").then(JSON.parse);
 const locales = {
@@ -68,6 +74,18 @@ test("student account screens have bilingual copy", () => {
     "accountSignedIn",
     "accountLogout",
     "accountLoggedOut",
+    "accountProgressTitle",
+    "accountProgressPrivacy",
+    "accountProgressUpload",
+    "accountProgressUploadConfirm",
+    "accountProgressUploaded",
+    "accountProgressDownload",
+    "accountProgressDownloadConfirm",
+    "accountProgressEmpty",
+    "accountProgressDelete",
+    "accountProgressDeleteConfirm",
+    "accountProgressDeleted",
+    "accountProgressConflict",
     "teacherOwnedClasses",
     "teacherNoClasses",
     "teacherOpenAccount",
@@ -319,6 +337,107 @@ test("XP thresholds map to player levels and ranks", () => {
   assert.equal(rankForXp(0), "Recruit");
   assert.equal(rankForXp(800), "Defender");
   assert.equal(rankForXp(3500), "Architect");
+});
+
+test("progress snapshots merge without dropping distinct levels or learning history", () => {
+  const local = createNewProgress();
+  local.name = "Learner";
+  local.current = { levelId: 2, mode: "campaign" };
+  local.unlocked = 3;
+  local.levels[1] = { score: 200, stars: 2, hints: 1, xpGranted: true };
+  local.xp = 220;
+  local.achievements = ["local-badge"];
+  local.adaptive.events = [
+    {
+      sessionId: "local-session",
+      levelId: 1,
+      skillTag: "passwords",
+      issueIndex: 0,
+      difficulty: 2,
+      outcome: "correct",
+      hintUsed: false,
+      seconds: 10,
+      category: "passwords",
+      timestamp: 100,
+      masteryBefore: 50,
+      masteryAfter: 60,
+    },
+  ];
+  local.sessionHistory = [
+    {
+      sessionId: "local-session",
+      levelId: 1,
+      skillTag: "passwords",
+      accuracy: 100,
+      elapsedSeconds: 30,
+      hints: 0,
+      mistakes: 0,
+      score: 200,
+      completedAt: "2026-01-01T00:00:00Z",
+    },
+  ];
+  local.streak = { count: 2, lastDate: "2026-01-01" };
+
+  const remote = createNewProgress();
+  remote.unlocked = 4;
+  remote.levels[1] = { score: 300, stars: 3, hints: 0, xpGranted: false };
+  remote.levels[3] = { score: 250, stars: 2, hints: 1, xpGranted: true };
+  remote.xp = 180;
+  remote.achievements = ["cloud-badge"];
+  remote.adaptive.events = [
+    {
+      sessionId: "cloud-session",
+      levelId: 3,
+      skillTag: "phishing",
+      issueIndex: 1,
+      difficulty: 3,
+      outcome: "wrong",
+      hintUsed: false,
+      seconds: 20,
+      category: "phishing",
+      timestamp: 200,
+      masteryBefore: 50,
+      masteryAfter: 30,
+    },
+  ];
+  remote.sessionHistory = [
+    {
+      sessionId: "cloud-session",
+      levelId: 3,
+      skillTag: "phishing",
+      accuracy: 0,
+      elapsedSeconds: 45,
+      hints: 1,
+      mistakes: 1,
+      score: 250,
+      completedAt: "2026-02-01T00:00:00Z",
+    },
+  ];
+  remote.streak = { count: 1, lastDate: "2026-02-01" };
+  remote.certificateId = "cloud-certificate";
+
+  const merged = mergeProgressSnapshots(local, remote);
+  assert.equal(merged.unlocked, 4);
+  assert.deepEqual(Object.keys(merged.levels).sort(), ["1", "3"]);
+  assert.deepEqual(merged.levels[1], { score: 300, stars: 3, hints: 0, xpGranted: true });
+  assert.equal(merged.levels[3].score, 250);
+  assert.equal(merged.xp, 220);
+  assert.deepEqual(merged.achievements.sort(), ["cloud-badge", "local-badge"]);
+  assert.deepEqual(
+    merged.adaptive.events.map((event) => event.sessionId),
+    ["local-session", "cloud-session"],
+  );
+  assert.equal(merged.sessionHistory.length, 2);
+  assert.equal(merged.adaptive.masteryScores.phishing, 30);
+  assert.deepEqual(merged.streak, remote.streak);
+  assert.equal(merged.certificateId, "cloud-certificate");
+  assert.equal(merged.name, "Learner");
+  assert.deepEqual(merged.current, local.current);
+
+  const repeated = mergeProgressSnapshots(merged, remote);
+  assert.equal(repeated.adaptive.events.length, 2);
+  assert.equal(repeated.sessionHistory.length, 2);
+  assert.deepEqual(repeated.levels, merged.levels);
 });
 
 test("progress export/import round-trips valid data and rejects tampering", () => {

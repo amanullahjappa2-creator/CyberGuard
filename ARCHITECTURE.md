@@ -28,14 +28,17 @@ scenario engine and renderers.
 - `js/adaptive.js` calculates local skill observations, recommendations and report
   summaries. The interface labels unattempted or emerging skill data explicitly;
   it only presents mastery estimates after four answered issues in a skill.
-- `js/storage.js` wraps local storage and validates exported/imported progress.
+- `js/storage.js` wraps local storage, validates exported/imported progress, and
+  merges account backups while retaining completed records and unique learning
+  events from both copies.
 - `js/levels/renderers.js` renders selectable and ordered scenario items.
 - `levels/level01.json` through `levels/level30.json` hold scenario structures and
   fix identifiers. `level-catalog.json` supplies lightweight index metadata.
 - `lang/en.json` and `lang/ur.json` hold English and Urdu UI and scenario content.
 - `app.py` implements the optional privacy-consented nickname scoreboard,
   teacher reports, student registration/login and private student progress backup
-  APIs, and transactional, versioned SQLite migrations. Teacher accounts activated by the server invite
+  APIs, and transactional, versioned SQLite migrations. Progress writes use an
+  optimistic revision check. Teacher accounts activated by the server invite
   code can create owned classes; report endpoints enforce owner identity.
   Students can request membership in owned classes; teachers approve/reject
   pending requests and remove active members.

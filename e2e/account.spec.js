@@ -5,6 +5,20 @@ test("student can register, sign in, and sign out through the bilingual account 
   const email = `${username}@example.test`;
   const password = "safe-example-password-2026";
   page.on("dialog", (dialog) => dialog.accept());
+  await page.addInitScript(() => {
+    if (localStorage.getItem("cyberguard-progress-v1") === null) {
+      localStorage.setItem(
+        "cyberguard-progress-v1",
+        JSON.stringify({
+          schemaVersion: 2,
+          unlocked: 2,
+          levels: { 1: { score: 100, stars: 1, hints: 1, xpGranted: true } },
+          xp: 120,
+          achievements: ["first-local-badge"],
+        }),
+      );
+    }
+  });
 
   await page.goto("/");
   await page.locator("#user-menu-trigger").click();
@@ -23,20 +37,57 @@ test("student can register, sign in, and sign out through the bilingual account 
   await expect(page.getByRole("heading", { name: "Signed in" })).toBeVisible();
   await expect(page.locator(".account-panel")).toContainText(username);
   await expect(page.locator(".account-panel")).toContainText("student");
-  await page.getByRole("button", { name: "Upload this browser's progress" }).click();
-  await expect(page.locator(".account-message")).toContainText("saved to your account");
+  await page.getByRole("button", { name: "Merge browser progress into account" }).click();
+  await expect(page.locator(".account-message")).toContainText("merged successfully");
+
+  await page.evaluate(() => {
+    const progress = JSON.parse(localStorage.getItem("cyberguard-progress-v1"));
+    progress.unlocked = 3;
+    progress.levels["2"] = { score: 150, stars: 2, hints: 0, xpGranted: true };
+    progress.xp = 250;
+    progress.achievements.push("second-local-badge");
+    localStorage.setItem("cyberguard-progress-v1", JSON.stringify(progress));
+  });
+  await page.reload();
+  await page.locator("#user-menu-trigger").click();
+  await page.getByRole("button", { name: "Account", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Signed in" })).toBeVisible();
+  await page.getByRole("button", { name: "Merge browser progress into account" }).click();
+  await expect(page.locator(".account-message")).toContainText("merged successfully");
+  const uploaded = await page.evaluate(() =>
+    fetch("/api/student/progress").then((response) => response.json()),
+  );
+  expect(Object.keys(uploaded.progress.levels).sort()).toEqual(["1", "2"]);
+  expect(uploaded.progress.xp).toBe(250);
+  await page.locator("#home-link").click();
+  await expect(page.getByText("Analyst", { exact: true })).toBeVisible();
+
+  await page.evaluate(() => {
+    const progress = JSON.parse(localStorage.getItem("cyberguard-progress-v1"));
+    progress.unlocked = 4;
+    progress.levels["3"] = { score: 175, stars: 1, hints: 2, xpGranted: true };
+    progress.xp = 300;
+    localStorage.setItem("cyberguard-progress-v1", JSON.stringify(progress));
+  });
+  await page.reload();
+  await page.locator("#user-menu-trigger").click();
+  await page.getByRole("button", { name: "Account", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Signed in" })).toBeVisible();
   await Promise.all([
     page.waitForNavigation({ waitUntil: "domcontentloaded" }),
-    page.getByRole("button", { name: "Restore account progress" }).click(),
+    page.getByRole("button", { name: "Merge account progress into browser" }).click(),
   ]);
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("cyberguard-progress-v1")).unlocked)).toBe(
-    1,
-  );
+  const locallyMerged = await page.evaluate(() => JSON.parse(localStorage.getItem("cyberguard-progress-v1")));
+  expect(Object.keys(locallyMerged.levels).sort()).toEqual(["1", "2", "3"]);
+  expect(locallyMerged.xp).toBe(300);
   await page.locator("#user-menu-trigger").click();
   await page.getByRole("button", { name: "Account", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Signed in" })).toBeVisible();
   await page.getByRole("button", { name: "Delete cloud backup" }).click();
   await expect(page.locator(".account-message")).toContainText("backup was deleted");
+  await expect
+    .poll(() => page.evaluate(() => fetch("/api/student/progress").then((response) => response.json())))
+    .toMatchObject({ progress: null, updatedAt: null });
   await page.locator("#user-menu-trigger").click();
   await page.getByRole("button", { name: "Account", exact: true }).click();
   await page.getByRole("button", { name: "Sign out" }).click();

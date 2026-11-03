@@ -8,9 +8,10 @@ offline learning.
 
 The Academy transition is staged. The Flask API provides student accounts,
 teacher-owned classes and account-linked progress backups. Local progress remains
-the gameplay source of truth; signed-in students explicitly choose when to upload,
-restore or delete their backup. Structured lessons, formal assessments,
-assignments and content administration are not yet implemented.
+the gameplay source of truth; signed-in students explicitly choose when to merge
+their browser progress with their account backup or delete it. Structured
+lessons, formal assessments, assignments and content administration are not yet
+implemented.
 
 ## Run locally
 
@@ -58,10 +59,14 @@ recovery, email verification, admin onboarding and migration of legacy token-own
 classes are not implemented. Legacy token-based class creation remains for
 compatibility. Score uploads to account-owned classes require an active student
 membership; membership requests only apply to account-owned classes, and legacy
-nickname scores remain unverified. Students can explicitly replace or restore a
-private account progress backup; it excludes the certificate name and unfinished
-attempt, and is never synchronized automatically. Do not use this stage to store
-sensitive student records or deploy as a production LMS.
+nickname scores remain unverified. Student progress merging keeps completed level
+records, achievements, adaptive events and session history from both copies. Uploads
+use a database revision check to reject stale concurrent writes; retrying reloads
+the latest backup before merging again. XP is a cumulative total without a per-award
+ledger, so merges retain the higher total rather than add potentially overlapping
+totals. The backup excludes the certificate name and unfinished attempt; no
+progress is synchronized automatically. Do not use this stage to store sensitive
+student records or deploy as a production LMS.
 
 ## Learning levels
 

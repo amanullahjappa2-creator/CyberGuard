@@ -417,12 +417,15 @@ class ScoreboardApiTests(unittest.TestCase):
             "current": {"levelId": 1},
         }
         self.assertEqual(
-            self.client.put(endpoint, json={"progress": progress}).status_code,
+            self.client.put(
+                endpoint,
+                json={"progress": progress, "expectedUpdatedAt": None},
+            ).status_code,
             403,
         )
         saved = self.client.put(
             endpoint,
-            json={"progress": progress},
+            json={"progress": progress, "expectedUpdatedAt": None},
             headers={"X-CSRF-Token": csrf},
         )
         self.assertEqual(saved.status_code, 200)
@@ -434,11 +437,17 @@ class ScoreboardApiTests(unittest.TestCase):
         self.assertEqual(restored["updatedAt"], first_timestamp)
         repeated = self.client.put(
             endpoint,
-            json={"progress": progress},
+            json={"progress": progress, "expectedUpdatedAt": first_timestamp},
             headers={"X-CSRF-Token": csrf},
         )
         self.assertEqual(repeated.status_code, 200)
         self.assertEqual(repeated.get_json()["updatedAt"], first_timestamp)
+        stale = self.client.put(
+            endpoint,
+            json={"progress": progress, "expectedUpdatedAt": None},
+            headers={"X-CSRF-Token": csrf},
+        )
+        self.assertEqual(stale.status_code, 409)
 
         invalid = {**progress, "levels": {"1": {"score": 100_000_000, "stars": 2}}}
         rejected = self.client.put(

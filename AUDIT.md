@@ -14,8 +14,9 @@ Audit baseline: `pre-polish` tag at `24a4b38b5b2f63f0dfb0151e030de7ea7f22c500`.
 - `level-catalog.json` is the lightweight index; `levels/level01.json` through
   `level30.json` hold scenario mechanics. `lang/en.json` and `lang/ur.json` hold
   localized screens, scenario copy, learning cards, and glossary entries.
-- `app.py` implements the optional consent-based classroom service, initial
-  student account APIs and versioned SQLite migrations; `js/scoreboard.js`,
+- `app.py` implements the optional consent-based scoreboard, student account,
+  private progress-backup, and account-owned classroom APIs with versioned SQLite
+  migrations; `js/scoreboard.js`,
   `js/teacher.js`, and `teacher.html` implement the existing browser clients.
 - `css/style.css` provides the responsive, light/dark, RTL, and print presentation.
   `service-worker.js` precaches the app shell and all current level data.
@@ -57,16 +58,50 @@ rank, XP, level and streak. This is a local UI improvement, not LMS analytics;
 accounts, database-backed learning records and role-based portals remain future
 work.
 
-## Scope note
+## Historical scope note
 
-The existing project does not include Learn lessons, a formal assessment bank,
-accounts, assignments, certificate signing, or a content-administration workflow.
-These are not treated as implemented by this polish pass. Implementing them safely
-requires new product and data models rather than cosmetic cleanup.
+At the time of this polish pass, the project did not include Learn lessons, a
+formal assessment bank, student accounts, assignments, certificate signing, or a
+content-administration workflow. Account and classroom capabilities were added
+later; the other items remain unimplemented.
 
-## Follow-up backend work
+## Current implementation audit — 2026-11-03
 
-The later student-account foundation adds versioned, transactional SQLite
-migrations and student registration/login/logout APIs. These APIs are not wired
-to the browser UI or learning progress. Teacher/admin provisioning, authorization
-of class routes, account recovery and email verification remain unimplemented.
+The checked-out implementation was verified, rather than relying on earlier
+documentation:
+
+- Student registration/login/logout and current-session checks are wired to the
+  bilingual Account screen. The Python and browser suites exercise registration,
+  login, logout, session rotation, and language switching.
+- Teacher activation requires `CYBERGUARD_TEACHER_INVITE_CODE`. Teachers create
+  account-owned classes; students request membership; owners approve, reject, or
+  remove students. The browser suite exercises that lifecycle and the API tests
+  check ownership/role denial.
+- Local gameplay progress is still stored in localStorage and remains usable
+  offline. Account progress is an optional explicit backup, not automatic sync.
+  The account API is tested for account isolation, input validation, and deletion.
+- Before this update, upload replaced the cloud snapshot and restore replaced
+  browser progress. The current increment changes both operations to merge
+  completed level records and unique learning histories; writes use revision
+  checks to reject stale concurrent updates. Cumulative XP has no award ledger,
+  so merge retains the greater total instead of adding potentially duplicated
+  totals.
+- Teacher reports are backed by the legacy nickname scoreboard aggregates.
+  Account-owned class membership exists, but account-linked student analytics,
+  assignments, exams, and individual student progress reporting do not.
+- The bilingual static app shell, 30 translated level scenarios, local reports,
+  and offline service worker are present. Learn courses, formal examinations,
+  admin portal, QR-verifiable certificates, and database-backed charts are not.
+
+Verification for the current increment: 31 Node tests, 14 Python API tests, 3
+Playwright tests, ESLint, Prettier, and Python compilation passed. The account
+progress tests additionally cover cross-device merges, stale-write rejection,
+and preserving browser-only progress during restore.
+
+## Remaining backend work
+
+The server stores an account-owned progress snapshot, but it does not yet maintain
+an append-only XP ledger, authoritative attempt records, exam history, or
+teacher-accessible individual learning records. Any future analytics must be
+based on explicitly synchronized data and must not present client-submitted
+records as verified exam results.

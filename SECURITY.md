@@ -29,6 +29,11 @@ not cryptographically proven; there is no signed certificate verification/revoca
 or server-verifiable exam evidence. Do not rely on the current service for high-stakes
 assessment or sensitive student records.
 
+Students may explicitly merge local progress with a private account snapshot.
+Snapshots are validated, limited in size, scoped by authenticated user, and use
+revision checks to reject stale writes. This is still client-submitted learning
+data, not authoritative evidence; XP has no server-verifiable per-award ledger.
+
 For production, deploy behind HTTPS, configure a strong persistent
 `CYBERGUARD_SECRET_KEY`, set `CYBERGUARD_COOKIE_SECURE=1`, use a shared
 rate-limiter across workers, protect the teacher invitation code, configure account

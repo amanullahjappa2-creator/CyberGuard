@@ -20,9 +20,9 @@ missing are not implied to exist elsewhere in the codebase.
   process-local rate limits, score-range checks, class codes, teacher-token
   reports and CSV export.
 - Versioned SQLite migrations; student registration, login, current-user, logout
-  and progress backup APIs. Students can explicitly upload, restore or delete
-  their account-owned progress, with no automatic upload. Backups exclude the
-  certificate name and unfinished attempt. Passwords use Werkzeug scrypt hashes,
+  and progress backup APIs. Students can explicitly merge or delete account-owned
+  progress, with no automatic upload. Backups exclude the certificate name and
+  unfinished attempt. Passwords use Werkzeug scrypt hashes,
   and account creation cannot assign teacher/admin roles from browser input.
 - Node, Python and Playwright test suites, ESLint, Prettier and GitHub Actions CI.
 
@@ -31,8 +31,10 @@ missing are not implied to exist elsewhere in the codebase.
 - No baseline test failures were found before Phase 2: 27 Node tests, 6 Python
   tests and 1 Playwright test pass; lint and formatting pass.
 - Cloud progress is an explicit account backup, not live synchronization: local
-  progress remains authoritative during play, and a restore replaces this
-  browser's progress only after confirmation. No account-linked dashboard or
+  progress remains authoritative during play. Confirmed merges preserve completed
+  level records and unique learning events across copies; stale concurrent writes
+  are rejected. XP remains a cumulative total without an event ledger and uses the
+  higher copy to avoid double counting. No account-linked dashboard or
   teacher-level progress reporting is implemented.
 - Teacher onboarding requires a server invite; there is no admin provisioning,
   account recovery, email verification or complete role-based authorization.
@@ -171,7 +173,7 @@ made that the missing features or platform-security controls are complete.
 
 ## Latest verification
 
-- `npm test`: 30 passing.
+- `npm test`: 31 passing.
 - Python API tests: 14 passing.
 - Playwright: 3 passing, including student auth, teacher-owned classroom
   management, explicit account-progress upload/restore/delete, membership
@@ -182,18 +184,38 @@ made that the missing features or platform-security controls are complete.
 
 - Migration version 5 adds one private progress snapshot per student, keyed by
   the authenticated account and removed when that account is deleted.
-- The Account screen lets students explicitly replace the account backup,
-  restore it to this browser after confirmation, or delete it. No game activity
-  is automatically uploaded, and local learning continues offline.
+- The Account screen lets students explicitly merge browser progress with the
+  account backup or delete it. No game activity is automatically uploaded, and
+  local learning continues offline.
 - The API accepts bounded, validated learning data only; it omits the certificate
   name and unfinished attempt, requires CSRF protection for changes, rejects
-  teacher access, and returns data only to its owning student.
-- Repeat uploads of an unchanged snapshot are idempotent. Tests cover private
-  account boundaries, role restrictions, invalid payloads, idempotency, backup
-  deletion and the browser restore flow.
+  teacher access, returns data only to its owning student, and rejects stale
+  concurrent writes using the snapshot revision.
+- The browser merge retains the better completed-level records, unions distinct
+  achievements and learning events, preserves browser-only progress on restore,
+  and is idempotent for repeated syncs. XP uses the greater cumulative total to
+  avoid duplicate awards; a per-award XP history is not yet available.
+- Tests cover private account boundaries, role restrictions, invalid payloads,
+  stale-write conflicts, snapshot merges, account backup deletion, and browser
+  upload/restore flows.
 
 ## Implementation order
 
 Continue with learning content and assessment modules, then connect account
 progress to carefully scoped learner/teacher reports. Keep local play available
 offline and verify every increment against the bilingual browser flow.
+
+## Next development phase checklist
+
+- [x] Audit current documentation, account APIs, teacher routes, local storage,
+      service-worker behavior, and existing browser/API test coverage.
+- [x] Make account progress upload and restore merge-safe across devices, with
+      conflict protection and tests proving existing records are retained.
+- [ ] Design structured, attributable learning and XP history before presenting
+      account-level analytics or teacher access to individual learning records.
+- [ ] Add bilingual structured courses, lessons, knowledge checks, bookmarks,
+      and resume state.
+- [ ] Add server-authorized examinations and class assignments only after the
+      account/class data model and answer-release rules are specified.
+- [ ] Add verified certificates and administrative workflows after authorization,
+      audit logging, and course-completion criteria are in place.

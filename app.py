@@ -792,11 +792,33 @@ def create_app(test_config=None):
         progress = normalize_student_progress(data.get("progress") if data else None)
         if progress is None:
             return jsonify(error="Learning progress has an invalid or unsupported format."), 400
+        expected_updated_at = data.get("expectedUpdatedAt") if data else None
+        if expected_updated_at is not None and (
+            not isinstance(expected_updated_at, str) or len(expected_updated_at) > 40
+        ):
+            return jsonify(error="The progress backup version is invalid."), 400
         progress_json = json.dumps(progress, ensure_ascii=True, separators=(",", ":"), allow_nan=False)
         if len(progress_json.encode("utf-8")) > MAX_PROGRESS_BYTES:
             return jsonify(error="Learning progress is larger than the allowed backup size."), 413
         timestamp = datetime.now(timezone.utc).isoformat()
         with db_connection() as connection:
+            connection.execute("BEGIN IMMEDIATE")
+            existing = connection.execute(
+                "SELECT updated_at FROM student_progress WHERE user_id = ?",
+                (user["user_id"],),
+            ).fetchone()
+            current_updated_at = existing["updated_at"] if existing else None
+            if current_updated_at != expected_updated_at:
+                return jsonify(
+                    error="The account backup changed on another device. Reload it and retry the merge."
+                ), 409
+            if existing:
+                current = connection.execute(
+                    "SELECT progress_json FROM student_progress WHERE user_id = ?",
+                    (user["user_id"],),
+                ).fetchone()
+                if current["progress_json"] == progress_json:
+                    return jsonify(saved=True, updatedAt=current_updated_at)
             connection.execute(
                 """
                 INSERT INTO student_progress (user_id, progress_json, updated_at)
@@ -808,11 +830,7 @@ def create_app(test_config=None):
                 """,
                 (user["user_id"], progress_json, timestamp),
             )
-            record = connection.execute(
-                "SELECT updated_at FROM student_progress WHERE user_id = ?",
-                (user["user_id"],),
-            ).fetchone()
-        return jsonify(saved=True, updatedAt=record["updated_at"])
+        return jsonify(saved=True, updatedAt=timestamp)
 
     @app.delete("/api/student/progress")
     @rate_limited

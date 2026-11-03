@@ -6,6 +6,8 @@ import {
   clearProgress,
   exportProgress as serializeProgress,
   importProgress as saveImportedProgress,
+  mergeProgressSnapshots,
+  saveProgress,
 } from "./storage.js";
 
 const app = document.querySelector("#app");
@@ -691,7 +693,11 @@ async function requestApi(path, method = "GET", data) {
   } catch {
     throw new Error(currentLocale().ui.accountServiceUnavailable);
   }
-  if (!response.ok) throw new Error(result.error || currentLocale().ui.accountServiceUnavailable);
+  if (!response.ok) {
+    const error = new Error(result.error || currentLocale().ui.accountServiceUnavailable);
+    error.status = response.status;
+    throw error;
+  }
   return result;
 }
 
@@ -859,11 +865,27 @@ function renderStudentProgress(panel, ui) {
       ui.accountProgressUpload,
       async () => {
         if (!window.confirm(ui.accountProgressUploadConfirm)) return;
-        await requestApi("student/progress", "PUT", {
-          progress: progressForCloud(engine.progress),
-        });
-        accountMessage = ui.accountProgressUploaded;
-        accountError = false;
+        try {
+          const backup = await requestApi("student/progress");
+          const merged = mergeProgressSnapshots(engine.progress, backup.progress);
+          await requestApi("student/progress", "PUT", {
+            progress: progressForCloud(merged),
+            expectedUpdatedAt: backup.updatedAt,
+          });
+          saveProgress(merged);
+          engine = new GameEngine(engine.levels, locales);
+          accountMessage = ui.accountProgressUploaded;
+          accountError = false;
+        } catch (error) {
+          console.error("Could not merge local and account progress.", error);
+          accountMessage =
+            error.status === 409
+              ? ui.accountProgressConflict
+              : error instanceof TypeError
+                ? ui.accountServiceUnavailable
+                : error.message;
+          accountError = true;
+        }
         render();
       },
       "button button-primary",
@@ -881,9 +903,8 @@ function renderStudentProgress(panel, ui) {
           return;
         }
         if (!window.confirm(ui.accountProgressDownloadConfirm)) return;
-        saveImportedProgress(
-          JSON.stringify({ ...result.progress, name: engine.progress.name, schemaVersion: 2 }),
-        );
+        const merged = mergeProgressSnapshots(engine.progress, result.progress);
+        saveProgress(merged);
         window.location.reload();
       },
       "button",
