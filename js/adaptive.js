@@ -9,6 +9,7 @@ export const SKILL_TAGS = [
 ];
 
 export const INITIAL_MASTERY = 50;
+export const MIN_MASTERY_ANSWERS = 4;
 export const MAX_ADAPTIVE_EVENTS = 2000;
 
 export function createAdaptiveState() {
@@ -199,10 +200,22 @@ export function buildPerformanceReport(progress) {
       const events = adaptive.events.filter((event) => event.skillTag === skillTag);
       const scored = events.filter((event) => ["correct", "wrong"].includes(event.outcome));
       const incorrect = scored.filter((event) => event.outcome === "wrong").length;
+      const hasMasteryBaseline = scored.length >= MIN_MASTERY_ANSWERS;
       return [
         skillTag,
         {
-          mastery: Math.round(adaptive.masteryScores?.[skillTag] ?? INITIAL_MASTERY),
+          mastery: hasMasteryBaseline
+            ? Math.round(adaptive.masteryScores?.[skillTag] ?? INITIAL_MASTERY)
+            : null,
+          masteryStatus:
+            scored.length === 0
+              ? events.length
+                ? "needs-answers"
+                : "not-attempted"
+              : hasMasteryBaseline
+                ? "measured"
+                : "building",
+          answersToBaseline: Math.max(0, MIN_MASTERY_ANSWERS - scored.length),
           accuracy: scored.length ? Math.round(((scored.length - incorrect) / scored.length) * 100) : null,
           attempts: scored.length,
           mistakes: incorrect,

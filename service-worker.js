@@ -1,4 +1,4 @@
-const CACHE_NAME = "cyberguard-static-v12";
+const CACHE_NAME = "cyberguard-static-v16";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -49,6 +49,7 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET" || new URL(event.request.url).origin !== self.location.origin) return;
+  if (/\/api(?:\/|$)/.test(new URL(event.request.url).pathname)) return;
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;

@@ -4,6 +4,7 @@ import {
   applyAdaptiveObservation,
   chooseRecommendation,
   createAdaptiveState,
+  MIN_MASTERY_ANSWERS,
   normalizeAdaptiveState,
   recentAccuracy,
   SKILL_TAGS,
@@ -273,7 +274,7 @@ export class GameEngine {
     const observations = this.progress.adaptive.events.filter(
       (event) => event.skillTag === level.skillTag && ["correct", "wrong"].includes(event.outcome),
     );
-    const hasEnoughEvidence = observations.length >= 4;
+    const hasEnoughEvidence = observations.length >= MIN_MASTERY_ANSWERS;
     const mastery = hasEnoughEvidence ? (this.progress.adaptive.masteryScores[level.skillTag] ?? 50) : 50;
     const accuracy = hasEnoughEvidence ? recentAccuracy(this.progress.adaptive.events, level.skillTag) : null;
     const issueDifficulty =

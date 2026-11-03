@@ -7,8 +7,9 @@ training app. The current baseline contains a static browser client, 30 bilingua
 scenario levels, local progress and reporting, and an optional Flask/SQLite
 scoreboard. Primary navigation exposes Dashboard, Levels, Reports and Dictionary;
 Badges, Settings, language and theme controls are grouped in the Options menu.
-Learn modules, formal assessments, user accounts, assignments and content
-administration are not implemented yet.
+Learn modules, formal assessments, assignments and content administration are not
+implemented yet. The bilingual Account screen uses the initial student
+registration/login endpoints but is not yet linked to local learning progress.
 
 The `pre-polish` tag preserves the application before this cleanup pass. The former
 map is replaced by the chapter-based level list, reusing the existing progression,
@@ -24,20 +25,28 @@ scenario engine and renderers.
   selection, scoring, hints, XP, badges, timers, persisted answer order and
   existing adaptive hooks.
 - `js/adaptive.js` calculates local skill observations, recommendations and report
-  summaries. Its current formula is transitional and does not yet implement the
-  Academy brief's five-item initialization and confidence thresholds.
+  summaries. The interface labels unattempted or emerging skill data explicitly;
+  it only presents mastery estimates after four answered issues in a skill.
 - `js/storage.js` wraps local storage and validates exported/imported progress.
 - `js/levels/renderers.js` renders selectable and ordered scenario items.
 - `levels/level01.json` through `levels/level30.json` hold scenario structures and
   fix identifiers. `level-catalog.json` supplies lightweight index metadata.
 - `lang/en.json` and `lang/ur.json` hold English and Urdu UI and scenario content.
-- `app.py`, `js/scoreboard.js`, `js/teacher.js` and `teacher.html` implement the
-  optional privacy-consented nickname scoreboard and teacher reports. Flask
-  response headers include a same-origin CSP, frame restrictions, and other
-  browser security policies.
+- `app.py` implements the optional privacy-consented nickname scoreboard,
+  teacher reports, initial student registration/login APIs, and transactional,
+  versioned SQLite migrations. Teacher accounts activated by the server invite
+  code can create owned classes; report endpoints enforce owner identity.
+  Students can request membership in owned classes; teachers approve/reject
+  pending requests and remove active members.
+  `js/scoreboard.js`, `js/teacher.js` and
+  `teacher.html` provide the browser clients. Flask response headers
+  include a same-origin CSP, frame restrictions, and other browser security
+  policies. The service worker bypasses API routes and does not offline-cache
+  authentication responses.
 - `css/style.css` provides responsive themes, RTL layout, accessibility states,
   chapter and level-card presentation, and scenario styles. Fonts are self-hosted
-  under `assets/fonts/`.
+  under `assets/fonts/`; shared dark-theme tokens use a restrained cyan, blue and
+  status palette.
 - `service-worker.js` precaches the app shell, locale files, levels and assets for
   offline use after the first successful load.
 - `THREAT_MODEL.md` and `SECURITY.md` document the current boundaries, known
@@ -47,11 +56,11 @@ scenario engine and renderers.
 
 The existing level JSON, bilingual translations, input validation, offline shell,
 and scenario renderers are the foundation for the Academy's Labs. The separate
-Learn and Assessments modules, secure assessment delivery, accounts/roles,
-instructor classes and assignments, signed certificate verification, and
-administrative content workflow still require implementation. When the mastery
-module is replaced, its result must remain the single source for dashboards,
-recommendations and learner/instructor reports.
+Learn and Assessments modules, secure assessment delivery, complete role
+provisioning and authorization, instructor classes and assignments, signed
+certificate verification, and administrative content workflow still require
+implementation. When the mastery module is replaced, its result must remain the
+single source for dashboards, recommendations and learner/instructor reports.
 
 ## Validation
 

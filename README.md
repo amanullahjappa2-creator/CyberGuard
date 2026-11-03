@@ -6,9 +6,10 @@ local progress and reports, and an optional nickname-only scoreboard. It does no
 perform real security tests, access real accounts, or send network traffic during
 offline learning.
 
-The Academy transition is staged. The level catalogue and scenario renderer are
-available now; structured lessons, formal assessments, learner accounts, assignments
-and content administration are not yet part of this baseline.
+The Academy transition is staged. The Flask API now includes the first student
+registration and login endpoints with versioned SQLite migrations, but the browser
+app does not yet include account screens, teacher/admin portals, structured lessons,
+formal assessments, assignments or content administration.
 
 ## Run locally
 
@@ -30,6 +31,7 @@ The scoreboard is optional. To run the browser app and API together:
 ```powershell
 python -m pip install -r requirements.txt
 $env:CYBERGUARD_SECRET_KEY = (python -c "import secrets; print(secrets.token_hex(32))")
+$env:CYBERGUARD_TEACHER_INVITE_CODE = (python -c "import secrets; print(secrets.token_urlsafe(24))")
 python app.py
 ```
 
@@ -38,6 +40,23 @@ scoreboard data in `instance/cyberguard.sqlite3`. Joining requires explicit cons
 and a nickname; learners can continue without uploading anything. The service uses
 CSRF protection, rate limiting, input validation and score sanity checks. Teacher
 reports are available from the Reports screen.
+
+The API also exposes `POST /api/auth/register`, `POST /api/auth/login`,
+`GET /api/auth/me` and `POST /api/auth/logout`. Mutations require the same-origin
+CSRF token from `GET /api/csrf` in the `X-CSRF-Token` header. Registration creates
+a student by default; a teacher account requires the server-configured
+`CYBERGUARD_TEACHER_INVITE_CODE`, and browser-supplied roles are ignored. Passwords
+are stored as scrypt hashes. Teachers can create account-owned classes and view
+their class reports after signing in. Students can request to join by class code;
+the owning teacher approves or removes memberships. The bilingual Account screen
+is available from Options when running through Flask; static-only hosting
+continues to support offline learning but cannot use account services. Account
+recovery, email verification, admin onboarding and migration of legacy token-owned
+classes are not implemented. Legacy token-based class creation remains for
+compatibility. Score uploads to account-owned classes require an active student
+membership; membership requests only apply to account-owned classes, and legacy
+nickname scores remain unverified. Do not use this stage to store sensitive
+student records or deploy as a production LMS.
 
 ## Learning levels
 
@@ -58,6 +77,9 @@ difficulty rating, estimated duration, issue count, completion stars, and lock
 status. Answer choices are shuffled per attempt and remain stable while that
 attempt is in progress. Dashboard, Levels, Reports and Dictionary are the primary
 destinations; Badges, Settings, language and theme controls are in the Options menu.
+The local mastery report labels unattempted and low-sample skills rather than
+displaying the engine's neutral starting value as measured performance. A mastery
+estimate appears after four answered issues in that skill.
 
 ## Responsible use and security
 
@@ -80,7 +102,9 @@ cookies, and a production WSGI server.
 - `levels/` and `level-catalog.json`: localized 30-level scenario data and index.
 - `lang/`: English and Urdu interface, level text, explanations and glossary.
 - `app.py`, `js/scoreboard.js`, `js/teacher.js`, `teacher.html`: optional scoreboard
-  API, browser client and teacher report.
+  API, student-account API, browser client and teacher report. SQLite schema
+  upgrades are tracked with `PRAGMA user_version` and preserve existing scoreboard
+  rows.
 - `assets/fonts/`: self-hosted typefaces and their licenses.
 - `tests/`, `e2e/`: Node, Python and browser checks.
 - `.github/workflows/ci.yml`: automated security scans, lint, formatting and tests.

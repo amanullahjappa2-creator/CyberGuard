@@ -25,6 +25,10 @@ let textSize = "normal";
 let reducedMotion = false;
 let dictionarySearch = "";
 let difficulty = "defender";
+let account = null;
+let accountChecked = false;
+let accountMessage = "";
+let accountError = false;
 let timerHandle = null;
 let activeAudioContext = null;
 
@@ -246,8 +250,30 @@ function renderHome() {
   scoreCopy.append(
     element("p", "muted", `${completedLevels} / ${engine.levels.length} ${ui.levelsCompleted}`),
   );
+  const progressTrack = element("div", "progress-track dashboard-progress");
+  progressTrack.setAttribute("role", "progressbar");
+  progressTrack.setAttribute("aria-label", ui.overallProgress);
+  progressTrack.setAttribute("aria-valuemin", "0");
+  progressTrack.setAttribute("aria-valuemax", "100");
+  progressTrack.setAttribute("aria-valuenow", String(progressPercent));
+  const progressFill = element("span", "progress-fill");
+  progressFill.style.width = `${progressPercent}%`;
+  progressTrack.append(progressFill);
+  scoreCopy.append(progressTrack);
   dashboardRank.append(scoreCopy);
   dashboard.append(dashboardRank);
+  const playerCard = element("section", "dashboard-card player-card");
+  playerCard.append(element("p", "eyebrow", ui.playerRank));
+  playerCard.append(element("h2", "rank-value", copy.ranks?.[engine.progress.rank] ?? engine.progress.rank));
+  const playerStats = element("div", "dashboard-stat-list");
+  playerStats.append(
+    element("p", "", `${ui.playerLevel}: ${engine.progress.playerLevel}`),
+    element("p", "", `${ui.experiencePoints}: ${engine.progress.xp}`),
+    element("p", "", `${ui.learningStreak}: ${engine.progress.streak.count} ${ui.days}`),
+    element("p", "muted", `${ui.xpToNextLevel}: ${engine.progress.playerLevel * 250 - engine.progress.xp}`),
+  );
+  playerCard.append(playerStats);
+  dashboard.append(playerCard);
   dashboard.append(renderSkillRadar());
   app.append(dashboard);
   const recommendation = engine.recommendLevel();
@@ -257,8 +283,12 @@ function renderHome() {
     const skillName = copy.skills[recommendation.skillTag] ?? recommendation.skillTag;
     card.append(element("p", "eyebrow", ui.recommendedLevel));
     card.append(element("h2", "", `${ui.level} ${recommendation.id}: ${levelCopy.title}`));
-    const reason =
-      recommendation.accuracy === null
+    const hasAnsweredIssues = engine.progress.adaptive.events.some((event) =>
+      ["correct", "wrong"].includes(event.outcome),
+    );
+    const reason = !hasAnsweredIssues
+      ? ui.recommendationFirstMission
+      : recommendation.accuracy === null
         ? ui.recommendationNewSkill.replace("{skill}", skillName)
         : ui.recommendationReason
             .replace("{skill}", skillName)
@@ -626,6 +656,228 @@ function resetProgress() {
   window.location.reload();
 }
 
+function accountField(label, name, type, autocomplete, required = true) {
+  const field = element("label", "account-field");
+  field.append(element("span", "", label));
+  const input = document.createElement("input");
+  input.name = name;
+  input.type = type;
+  input.autocomplete = autocomplete;
+  input.required = required;
+  if (type === "password") input.minLength = 12;
+  field.append(input);
+  return field;
+}
+
+async function requestApi(path, method = "GET", data) {
+  const headers = { Accept: "application/json" };
+  if (method !== "GET") {
+    const csrfResponse = await fetch("./api/csrf", { cache: "no-store" });
+    const csrfData = await csrfResponse.json();
+    if (!csrfResponse.ok || typeof csrfData.token !== "string")
+      throw new Error(currentLocale().ui.accountServiceUnavailable);
+    headers["X-CSRF-Token"] = csrfData.token;
+  }
+  if (data) headers["Content-Type"] = "application/json";
+  const response = await fetch(`./api/${path}`, {
+    method,
+    headers,
+    cache: "no-store",
+    body: data ? JSON.stringify(data) : undefined,
+  });
+  let result;
+  try {
+    result = await response.json();
+  } catch {
+    throw new Error(currentLocale().ui.accountServiceUnavailable);
+  }
+  if (!response.ok) throw new Error(result.error || currentLocale().ui.accountServiceUnavailable);
+  return result;
+}
+
+function renderAccount() {
+  const ui = currentLocale().ui;
+  const page = element("div", "page account-page");
+  const heading = element("header", "page-heading");
+  heading.append(element("p", "eyebrow", ui.academyLabel));
+  heading.append(element("h1", "", ui.navAccount));
+  heading.append(element("p", "", ui.accountIntro));
+  page.append(heading);
+
+  const panel = element("section", "report-card account-panel");
+  if (accountMessage) {
+    const message = element("p", `account-message${accountError ? " is-error" : ""}`, accountMessage);
+    message.setAttribute("role", accountError ? "alert" : "status");
+    panel.append(message);
+  }
+  if (account) {
+    panel.append(element("h2", "", ui.accountSignedIn));
+    panel.append(element("p", "", account.fullName));
+    panel.append(element("p", "muted", `${account.username} · ${account.role}`));
+    if (account.role === "teacher") {
+      const teacherDashboard = element("a", "button button-primary", ui.teacherDashboard);
+      teacherDashboard.href = "./teacher.html";
+      panel.append(teacherDashboard);
+    }
+    if (account.role === "student") renderStudentClasses(panel, ui);
+    const logout = button(
+      ui.accountLogout,
+      async () => {
+        await requestApi("auth/logout", "POST", {});
+        account = null;
+        accountMessage = ui.accountLoggedOut;
+        accountError = false;
+        render();
+      },
+      "button button-quiet",
+    );
+    panel.append(logout);
+  } else {
+    if (!accountChecked) {
+      accountChecked = true;
+      panel.append(element("p", "muted", ui.accountChecking));
+      void requestApi("auth/me")
+        .then((result) => {
+          account = result.user;
+          accountMessage = "";
+          render();
+        })
+        .catch((error) => {
+          if (error instanceof TypeError || error.message === ui.accountServiceUnavailable) {
+            accountMessage = ui.accountServiceUnavailable;
+            accountError = true;
+          }
+          render();
+        });
+    } else {
+      const loginForm = document.createElement("form");
+      loginForm.className = "account-form";
+      loginForm.append(element("h2", "", ui.accountLogin));
+      loginForm.append(accountField(ui.accountIdentifier, "identifier", "text", "username"));
+      loginForm.append(accountField(ui.accountPassword, "password", "password", "current-password"));
+      const loginButton = element("button", "button button-primary", ui.accountLogin);
+      loginButton.type = "submit";
+      loginForm.append(loginButton);
+      loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        loginButton.disabled = true;
+        try {
+          const form = new FormData(loginForm);
+          const result = await requestApi("auth/login", "POST", {
+            identifier: form.get("identifier"),
+            password: form.get("password"),
+          });
+          account = result.user;
+          accountMessage = ui.accountWelcome;
+          accountError = false;
+          render();
+        } catch (error) {
+          accountMessage = error.message;
+          accountError = true;
+          render();
+        }
+      });
+
+      const registerForm = document.createElement("form");
+      registerForm.className = "account-form";
+      registerForm.append(element("h2", "", ui.accountRegister));
+      registerForm.append(accountField(ui.accountFullName, "fullName", "text", "name"));
+      registerForm.append(accountField(ui.accountUsername, "username", "text", "username"));
+      registerForm.append(accountField(ui.accountEmail, "email", "email", "email"));
+      registerForm.append(accountField(ui.accountTeacherInvite, "teacherInviteCode", "text", "off", false));
+      registerForm.append(accountField(ui.accountPassword, "password", "password", "new-password"));
+      registerForm.append(
+        accountField(ui.accountConfirmPassword, "confirmPassword", "password", "new-password"),
+      );
+      const registerButton = element("button", "button button-primary", ui.accountRegister);
+      registerButton.type = "submit";
+      registerForm.append(registerButton);
+      registerForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        registerButton.disabled = true;
+        const form = new FormData(registerForm);
+        const password = form.get("password");
+        if (password !== form.get("confirmPassword")) {
+          accountMessage = ui.accountPasswordMismatch;
+          accountError = true;
+          render();
+          return;
+        }
+        try {
+          const result = await requestApi("auth/register", "POST", {
+            fullName: form.get("fullName"),
+            username: form.get("username"),
+            email: form.get("email"),
+            teacherInviteCode: form.get("teacherInviteCode"),
+            password,
+            confirmPassword: form.get("confirmPassword"),
+          });
+          account = result.user;
+          accountMessage = ui.accountWelcome;
+          accountError = false;
+          render();
+        } catch (error) {
+          accountMessage = error.message;
+          accountError = true;
+          render();
+        }
+      });
+      panel.append(loginForm, registerForm);
+    }
+  }
+  page.append(panel);
+  app.replaceChildren(page);
+}
+
+function renderStudentClasses(panel, ui) {
+  const section = element("section", "account-classes");
+  section.append(element("h2", "", ui.studentClasses));
+  const form = document.createElement("form");
+  form.className = "account-form";
+  const classCodeField = accountField(ui.teacherCodeLabel, "classCode", "text", "off");
+  const classCode = classCodeField.querySelector("input");
+  classCode.maxLength = 6;
+  classCode.pattern = "[A-Z2-9]{6}";
+  classCode.autocapitalize = "characters";
+  classCode.addEventListener("input", () => {
+    classCode.value = classCode.value.toUpperCase();
+  });
+  form.append(classCodeField);
+  const joinButton = element("button", "button button-primary", ui.joinClass);
+  joinButton.type = "submit";
+  form.append(joinButton);
+  const statusList = element("div", "student-class-list");
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    joinButton.disabled = true;
+    try {
+      await requestApi("student/classes", "POST", { classCode: classCode.value.trim().toUpperCase() });
+      statusList.replaceChildren(element("p", "account-message", ui.classJoinPending));
+      await refreshClasses();
+    } catch (error) {
+      statusList.replaceChildren(element("p", "account-message is-error", error.message));
+    } finally {
+      joinButton.disabled = false;
+    }
+  });
+  async function refreshClasses() {
+    try {
+      const result = await requestApi("student/classes");
+      statusList.replaceChildren();
+      if (!result.classes.length) statusList.append(element("p", "muted", ui.studentNoClasses));
+      for (const membership of result.classes) {
+        const status = membership.status === "active" ? ui.classMembershipActive : ui.classMembershipPending;
+        statusList.append(element("p", "student-class-row", `${membership.classCode} · ${status}`));
+      }
+    } catch (error) {
+      statusList.replaceChildren(element("p", "account-message is-error", error.message));
+    }
+  }
+  section.append(form, statusList);
+  panel.append(section);
+  void refreshClasses();
+}
+
 function renderBadges() {
   const copy = currentLocale();
   const heading = element("header", "page-heading");
@@ -676,13 +928,13 @@ function renderDictionary() {
 
 function renderSkillRadar(title = currentLocale().ui.mastery) {
   const copy = currentLocale();
+  const report = buildPerformanceReport(engine.progress);
   const section = element("section", "dashboard-card");
   section.append(element("h2", "", title));
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.classList.add("skill-radar");
   svg.setAttribute("viewBox", "0 0 320 280");
   svg.setAttribute("role", "img");
-  svg.setAttribute("aria-label", title);
   const center = { x: 160, y: 137 };
   const radius = 92;
   const points = SKILL_TAGS.map((skill, index) => {
@@ -691,7 +943,10 @@ function renderSkillRadar(title = currentLocale().ui.mastery) {
       skill,
       x: center.x + Math.cos(angle) * radius,
       y: center.y + Math.sin(angle) * radius,
-      value: Math.min(1, (engine.progress.adaptive.masteryScores[skill] ?? 50) / 100),
+      value:
+        report.skillStats[skill].mastery === null
+          ? null
+          : Math.min(1, report.skillStats[skill].mastery / 100),
       angle,
     };
   });
@@ -708,18 +963,24 @@ function renderSkillRadar(title = currentLocale().ui.mastery) {
     polygon.setAttribute("class", "radar-grid");
     svg.append(polygon);
   }
-  const data = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-  data.setAttribute(
-    "points",
-    points
-      .map(
-        (point) =>
-          `${center.x + (point.x - center.x) * point.value},${center.y + (point.y - center.y) * point.value}`,
-      )
-      .join(" "),
+  const measuredPoints = points.filter((point) => point.value !== null);
+  svg.setAttribute(
+    "aria-label",
+    `${title}. ${
+      measuredPoints
+        .map((point) => `${copy.skills?.[point.skill] ?? point.skill}: ${Math.round(point.value * 100)}%`)
+        .join(", ") || currentLocale().ui.masteryRadarEmpty
+    }`,
   );
-  data.setAttribute("class", "radar-data");
-  svg.append(data);
+  measuredPoints.forEach((point) => {
+    const marker = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    marker.setAttribute("cx", String(center.x + (point.x - center.x) * point.value));
+    marker.setAttribute("cy", String(center.y + (point.y - center.y) * point.value));
+    marker.setAttribute("r", "5");
+    marker.setAttribute("class", "radar-point");
+    marker.dataset.skillTag = point.skill;
+    svg.append(marker);
+  });
   points.forEach((point) => {
     const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
     const labelRadius = radius + 24;
@@ -731,6 +992,16 @@ function renderSkillRadar(title = currentLocale().ui.mastery) {
     svg.append(label);
   });
   section.append(svg);
+  const tracked = measuredPoints.length;
+  section.append(
+    element(
+      "p",
+      "muted radar-caption",
+      tracked
+        ? currentLocale().ui.masteryRadarTracked.replace("{tracked}", String(tracked))
+        : currentLocale().ui.masteryRadarEmpty,
+    ),
+  );
   return section;
 }
 
@@ -773,13 +1044,23 @@ function renderPerformanceReport() {
     const stats = report.skillStats[skillTag];
     const row = element("div", "report-skill");
     row.append(element("span", "", copy.skills[skillTag]));
-    const bar = document.createElement("progress");
-    bar.max = 100;
-    bar.value = stats.mastery;
-    bar.dataset.skillTag = skillTag;
-    bar.setAttribute("aria-label", `${copy.skills[skillTag]} ${stats.mastery}%`);
-    row.append(bar);
-    row.append(element("strong", "", `${stats.mastery}%`));
+    if (stats.mastery === null) {
+      const status =
+        stats.masteryStatus === "needs-answers"
+          ? ui.masteryNeedsAnswers
+          : stats.masteryStatus === "not-attempted"
+            ? ui.masteryNotAttempted
+            : ui.masteryBuilding.replace("{remaining}", String(stats.answersToBaseline));
+      row.append(element("span", "mastery-status", status));
+    } else {
+      const bar = document.createElement("progress");
+      bar.max = 100;
+      bar.value = stats.mastery;
+      bar.dataset.skillTag = skillTag;
+      bar.setAttribute("aria-label", `${copy.skills[skillTag]} ${stats.mastery}%`);
+      row.append(bar);
+      row.append(element("strong", "", `${stats.mastery}%`));
+    }
     row.append(
       element("span", "muted", `${ui.accuracy}: ${stats.accuracy === null ? "—" : `${stats.accuracy}%`}`),
     );
@@ -789,7 +1070,8 @@ function renderPerformanceReport() {
   const mistakes = element("section", "report-card");
   mistakes.append(element("h2", "", ui.mistakesBySkill));
   for (const [skillTag, count] of Object.entries(report.mistakesByCategory)) {
-    mistakes.append(element("p", "", `${copy.skills[skillTag]}: ${count}`));
+    const value = report.skillStats[skillTag].attempts ? count : ui.masteryNotAttempted;
+    mistakes.append(element("p", "", `${copy.skills[skillTag]}: ${value}`));
   }
   summary.append(mistakes);
   const times = element("section", "report-card");
@@ -823,12 +1105,20 @@ function renderPerformanceReport() {
   tipsCard.append(element("h2", "", ui.personalTips));
   const tips = element("ol", "report-tip-list");
   const weakest = SKILL_TAGS.slice().sort(
-    (left, right) => report.skillStats[left].mastery - report.skillStats[right].mastery,
+    (left, right) => (report.skillStats[left].mastery ?? 101) - (report.skillStats[right].mastery ?? 101),
   );
   for (const skillTag of weakest.slice(0, 3)) {
     const stats = report.skillStats[skillTag];
     let message;
-    if (stats.mistakes > 0) {
+    if (stats.masteryStatus === "not-attempted") {
+      message = ui.reportTipUnattempted.replace("{skill}", copy.skills[skillTag]);
+    } else if (stats.masteryStatus === "needs-answers") {
+      message = ui.reportTipNeedsAnswers.replace("{skill}", copy.skills[skillTag]);
+    } else if (stats.masteryStatus === "building") {
+      message = ui.reportTipBuilding
+        .replace("{skill}", copy.skills[skillTag])
+        .replace("{remaining}", String(stats.answersToBaseline));
+    } else if (stats.mistakes > 0) {
       message = ui.reportTipMistakes.replace("{skill}", copy.skills[skillTag]);
     } else if (stats.accuracy === null) {
       message = ui.reportTipLowMastery
@@ -1349,6 +1639,7 @@ function render() {
   else if (screen === "levels") renderLevels();
   else if (screen === "report") renderPerformanceReport();
   else if (screen === "settings") renderSettings();
+  else if (screen === "account") renderAccount();
   else if (screen === "badges") renderBadges();
   else if (screen === "dictionary") renderDictionary();
   else renderHome();

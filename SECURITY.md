@@ -18,14 +18,20 @@ guarantee is implied.
 
 ## Current security limitations
 
-The optional service is a nickname scoreboard, not an account or exam platform.
-It has no authenticated learner/instructor accounts, password reset, TOTP,
-global logout, signed certificate verification/revocation, or server-verifiable
-exam evidence. Client-submitted scores are sanity-checked, not cryptographically
-proven. Do not rely on the current service for high-stakes assessment or sensitive
-student records.
+The service now has student registration/login APIs using scrypt password hashes,
+versioned SQLite migrations, teacher-owned class/report endpoints, and student
+class-membership requests with teacher approval. Teacher registration requires a
+deployment-configured invitation code. There is no email
+verification, password reset, TOTP, server-side session revocation, or admin
+provisioning. Legacy bearer-token classes remain separate from the new ownership
+model and are not migrated to accounts. Client-submitted scores are sanity-checked,
+not cryptographically proven; there is no signed certificate verification/revocation
+or server-verifiable exam evidence. Do not rely on the current service for high-stakes
+assessment or sensitive student records.
 
 For production, deploy behind HTTPS, configure a strong persistent
 `CYBERGUARD_SECRET_KEY`, set `CYBERGUARD_COOKIE_SECURE=1`, use a shared
-rate-limiter across workers, and protect the SQLite database and teacher tokens.
-The built-in Flask development server is for local use only.
+rate-limiter across workers, protect the teacher invitation code, configure account
+recovery and abuse monitoring, and protect the SQLite database and legacy teacher
+tokens. The current rate limiter is process-local. The built-in Flask development
+server is for local use only.

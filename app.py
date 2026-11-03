@@ -15,6 +15,7 @@ from functools import wraps
 from pathlib import Path
 
 from flask import Flask, Response, current_app, jsonify, request, send_from_directory, session
+from werkzeug.security import check_password_hash, generate_password_hash
 
 
 ROOT = Path(__file__).resolve().parent
@@ -22,6 +23,8 @@ SKILL_TAGS = ("passwords", "phishing", "social-engineering", "network", "web", "
 CLASS_CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
 NICKNAME_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]{2,23}$")
 CLASS_CODE_PATTERN = re.compile(r"^[A-Z2-9]{6}$")
+USERNAME_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{2,23}$")
+EMAIL_PATTERN = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 MAX_SCORE_PER_ISSUE = 125
 
 
@@ -46,6 +49,7 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY=os.environ.get("CYBERGUARD_SECRET_KEY") or secrets.token_hex(32),
         DATABASE=os.environ.get("CYBERGUARD_DATABASE", str(ROOT / "instance" / "cyberguard.sqlite3")),
+        TEACHER_INVITE_CODE=os.environ.get("CYBERGUARD_TEACHER_INVITE_CODE", ""),
         MAX_CONTENT_LENGTH=16 * 1024,
         RATE_LIMIT=30,
         RATE_WINDOW_SECONDS=60,
@@ -80,31 +84,98 @@ def create_app(test_config=None):
         finally:
             connection.close()
 
+    def migrate_legacy_schema(connection):
+        connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS classes (
+                class_code TEXT PRIMARY KEY,
+                teacher_token_hash TEXT NOT NULL,
+                created_at TEXT NOT NULL
+            )
+            """
+        )
+        connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS leaderboard (
+                nickname_key TEXT PRIMARY KEY,
+                nickname TEXT NOT NULL,
+                score INTEGER NOT NULL,
+                completed_levels TEXT NOT NULL,
+                skill_stats TEXT NOT NULL,
+                level_stats TEXT NOT NULL,
+                class_code TEXT REFERENCES classes(class_code),
+                updated_at TEXT NOT NULL
+            )
+            """
+        )
+        connection.execute(
+            "CREATE INDEX IF NOT EXISTS leaderboard_score_idx ON leaderboard(score DESC, updated_at ASC)"
+        )
+        connection.execute(
+            "CREATE INDEX IF NOT EXISTS leaderboard_class_idx ON leaderboard(class_code, score DESC)"
+        )
+
+    def migrate_accounts_schema(connection):
+        connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS users (
+                user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                full_name TEXT NOT NULL CHECK(length(full_name) BETWEEN 1 AND 100),
+                username TEXT NOT NULL COLLATE NOCASE UNIQUE,
+                email TEXT NOT NULL COLLATE NOCASE UNIQUE,
+                password_hash TEXT NOT NULL,
+                role TEXT NOT NULL DEFAULT 'student' CHECK(role IN ('student', 'teacher', 'admin')),
+                status TEXT NOT NULL DEFAULT 'active' CHECK(status IN ('active', 'pending', 'suspended')),
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            )
+            """
+        )
+        connection.execute("CREATE INDEX IF NOT EXISTS users_role_status_idx ON users(role, status)")
+
+    def migrate_teacher_ownership_schema(connection):
+        connection.execute(
+            "ALTER TABLE classes ADD COLUMN owner_user_id INTEGER REFERENCES users(user_id)"
+        )
+        connection.execute("CREATE INDEX IF NOT EXISTS classes_owner_idx ON classes(owner_user_id)")
+
+    def migrate_class_membership_schema(connection):
+        connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS class_members (
+                member_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                class_code TEXT NOT NULL REFERENCES classes(class_code) ON DELETE CASCADE,
+                user_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+                status TEXT NOT NULL DEFAULT 'pending'
+                    CHECK(status IN ('pending', 'active', 'rejected')),
+                joined_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                UNIQUE(class_code, user_id)
+            )
+            """
+        )
+        connection.execute("CREATE INDEX IF NOT EXISTS class_members_user_idx ON class_members(user_id, status)")
+
+    DATABASE_MIGRATIONS = (
+        (1, migrate_legacy_schema),
+        (2, migrate_accounts_schema),
+        (3, migrate_teacher_ownership_schema),
+        (4, migrate_class_membership_schema),
+    )
+
     def initialize_db():
         with db_connection() as connection:
-            connection.executescript(
-                """
-                CREATE TABLE IF NOT EXISTS classes (
-                    class_code TEXT PRIMARY KEY,
-                    teacher_token_hash TEXT NOT NULL,
-                    created_at TEXT NOT NULL
-                );
-                CREATE TABLE IF NOT EXISTS leaderboard (
-                    nickname_key TEXT PRIMARY KEY,
-                    nickname TEXT NOT NULL,
-                    score INTEGER NOT NULL,
-                    completed_levels TEXT NOT NULL,
-                    skill_stats TEXT NOT NULL,
-                    level_stats TEXT NOT NULL,
-                    class_code TEXT REFERENCES classes(class_code),
-                    updated_at TEXT NOT NULL
-                );
-                CREATE INDEX IF NOT EXISTS leaderboard_score_idx
-                    ON leaderboard(score DESC, updated_at ASC);
-                CREATE INDEX IF NOT EXISTS leaderboard_class_idx
-                    ON leaderboard(class_code, score DESC);
-                """
-            )
+            connection.execute("BEGIN IMMEDIATE")
+            schema_version = connection.execute("PRAGMA user_version").fetchone()[0]
+            latest_version = DATABASE_MIGRATIONS[-1][0]
+            if schema_version > latest_version:
+                raise RuntimeError(
+                    f"Database schema version {schema_version} is newer than this application supports."
+                )
+            for version, migration in DATABASE_MIGRATIONS:
+                if version > schema_version:
+                    migration(connection)
+                    connection.execute(f"PRAGMA user_version = {version}")
 
     with app.app_context():
         initialize_db()
@@ -135,6 +206,45 @@ def create_app(test_config=None):
             return function(*args, **kwargs)
 
         return wrapper
+
+    def authenticated_user():
+        user_id = session.get("user_id")
+        if not isinstance(user_id, int) or isinstance(user_id, bool):
+            return None
+        with db_connection() as connection:
+            user = connection.execute(
+                """
+                SELECT user_id, full_name, username, email, role, status, created_at
+                FROM users WHERE user_id = ?
+                """,
+                (user_id,),
+            ).fetchone()
+        if not user or user["status"] != "active":
+            session.clear()
+            return None
+        return user
+
+    def public_user(user):
+        return {
+            "id": user["user_id"],
+            "fullName": user["full_name"],
+            "username": user["username"],
+            "email": user["email"],
+            "role": user["role"],
+            "createdAt": user["created_at"],
+        }
+
+    def owns_class(user, class_code):
+        with db_connection() as connection:
+            owner = connection.execute(
+                "SELECT owner_user_id FROM classes WHERE class_code = ?",
+                (class_code,),
+            ).fetchone()
+        return bool(
+            owner
+            and owner["owner_user_id"] is not None
+            and (user["role"] == "admin" or owner["owner_user_id"] == user["user_id"])
+        )
 
     def payload():
         data = request.get_json(silent=True)
@@ -173,15 +283,26 @@ def create_app(test_config=None):
         return True
 
     def teacher_class(class_code):
-        authorization = request.headers.get("Authorization", "")
-        token = authorization.removeprefix("Bearer ").strip()
-        if not token:
-            return None
         with db_connection() as connection:
             record = connection.execute(
-                "SELECT teacher_token_hash FROM classes WHERE class_code = ?", (class_code,)
+                "SELECT teacher_token_hash, owner_user_id FROM classes WHERE class_code = ?", (class_code,)
             ).fetchone()
-        if not record or not hmac.compare_digest(record["teacher_token_hash"], hashlib.sha256(token.encode()).hexdigest()):
+        if not record:
+            return None
+        if record["owner_user_id"] is not None:
+            user = authenticated_user()
+            if (
+                user
+                and user["role"] in {"teacher", "admin"}
+                and (user["role"] == "admin" or user["user_id"] == record["owner_user_id"])
+            ):
+                return record
+            return None
+        authorization = request.headers.get("Authorization", "")
+        token = authorization.removeprefix("Bearer ").strip()
+        if not token or not hmac.compare_digest(
+            record["teacher_token_hash"], hashlib.sha256(token.encode()).hexdigest()
+        ):
             return None
         return record
 
@@ -246,6 +367,343 @@ def create_app(test_config=None):
     def health():
         return jsonify(status="ok")
 
+    @app.post("/api/auth/register")
+    @rate_limited
+    @require_csrf
+    def register():
+        data = payload()
+        if data is None:
+            return jsonify(error="A JSON object is required."), 400
+        full_name = data.get("fullName")
+        username = data.get("username")
+        email = data.get("email")
+        password = data.get("password")
+        confirmation = data.get("confirmPassword")
+        if (
+            not isinstance(full_name, str)
+            or not full_name.strip()
+            or len(full_name.strip()) > 100
+            or any(ord(character) < 32 for character in full_name)
+        ):
+            return jsonify(error="Full name must contain 1–100 characters."), 400
+        if not isinstance(username, str) or not USERNAME_PATTERN.fullmatch(username):
+            return jsonify(error="Username must be 3–24 letters, numbers, dots, underscores, or hyphens."), 400
+        if (
+            not isinstance(email, str)
+            or len(email) > 254
+            or not EMAIL_PATTERN.fullmatch(email)
+        ):
+            return jsonify(error="Enter a valid email address."), 400
+        if (
+            not isinstance(password, str)
+            or not 12 <= len(password) <= 128
+            or password != confirmation
+        ):
+            return jsonify(error="Password must be 12–128 characters and match the confirmation."), 400
+
+        role = "student"
+        teacher_invite_code = data.get("teacherInviteCode", "")
+        configured_invite_code = current_app.config["TEACHER_INVITE_CODE"]
+        if teacher_invite_code:
+            if (
+                not isinstance(teacher_invite_code, str)
+                or not configured_invite_code
+                or not hmac.compare_digest(teacher_invite_code, configured_invite_code)
+            ):
+                return jsonify(error="The teacher invitation code is invalid."), 403
+            role = "teacher"
+
+        normalized_email = email.casefold()
+        timestamp = datetime.now(timezone.utc).isoformat()
+        password_hash = generate_password_hash(password, method="scrypt")
+        try:
+            with db_connection() as connection:
+                connection.execute(
+                    """
+                    INSERT INTO users (full_name, username, email, password_hash, role, status, created_at, updated_at)
+                    VALUES (?, ?, ?, ?, ?, 'active', ?, ?)
+                    """,
+                    (
+                        full_name.strip(),
+                        username,
+                        normalized_email,
+                        password_hash,
+                        role,
+                        timestamp,
+                        timestamp,
+                    ),
+                )
+                user = connection.execute(
+                    """
+                    SELECT user_id, full_name, username, email, role, status, created_at
+                    FROM users WHERE username = ?
+                    """,
+                    (username,),
+                ).fetchone()
+        except sqlite3.IntegrityError:
+            return jsonify(error="That username or email is already registered."), 409
+
+        session.clear()
+        session["user_id"] = user["user_id"]
+        session["csrf_token"] = secrets.token_urlsafe(32)
+        return jsonify(user=public_user(user)), 201
+
+    @app.post("/api/auth/login")
+    @rate_limited
+    @require_csrf
+    def login():
+        data = payload()
+        if data is None:
+            return jsonify(error="A JSON object is required."), 400
+        identifier = data.get("identifier")
+        password = data.get("password")
+        if (
+            not isinstance(identifier, str)
+            or not identifier.strip()
+            or len(identifier) > 254
+            or not isinstance(password, str)
+            or not password
+            or len(password) > 128
+        ):
+            return jsonify(error="Username/email and password are required."), 400
+
+        identity = identifier.strip()
+        with db_connection() as connection:
+            user = connection.execute(
+                """
+                SELECT user_id, full_name, username, email, password_hash, role, status, created_at
+                FROM users WHERE username = ? COLLATE NOCASE OR email = ? COLLATE NOCASE
+                """,
+                (identity, identity),
+            ).fetchone()
+        if (
+            not user
+            or user["status"] != "active"
+            or not check_password_hash(user["password_hash"], password)
+        ):
+            return jsonify(error="Invalid username/email or password."), 401
+
+        session.clear()
+        session["user_id"] = user["user_id"]
+        session["csrf_token"] = secrets.token_urlsafe(32)
+        return jsonify(user=public_user(user)), 200
+
+    @app.get("/api/auth/me")
+    @rate_limited
+    def auth_me():
+        user = authenticated_user()
+        if not user:
+            return jsonify(error="Authentication is required."), 401
+        return jsonify(user=public_user(user))
+
+    @app.post("/api/auth/logout")
+    @rate_limited
+    @require_csrf
+    def logout():
+        session.clear()
+        return jsonify(loggedOut=True)
+
+    @app.get("/api/teacher/classes")
+    @rate_limited
+    def list_teacher_classes():
+        user = authenticated_user()
+        if not user:
+            return jsonify(error="Authentication is required."), 401
+        if user["role"] not in {"teacher", "admin"}:
+            return jsonify(error="Teacher authorization is required."), 403
+        with db_connection() as connection:
+            if user["role"] == "admin":
+                rows = connection.execute(
+                    """
+                    SELECT class_code, created_at FROM classes
+                    WHERE owner_user_id IS NOT NULL ORDER BY created_at DESC
+                    """
+                ).fetchall()
+            else:
+                rows = connection.execute(
+                    """
+                    SELECT class_code, created_at FROM classes
+                    WHERE owner_user_id = ? ORDER BY created_at DESC
+                    """,
+                    (user["user_id"],),
+                ).fetchall()
+        return jsonify(
+            classes=[{"classCode": row["class_code"], "createdAt": row["created_at"]} for row in rows]
+        )
+
+    @app.post("/api/teacher/classes")
+    @rate_limited
+    @require_csrf
+    def create_teacher_class():
+        user = authenticated_user()
+        if not user:
+            return jsonify(error="Authentication is required."), 401
+        if user["role"] != "teacher":
+            return jsonify(error="Teacher authorization is required."), 403
+        code = "".join(secrets.choice(CLASS_CODE_CHARS) for _ in range(6))
+        token = secrets.token_urlsafe(32)
+        timestamp = datetime.now(timezone.utc).isoformat()
+        with db_connection() as connection:
+            while connection.execute("SELECT 1 FROM classes WHERE class_code = ?", (code,)).fetchone():
+                code = "".join(secrets.choice(CLASS_CODE_CHARS) for _ in range(6))
+            connection.execute(
+                """
+                INSERT INTO classes (class_code, teacher_token_hash, created_at, owner_user_id)
+                VALUES (?, ?, ?, ?)
+                """,
+                (code, hashlib.sha256(token.encode()).hexdigest(), timestamp, user["user_id"]),
+            )
+        return jsonify(classCode=code, createdAt=timestamp), 201
+
+    @app.get("/api/student/classes")
+    @rate_limited
+    def list_student_classes():
+        user = authenticated_user()
+        if not user:
+            return jsonify(error="Authentication is required."), 401
+        if user["role"] != "student":
+            return jsonify(error="Student authorization is required."), 403
+        with db_connection() as connection:
+            rows = connection.execute(
+                """
+                SELECT m.class_code, m.status, m.joined_at, c.created_at
+                FROM class_members AS m
+                JOIN classes AS c ON c.class_code = m.class_code
+                WHERE m.user_id = ? AND m.status IN ('pending', 'active')
+                ORDER BY m.joined_at DESC
+                """,
+                (user["user_id"],),
+            ).fetchall()
+        return jsonify(
+            classes=[
+                {
+                    "classCode": row["class_code"],
+                    "status": row["status"],
+                    "joinedAt": row["joined_at"],
+                }
+                for row in rows
+            ]
+        )
+
+    @app.post("/api/student/classes")
+    @rate_limited
+    @require_csrf
+    def join_student_class():
+        user = authenticated_user()
+        if not user:
+            return jsonify(error="Authentication is required."), 401
+        if user["role"] != "student":
+            return jsonify(error="Student authorization is required."), 403
+        data = payload()
+        class_code = data.get("classCode") if data else None
+        if not isinstance(class_code, str) or not CLASS_CODE_PATTERN.fullmatch(class_code):
+            return jsonify(error="A valid class code is required."), 400
+        timestamp = datetime.now(timezone.utc).isoformat()
+        with db_connection() as connection:
+            classroom = connection.execute(
+                "SELECT owner_user_id FROM classes WHERE class_code = ?",
+                (class_code,),
+            ).fetchone()
+            if not classroom or classroom["owner_user_id"] is None:
+                return jsonify(error="That class code was not found."), 404
+            existing = connection.execute(
+                "SELECT status FROM class_members WHERE class_code = ? AND user_id = ?",
+                (class_code, user["user_id"]),
+            ).fetchone()
+            if existing and existing["status"] in {"pending", "active"}:
+                return jsonify(error="You already have a pending request or membership for this class."), 409
+            connection.execute(
+                """
+                INSERT INTO class_members (class_code, user_id, status, joined_at, updated_at)
+                VALUES (?, ?, 'pending', ?, ?)
+                ON CONFLICT(class_code, user_id) DO UPDATE SET
+                    status = 'pending', joined_at = excluded.joined_at, updated_at = excluded.updated_at
+                """,
+                (class_code, user["user_id"], timestamp, timestamp),
+            )
+        return jsonify(classCode=class_code, status="pending"), 201
+
+    @app.get("/api/teacher/classes/<class_code>/members")
+    @rate_limited
+    def list_class_members(class_code):
+        user = authenticated_user()
+        if not user:
+            return jsonify(error="Authentication is required."), 401
+        if user["role"] not in {"teacher", "admin"} or not CLASS_CODE_PATTERN.fullmatch(class_code):
+            return jsonify(error="Teacher authorization is required for this class."), 403
+        if not owns_class(user, class_code):
+            return jsonify(error="Teacher authorization is required for this class."), 403
+        with db_connection() as connection:
+            rows = connection.execute(
+                """
+                SELECT u.user_id, u.full_name, u.username, m.status, m.joined_at
+                FROM class_members AS m
+                JOIN users AS u ON u.user_id = m.user_id
+                WHERE m.class_code = ? AND m.status IN ('pending', 'active')
+                ORDER BY CASE m.status WHEN 'pending' THEN 0 ELSE 1 END, m.joined_at
+                """,
+                (class_code,),
+            ).fetchall()
+        return jsonify(
+            members=[
+                {
+                    "userId": row["user_id"],
+                    "fullName": row["full_name"],
+                    "username": row["username"],
+                    "status": row["status"],
+                    "joinedAt": row["joined_at"],
+                }
+                for row in rows
+            ]
+        )
+
+    @app.post("/api/teacher/classes/<class_code>/members/<int:user_id>/status")
+    @rate_limited
+    @require_csrf
+    def update_class_member_status(class_code, user_id):
+        user = authenticated_user()
+        if not user:
+            return jsonify(error="Authentication is required."), 401
+        if user["role"] not in {"teacher", "admin"} or not CLASS_CODE_PATTERN.fullmatch(class_code):
+            return jsonify(error="Teacher authorization is required for this class."), 403
+        if not owns_class(user, class_code):
+            return jsonify(error="Teacher authorization is required for this class."), 403
+        data = payload()
+        status = data.get("status") if data else None
+        if not isinstance(status, str) or status not in {"active", "rejected"}:
+            return jsonify(error="Member status must be active or rejected."), 400
+        with db_connection() as connection:
+            result = connection.execute(
+                """
+                UPDATE class_members SET status = ?, updated_at = ?
+                WHERE class_code = ? AND user_id = ? AND status = 'pending'
+                """,
+                (status, datetime.now(timezone.utc).isoformat(), class_code, user_id),
+            )
+            if result.rowcount != 1:
+                return jsonify(error="No pending request was found for this student."), 404
+        return jsonify(userId=user_id, status=status)
+
+    @app.delete("/api/teacher/classes/<class_code>/members/<int:user_id>")
+    @rate_limited
+    @require_csrf
+    def remove_class_member(class_code, user_id):
+        user = authenticated_user()
+        if not user:
+            return jsonify(error="Authentication is required."), 401
+        if user["role"] not in {"teacher", "admin"} or not CLASS_CODE_PATTERN.fullmatch(class_code):
+            return jsonify(error="Teacher authorization is required for this class."), 403
+        if not owns_class(user, class_code):
+            return jsonify(error="Teacher authorization is required for this class."), 403
+        with db_connection() as connection:
+            result = connection.execute(
+                "DELETE FROM class_members WHERE class_code = ? AND user_id = ? AND status = 'active'",
+                (class_code, user_id),
+            )
+            if result.rowcount != 1:
+                return jsonify(error="No active membership was found for this student."), 404
+        return jsonify(removed=True, userId=user_id)
+
     @app.post("/api/classes")
     @rate_limited
     @require_csrf
@@ -297,9 +755,25 @@ def create_app(test_config=None):
             if not isinstance(class_code, str) or not CLASS_CODE_PATTERN.fullmatch(class_code):
                 return jsonify(error="Class code is invalid."), 400
             with db_connection() as connection:
-                exists = connection.execute("SELECT 1 FROM classes WHERE class_code = ?", (class_code,)).fetchone()
-            if not exists:
+                classroom = connection.execute(
+                    "SELECT owner_user_id FROM classes WHERE class_code = ?", (class_code,)
+                ).fetchone()
+            if not classroom:
                 return jsonify(error="That class code was not found."), 404
+            if classroom["owner_user_id"] is not None:
+                learner = authenticated_user()
+                if not learner or learner["role"] != "student":
+                    return jsonify(error="An approved student membership is required for this class."), 403
+                with db_connection() as connection:
+                    membership = connection.execute(
+                        """
+                        SELECT 1 FROM class_members
+                        WHERE class_code = ? AND user_id = ? AND status = 'active'
+                        """,
+                        (class_code, learner["user_id"]),
+                    ).fetchone()
+                if not membership:
+                    return jsonify(error="An approved student membership is required for this class."), 403
         else:
             class_code = None
         updated_at = datetime.now(timezone.utc).isoformat()

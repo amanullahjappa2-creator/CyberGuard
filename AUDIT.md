@@ -14,8 +14,9 @@ Audit baseline: `pre-polish` tag at `24a4b38b5b2f63f0dfb0151e030de7ea7f22c500`.
 - `level-catalog.json` is the lightweight index; `levels/level01.json` through
   `level30.json` hold scenario mechanics. `lang/en.json` and `lang/ur.json` hold
   localized screens, scenario copy, learning cards, and glossary entries.
-- `app.py`, `js/scoreboard.js`, `js/teacher.js`, and `teacher.html` implement the
-  optional consent-based classroom service and its teacher report.
+- `app.py` implements the optional consent-based classroom service, initial
+  student account APIs and versioned SQLite migrations; `js/scoreboard.js`,
+  `js/teacher.js`, and `teacher.html` implement the existing browser clients.
 - `css/style.css` provides the responsive, light/dark, RTL, and print presentation.
   `service-worker.js` precaches the app shell and all current level data.
 - Node, Python, and Playwright checks live in `tests/` and `e2e/`; GitHub Actions
@@ -46,9 +47,26 @@ passing Playwright end-to-end test. ESLint, Prettier, and `git diff --check` pas
 The browser flow checks English and Urdu, light and dark themes, offline progress,
 keyboard navigation, and the 360px primary navigation layout.
 
+## Phase 1 reporting refinement
+
+The mastery report now keeps the engine's neutral prior out of user-facing
+performance metrics until a skill has four answered issues. Empty and hint-only
+states are labelled, and the browser test covers both the empty state and the
+first established skill estimate. The dashboard also surfaces recorded player
+rank, XP, level and streak. This is a local UI improvement, not LMS analytics;
+accounts, database-backed learning records and role-based portals remain future
+work.
+
 ## Scope note
 
 The existing project does not include Learn lessons, a formal assessment bank,
 accounts, assignments, certificate signing, or a content-administration workflow.
 These are not treated as implemented by this polish pass. Implementing them safely
 requires new product and data models rather than cosmetic cleanup.
+
+## Follow-up backend work
+
+The later student-account foundation adds versioned, transactional SQLite
+migrations and student registration/login/logout APIs. These APIs are not wired
+to the browser UI or learning progress. Teacher/admin provisioning, authorization
+of class routes, account recovery and email verification remain unimplemented.

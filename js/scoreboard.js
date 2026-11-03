@@ -61,16 +61,65 @@ export async function createClass() {
   });
 }
 
-export async function fetchClassReport(classCode, teacherToken) {
-  return requestJson(`/api/classes/${encodeURIComponent(classCode)}/report`, {
-    headers: { Authorization: `Bearer ${teacherToken}` },
+export async function createTeacherClass() {
+  return requestJson("/api/teacher/classes", {
+    method: "POST",
+    headers: await csrfHeaders(),
+    body: JSON.stringify({}),
   });
 }
 
-export async function fetchClassCsv(classCode, teacherToken) {
+export async function fetchTeacherClasses() {
+  return requestJson("/api/teacher/classes");
+}
+
+export async function fetchStudentClasses() {
+  return requestJson("/api/student/classes");
+}
+
+export async function joinStudentClass(classCode) {
+  return requestJson("/api/student/classes", {
+    method: "POST",
+    headers: await csrfHeaders(),
+    body: JSON.stringify({ classCode }),
+  });
+}
+
+export async function fetchClassMembers(classCode) {
+  return requestJson(`/api/teacher/classes/${encodeURIComponent(classCode)}/members`);
+}
+
+export async function updateClassMemberStatus(classCode, userId, status) {
+  return requestJson(
+    `/api/teacher/classes/${encodeURIComponent(classCode)}/members/${encodeURIComponent(userId)}/status`,
+    {
+      method: "POST",
+      headers: await csrfHeaders(),
+      body: JSON.stringify({ status }),
+    },
+  );
+}
+
+export async function removeClassMember(classCode, userId) {
+  return requestJson(
+    `/api/teacher/classes/${encodeURIComponent(classCode)}/members/${encodeURIComponent(userId)}`,
+    {
+      method: "DELETE",
+      headers: await csrfHeaders(),
+    },
+  );
+}
+
+export async function fetchClassReport(classCode, teacherToken = "") {
+  return requestJson(`/api/classes/${encodeURIComponent(classCode)}/report`, {
+    headers: teacherToken ? { Authorization: `Bearer ${teacherToken}` } : {},
+  });
+}
+
+export async function fetchClassCsv(classCode, teacherToken = "") {
   const response = await fetch(`/api/classes/${encodeURIComponent(classCode)}/export.csv`, {
     credentials: "same-origin",
-    headers: { Authorization: `Bearer ${teacherToken}` },
+    headers: teacherToken ? { Authorization: `Bearer ${teacherToken}` } : {},
   });
   if (!response.ok) {
     const result = await response.json().catch(() => ({}));

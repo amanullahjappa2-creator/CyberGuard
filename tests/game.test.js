@@ -40,6 +40,54 @@ test("all thirty levels have complete fixes, explanations and translations", () 
   });
 });
 
+test("English and Urdu interface translations contain the same non-empty keys", () => {
+  assert.deepEqual(Object.keys(locales.en.ui).sort(), Object.keys(locales.ur.ui).sort());
+  for (const key of Object.keys(locales.en.ui)) {
+    assert.ok(locales.en.ui[key], `English UI is missing ${key}`);
+    assert.ok(locales.ur.ui[key], `Urdu UI is missing ${key}`);
+  }
+});
+
+test("student account screens have bilingual copy", () => {
+  for (const key of [
+    "navAccount",
+    "accountIntro",
+    "accountChecking",
+    "accountServiceUnavailable",
+    "accountLogin",
+    "accountRegister",
+    "accountIdentifier",
+    "accountPassword",
+    "accountFullName",
+    "accountUsername",
+    "accountEmail",
+    "accountTeacherInvite",
+    "accountConfirmPassword",
+    "accountPasswordMismatch",
+    "accountWelcome",
+    "accountSignedIn",
+    "accountLogout",
+    "accountLoggedOut",
+    "teacherOwnedClasses",
+    "teacherNoClasses",
+    "teacherOpenAccount",
+    "studentClasses",
+    "studentNoClasses",
+    "joinClass",
+    "classJoinPending",
+    "classMembershipPending",
+    "classMembershipActive",
+    "teacherMembers",
+    "teacherNoMembers",
+    "teacherApprove",
+    "teacherReject",
+    "teacherRemove",
+  ]) {
+    assert.ok(locales.en.ui[key]);
+    assert.ok(locales.ur.ui[key]);
+  }
+});
+
 test("answer choices shuffle deterministically across attempts and cover each position", () => {
   const choices = ["correct", "wrong-a", "wrong-b"];
   const positions = new Set(

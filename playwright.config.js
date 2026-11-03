@@ -22,6 +22,7 @@ export default defineConfig({
     env: {
       PORT: "4173",
       CYBERGUARD_SECRET_KEY: "playwright-test-secret",
+      CYBERGUARD_TEACHER_INVITE_CODE: "playwright-teacher-invite",
       CYBERGUARD_DATABASE: "test-results/scoreboard-e2e.sqlite3",
     },
   },

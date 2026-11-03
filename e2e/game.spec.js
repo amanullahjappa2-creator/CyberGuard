@@ -9,14 +9,32 @@ test("completes a level, switches language and theme, and keeps progress after r
   });
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "Build practical cyber safety skills" })).toBeVisible();
+  await expect(page.locator(".player-card")).toContainText("Recruit");
+  await expect(page.locator(".player-card")).toContainText("Experience points (XP): 0");
+  await expect(page.locator(".recommendation-card")).toContainText("Start with this available mission.");
+  await expect(page.locator(".radar-point")).toHaveCount(0);
+  await expect(page.locator(".radar-caption")).toContainText("Answer four issues");
+  await page
+    .getByRole("navigation", { name: "Primary navigation" })
+    .getByRole("button", { name: "Reports" })
+    .click();
+  await expect(page.locator(".mastery-status")).toHaveCount(7);
+  await expect(page.locator(".mastery-status").first()).toHaveText("Not attempted");
+  await expect(page.locator(".report-skill progress")).toHaveCount(0);
+  const mistakesCard = page
+    .locator(".report-card")
+    .filter({ has: page.getByRole("heading", { name: "Mistakes by skill" }) });
+  await expect(mistakesCard).toContainText("Passwords: Not attempted");
+  await page
+    .getByRole("navigation", { name: "Primary navigation" })
+    .getByRole("button", { name: "Dashboard" })
+    .click();
   const appOutlineStyle = await page.locator("#app").evaluate((app) => getComputedStyle(app).outlineStyle);
   expect(appOutlineStyle).not.toBe("none");
   await expect(page.locator(".skill-radar")).toBeVisible();
-  const radarFill = await page.locator(".radar-data").evaluate((polygon) => getComputedStyle(polygon).fill);
   const radarLabelFills = await page
     .locator(".radar-label")
     .evaluateAll((labels) => labels.map((label) => getComputedStyle(label).fill));
-  expect(radarFill).not.toBe("rgb(0, 0, 0)");
   expect(radarLabelFills.every((fill) => fill !== "rgb(0, 0, 0)")).toBe(true);
   await page.getByRole("button", { name: "Start learning" }).click();
 
@@ -70,6 +88,11 @@ test("completes a level, switches language and theme, and keeps progress after r
     .locator('[data-screen="report"]')
     .click();
   await expect(page.getByRole("heading", { name: "مہارت کی تفصیل" })).toBeVisible();
+  await expect(page.locator(".radar-point")).toHaveCount(1);
+  await expect(page.locator(".mastery-status")).toHaveCount(6);
+  await expect(page.locator(".mastery-status").first()).toHaveText("ابھی مشق نہیں کی");
+  const radarPointFill = await page.locator(".radar-point").evaluate((point) => getComputedStyle(point).fill);
+  expect(radarPointFill).not.toBe("rgb(0, 0, 0)");
   await expect(page.getByText(/رازداری:/)).toBeVisible();
   await page.setViewportSize({ width: 360, height: 800 });
   const fitsPhone = await page.evaluate(

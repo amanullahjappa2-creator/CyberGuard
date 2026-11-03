@@ -122,3 +122,50 @@ test("performance report summarizes accuracy, mistakes, hints and recent session
   assert.equal(report.levels[0].accuracy, 80);
   assert.equal(recentAccuracy(adaptive.events, "web"), 50);
 });
+
+test("performance reports do not label baseline or sparse data as established mastery", () => {
+  const progress = { levels: {}, adaptive: createAdaptiveState() };
+  const emptyReport = buildPerformanceReport(progress);
+  assert.equal(emptyReport.skillStats.passwords.mastery, null);
+  assert.equal(emptyReport.skillStats.passwords.masteryStatus, "not-attempted");
+
+  progress.adaptive = applyAdaptiveObservation(progress.adaptive, {
+    sessionId: "hint-session",
+    levelId: 1,
+    skillTag: "passwords",
+    issueIndex: 0,
+    difficulty: 1,
+    outcome: "hint",
+    seconds: 0,
+  });
+  assert.equal(buildPerformanceReport(progress).skillStats.passwords.masteryStatus, "needs-answers");
+
+  for (let issueIndex = 0; issueIndex < 3; issueIndex += 1) {
+    progress.adaptive = applyAdaptiveObservation(progress.adaptive, {
+      sessionId: "practice-session",
+      levelId: 1,
+      skillTag: "passwords",
+      issueIndex,
+      difficulty: 1,
+      outcome: "correct",
+      seconds: 20,
+    });
+  }
+  const building = buildPerformanceReport(progress).skillStats.passwords;
+  assert.equal(building.mastery, null);
+  assert.equal(building.masteryStatus, "building");
+  assert.equal(building.answersToBaseline, 1);
+
+  progress.adaptive = applyAdaptiveObservation(progress.adaptive, {
+    sessionId: "practice-session",
+    levelId: 1,
+    skillTag: "passwords",
+    issueIndex: 3,
+    difficulty: 1,
+    outcome: "correct",
+    seconds: 20,
+  });
+  const measured = buildPerformanceReport(progress).skillStats.passwords;
+  assert.equal(measured.masteryStatus, "measured");
+  assert.equal(typeof measured.mastery, "number");
+});

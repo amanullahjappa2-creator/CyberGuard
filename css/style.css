@@ -10,31 +10,31 @@
   --text: #e6edf7;
   --muted: #8fa0bf;
   --border: #1e2a47;
-  --primary: #00e5ff;
-  --primary-hover: #74f1ff;
-  --accent: #00e5ff;
-  --danger: #ff3b5c;
-  --danger-soft: #301522;
-  --success: #39ff88;
-  --success-soft: #102b21;
-  --warning: #ffb020;
-  --magenta: #ff2bd6;
-  --violet: #8b5cff;
-  --blue: #3d8bff;
-  --chapter-1: #00e5ff;
-  --chapter-2: #39ff88;
-  --chapter-3: #ff2bd6;
-  --chapter-4: #8b5cff;
-  --chapter-5: #ffb020;
-  --chapter-6: #ff3b5c;
-  --skill-passwords: #00e5ff;
-  --skill-phishing: #ff2bd6;
-  --skill-social: #ffb020;
-  --skill-network: #39ff88;
-  --skill-web: #8b5cff;
-  --skill-cloud: #3d8bff;
-  --skill-response: #ff3b5c;
-  --shadow-glow: 0 0 18px rgb(0 229 255 / 28%);
+  --primary: #39bde0;
+  --primary-hover: #6ed2eb;
+  --accent: #39bde0;
+  --danger: #e66c7c;
+  --danger-soft: #321b24;
+  --success: #45c993;
+  --success-soft: #102a22;
+  --warning: #e7ad55;
+  --magenta: #c178d5;
+  --violet: #a08dff;
+  --blue: #60a6e8;
+  --chapter-1: #39bde0;
+  --chapter-2: #45c993;
+  --chapter-3: #c178d5;
+  --chapter-4: #a08dff;
+  --chapter-5: #e7ad55;
+  --chapter-6: #e66c7c;
+  --skill-passwords: #39bde0;
+  --skill-phishing: #c178d5;
+  --skill-social: #e7ad55;
+  --skill-network: #45c993;
+  --skill-web: #a08dff;
+  --skill-cloud: #60a6e8;
+  --skill-response: #e66c7c;
+  --shadow-glow: 0 0 14px rgb(57 189 224 / 16%);
   --shadow: 0 18px 48px rgb(0 0 0 / 24%);
   --space-1: 4px;
   --space-2: 8px;
@@ -97,39 +97,6 @@ body {
 
 body[data-theme="dark"] {
   color-scheme: dark;
-  --page: #070b14;
-  --surface: #0d1424;
-  --surface-soft: #121c33;
-  --surface-raised: #17233c;
-  --text: #e6edf7;
-  --muted: #8fa0bf;
-  --border: #1e2a47;
-  --primary: #00e5ff;
-  --primary-hover: #74f1ff;
-  --accent: #00e5ff;
-  --danger: #ff3b5c;
-  --danger-soft: #301522;
-  --success: #39ff88;
-  --success-soft: #102b21;
-  --warning: #ffb020;
-  --magenta: #ff2bd6;
-  --violet: #8b5cff;
-  --blue: #3d8bff;
-  --chapter-1: #00e5ff;
-  --chapter-2: #39ff88;
-  --chapter-3: #ff2bd6;
-  --chapter-4: #8b5cff;
-  --chapter-5: #ffb020;
-  --chapter-6: #ff3b5c;
-  --skill-passwords: #00e5ff;
-  --skill-phishing: #ff2bd6;
-  --skill-social: #ffb020;
-  --skill-network: #39ff88;
-  --skill-web: #8b5cff;
-  --skill-cloud: #3d8bff;
-  --skill-response: #ff3b5c;
-  --shadow-glow: 0 0 18px rgb(0 229 255 / 28%);
-  --shadow: 0 18px 48px rgb(0 0 0 / 24%);
 }
 
 body[data-theme="light"] {
@@ -979,7 +946,7 @@ p {
 }
 .dashboard-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(240px, 0.8fr);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 18px;
   margin-top: 18px;
 }
@@ -998,6 +965,29 @@ p {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+}
+.rank-card > div {
+  width: 100%;
+}
+.dashboard-progress {
+  height: 8px;
+  margin-top: 12px;
+}
+.player-card h2 {
+  margin: 0 0 16px;
+}
+.dashboard-stat-list {
+  display: grid;
+  gap: 0;
+}
+.dashboard-stat-list p {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+  font-size: 0.85rem;
 }
 .rank-value {
   color: var(--primary);
@@ -1203,11 +1193,14 @@ p {
   stroke: var(--border);
   stroke-width: 1.5px;
 }
-.radar-data {
-  fill: color-mix(in srgb, var(--primary) 24%, transparent);
+.radar-point {
+  fill: var(--primary);
   stroke: var(--primary);
-  stroke-width: 3px;
-  stroke-linejoin: round;
+  stroke-width: 2px;
+}
+.radar-caption {
+  margin: 0;
+  text-align: center;
 }
 .radar-label {
   fill: var(--text);
@@ -1236,6 +1229,11 @@ p {
 .report-skill progress {
   width: 100%;
   accent-color: var(--primary);
+}
+.mastery-status {
+  grid-column: span 2;
+  color: var(--muted);
+  font-size: 0.82rem;
 }
 .report-skill progress[data-skill-tag="passwords"] {
   accent-color: var(--skill-passwords);
@@ -1276,15 +1274,68 @@ p {
   margin-top: 18px;
 }
 .scoreboard-form,
-.teacher-card {
+.teacher-card,
+.account-form {
   display: grid;
   gap: 14px;
 }
 .scoreboard-form label,
-.teacher-card label {
+.teacher-card label,
+.account-field {
   display: grid;
   gap: 6px;
   font-weight: 650;
+}
+.account-panel {
+  display: grid;
+  gap: 18px;
+  max-width: 760px;
+}
+.account-classes {
+  display: grid;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.account-classes h2 {
+  margin: 0;
+}
+.student-class-list {
+  display: grid;
+  gap: 8px;
+}
+.student-class-row {
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+}
+.account-panel > p,
+.account-form h2 {
+  margin: 0;
+}
+.account-form {
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+.account-field input {
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 11px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  color: var(--text);
+}
+.account-message {
+  padding: 12px;
+  border: 1px solid var(--success);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+}
+.account-message.is-error {
+  border-color: var(--danger);
 }
 .scoreboard-form input:not([type="checkbox"]),
 .scoreboard-form select,
@@ -1317,6 +1368,40 @@ p {
 }
 .teacher-card {
   margin-top: 16px;
+}
+.teacher-class-list {
+  display: grid;
+  gap: 12px;
+}
+.teacher-owned-class {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+}
+.teacher-owned-class h3 {
+  margin: 0;
+  font-family: var(--font-mono);
+}
+.teacher-members {
+  display: grid;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+.teacher-members h4,
+.teacher-members p {
+  margin: 0;
+}
+.teacher-member {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
 }
 .teacher-message {
   padding: 12px;
