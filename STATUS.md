@@ -211,7 +211,7 @@ offline and verify every increment against the bilingual browser flow.
       service-worker behavior, and existing browser/API test coverage.
 - [x] Make account progress upload and restore merge-safe across devices, with
       conflict protection and tests proving existing records are retained.
-- [ ] Design structured, attributable learning and XP history before presenting
+- [x] Design structured, attributable learning and XP history before presenting
       account-level analytics or teacher access to individual learning records.
 - [ ] Add bilingual structured courses, lessons, knowledge checks, bookmarks,
       and resume state.
@@ -219,3 +219,8 @@ offline and verify every increment against the bilingual browser flow.
       account/class data model and answer-release rules are specified.
 - [ ] Add verified certificates and administrative workflows after authorization,
       audit logging, and course-completion criteria are in place.
+
+The learning-event and XP-ledger design is recorded in
+`LEARNING_DATA_MODEL.md`. It specifies stable event identity, legacy XP handling,
+offline-first capture, explicit revision-checked upload, privacy boundaries, and
+authorization gates. The implementation and its acceptance tests remain pending.

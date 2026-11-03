@@ -68,6 +68,12 @@ single source for dashboards, recommendations and learner/instructor reports.
 
 ## Validation
 
+The prerequisite event and XP accounting design is documented in
+`LEARNING_DATA_MODEL.md`. Implementation must retain offline local play, treat
+the current XP total as a legacy balance rather than inventing award history,
+and keep teacher reporting behind approved membership and server-side ownership
+checks.
+
 - `npm test`: Node unit tests and level data validation.
 - `npm run lint`: ESLint for application, tests, scripts, browser tests and service
   worker.
