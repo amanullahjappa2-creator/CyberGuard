@@ -98,7 +98,7 @@ exploit or test real systems, and do not enter real passwords, OTPs, payment
 details or other sensitive information. The optional scoreboard is not an
 authenticated account or high-stakes assessment service; client-submitted scores
 are sanity-checked, not proven. It is not suitable for storing sensitive student
-records.
+records. So, learn and grow with us.
 
 See [SECURITY.md](./SECURITY.md) for private vulnerability reporting and
 [THREAT_MODEL.md](./THREAT_MODEL.md) for the current security scope and known
